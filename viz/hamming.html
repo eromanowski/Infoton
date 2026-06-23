@@ -371,6 +371,10 @@ let mode='word';
 let stepDelay=156;
 const EMBED_COMPARE=/[?&]embed=compare\b/.test(location.search);
 if(EMBED_COMPARE){document.body.classList.add('embed-compare');stepDelay=6;}
+(function(){
+  const dm=/[?&]delay=(\d+)/.exec(location.search);
+  if(dm) stepDelay=parseInt(dm[1],10);
+})();
 const TWEET_STR="The Great Salt Lake can be fully restored to full health within as little as 3 years by returning 1,150,000 AF/yr. Resulting Utah's lake effect and water security.";
 function wordChars(w){
   const slice=TWEET_STR.slice(w*8,w*8+8);
@@ -823,6 +827,7 @@ if(EMBED_COMPARE){
   });
   setMode('tweet');
   broadcastEmbed();
+  window.parent.postMessage({type:'embed-ready',source:'hamming'},'*');
 }
 </script>
 </body>

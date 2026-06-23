@@ -125,7 +125,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
       <span class="pane-title">P30 Prime 30 Clock</span>
       <span class="pane-sub" id="p30Phase">Idle</span>
     </div>
-    <iframe id="p30Frame" src="encoder.html?embed=compare" title="P30 encoder"></iframe>
+    <iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=55" title="P30 encoder"></iframe>
   </div>
   <div class="divider" aria-hidden="true"></div>
   <div class="pane">
@@ -133,7 +133,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
       <span class="pane-title">Traditional 64-Bit Word + ECC</span>
       <span class="pane-sub" id="hamPhase">Idle</span>
     </div>
-    <iframe id="hamFrame" src="hamming.html?embed=compare" title="Hamming SECDED"></iframe>
+    <iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=3" title="Hamming SECDED"></iframe>
   </div>
 </div>
 
@@ -180,10 +180,22 @@ function postBoth(cmd,extra){
   hamFrame.contentWindow.postMessage(msg,'*');
 }
 
+function syncDelaysFromActiveTier(){
+  var btn=document.querySelector('.tier.active');
+  if(!btn) return;
+  p30Delay=parseInt(btn.dataset.p30,10);
+  hamDelay=parseInt(btn.dataset.ham,10);
+}
+
+function applySpeed(){
+  syncDelaysFromActiveTier();
+  try{p30Frame.contentWindow.postMessage({cmd:'setSpeed',delay:p30Delay},'*');}catch(e){}
+  try{hamFrame.contentWindow.postMessage({cmd:'setSpeed',delay:hamDelay},'*');}catch(e){}
+}
+
 function setSpeed(p30,ham){
   p30Delay=p30; hamDelay=ham;
-  p30Frame.contentWindow.postMessage({cmd:'setSpeed',delay:p30},'*');
-  hamFrame.contentWindow.postMessage({cmd:'setSpeed',delay:ham},'*');
+  applySpeed();
 }
 
 function idleStatus(){
@@ -219,7 +231,12 @@ function reset(){
 
 window.addEventListener('message',function(e){
   var d=e.data;
-  if(!d||d.type!=='state') return;
+  if(!d) return;
+  if(d.type==='embed-ready'){
+    applySpeed();
+    return;
+  }
+  if(d.type!=='state') return;
   if(d.source==='p30'){
     state.p30.ops=d.ops; state.p30.progress=d.progress;
     state.p30.finished=d.finished; state.p30.playing=d.playing;
@@ -247,14 +264,7 @@ document.querySelectorAll('.tier').forEach(function(btn){
   });
 });
 
-function onFrameLoad(frame,delay){
-  frame.addEventListener('load',function(){
-    try{ frame.contentWindow.postMessage({cmd:'setSpeed',delay:delay},'*'); }catch(e){}
-  });
-}
-onFrameLoad(p30Frame,p30Delay);
-onFrameLoad(hamFrame,hamDelay);
-
+syncDelaysFromActiveTier();
 updateRace();
 </script>
 </body>

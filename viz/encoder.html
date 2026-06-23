@@ -596,6 +596,10 @@ function highlightChar(idx){
 }
 
 var idx=0, playing=false, stepTimer=null, stepDelay=150, finished=false, tokensSoFar=0;
+(function(){
+  var dm=/[?&]delay=(\d+)/.exec(location.search);
+  if(dm) stepDelay=parseInt(dm[1],10);
+})();
 var runClock={accumulated:0, running:false, tick:null};
 
 function formatElapsed(ms){
@@ -918,6 +922,7 @@ if(EMBED_COMPARE){
     else if(d.cmd==='setSpeed'&&d.delay) stepDelay=parseInt(d.delay,10);
   });
   broadcastEmbed();
+  window.parent.postMessage({type:'embed-ready',source:'p30'},'*');
 }
 </script>
 </body>
