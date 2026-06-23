@@ -206,6 +206,6 @@ Validates op counts (489 / 326 BIOS soak / 12 264), ~25× pass-rate ratio, CSV
 - [adr/001-coprime-position.md](adr/001-coprime-position.md) — native code unit decision
 - [adr/002-isa-strategy.md](adr/002-isa-strategy.md) — RISC-V + P30 coprocessor
 - [isa/P30-ISA-v0.1.md](isa/P30-ISA-v0.1.md) — Phase 2 coprocessor + monitor
-- [bench/dual-fpga-thermal.md](bench/dual-fpga-thermal.md) — BOM + Mode MAX/RATE protocol
+- [bench/dual-fpga-thermal.md](bench/dual-fpga-thermal.md) — BOM, **procurement & wiring**, Mode MAX/RATE protocol
 - [bench/thermal-claim-chain.md](bench/thermal-claim-chain.md) — **publishable thermal claim chain**
 - [validity-model-analysis.md](validity-model-analysis.md) — integrity model options
