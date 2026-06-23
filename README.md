@@ -10,10 +10,12 @@ See [`docs/ROADMAP.md`](docs/ROADMAP.md) for phases 0–10.
 
 ## Visualization (matches Infoton UI)
 
+**Live demo:** [eromanowski.github.io/Infoton](https://eromanowski.github.io/Infoton/) — P30 vs Hamming side-by-side comparison (GitHub Pages).
+
 ```bash
 python tools/prepare_viz.py          # refresh from viz/infoton_reference/
 python -m http.server 8080 --directory viz
-# → http://localhost:8080/hub.html
+# → http://localhost:8080/hub.html  (or landing.html for Pages-style home)
 ```
 
 - **Prime 30 clock** with Play/Step/Inject Error

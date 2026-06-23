@@ -2,8 +2,12 @@
 
 Interactive demos extracted from [infoton.ai/infoton-p30](https://infoton.ai/infoton-p30) (June 2026) for local open reproduction.
 
+**GitHub Pages:** [eromanowski.github.io/Infoton](https://eromanowski.github.io/Infoton/) — deploys from `viz/` on push to `main` (see [`.github/workflows/pages.yml`](../.github/workflows/pages.yml)).
+
 | File | Infoton widget | Description |
 |------|----------------|-------------|
+| [`landing.html`](landing.html) | — | Pages home — links to comparison + hub |
+| [`compare.html`](compare.html) | — | **P30 vs Hamming** side-by-side race (489 vs 12,264 ops) |
 | [`index.html`](index.html) | Main encoder | Prime 30 clock, Play/Step, Library vs BIOS panel |
 | [`hamming.html`](hamming.html) | Byte cost | 584-op Hamming SECDED animation per 64-bit word |
 | [`impact.html`](impact.html) | Datacenter | Rack power / no-water extrapolation panel |

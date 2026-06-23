@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infoton P30 — Open Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f6f6;--space:#350498;--center:#fada24;--grid:#6e54a3;--text:#1a1a1a;--muted:rgba(53,4,152,.72)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.55}
+.wrap{max-width:52rem;margin:0 auto;padding:2.5rem 1.5rem 3rem}
+.badge{display:inline-block;font:600 10px/1 'Cinzel',serif;letter-spacing:.12em;text-transform:uppercase;
+  background:var(--center);color:var(--space);padding:6px 12px;border-radius:4px;margin-bottom:1rem}
+h1{font:700 2rem/1.15 'Cinzel',serif;color:var(--space);margin-bottom:.75rem}
+.lead{font-size:1.15rem;color:var(--muted);max-width:44rem}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:2rem 0}
+.metric{background:#fff;border:1px solid rgba(53,4,152,.12);border-radius:8px;padding:1rem 1.1rem;text-align:center}
+.metric-val{font:700 1.65rem/1 'Cinzel',serif;color:var(--space)}
+.metric-lab{font:400 .9rem/1.3 'Cormorant Garamond',serif;color:var(--muted);margin-top:.35rem}
+.cards{display:grid;gap:12px;margin:2rem 0}
+.card{display:block;text-decoration:none;color:inherit;background:#fff;border:2px solid var(--space);
+  border-radius:10px;padding:1.25rem 1.35rem;transition:transform .12s,box-shadow .12s}
+.card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(53,4,152,.12)}
+.card.primary{border-color:var(--center);background:linear-gradient(135deg,#fff 0%,#fff9e6 100%)}
+.card h2{font:600 1.05rem/1.2 'Cinzel',serif;color:var(--space);margin-bottom:.35rem}
+.card p{font-size:1rem;color:var(--muted)}
+.card .go{display:inline-block;margin-top:.65rem;font:600 11px/1 'Cinzel',serif;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--space)}
+.note{margin-top:2rem;padding:1rem 1.15rem;background:#fff;border-left:4px solid var(--grid);font-size:.95rem;color:var(--muted)}
+.note a{color:var(--space)}
+footer{margin-top:2.5rem;font-size:.9rem;color:var(--muted)}
+footer a{color:var(--space)}
+@media(max-width:640px){.metrics{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="badge">Open reproduction</span>
+  <h1>P30 vs Hamming SECDED</h1>
+  <p class="lead">Same 163-character sentence. Two error-correction stacks. Watch how Prime&nbsp;30 coprime encoding compares to traditional byte + Hamming SECDED — operation counts verified against the Infoton demo and our conformance suite.</p>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-val">489</div>
+      <div class="metric-lab">P30 Library ops<br>(3 × 163 chars)</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val">12,264</div>
+      <div class="metric-lab">Hamming SECDED ops<br>(21 × 584 words)</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val">25.1×</div>
+      <div class="metric-lab">Traditional ÷ P30<br>op gap (library)</div>
+    </div>
+  </div>
+
+  <div class="cards">
+    <a class="card primary" href="compare.html">
+      <h2>Side-by-side comparison</h2>
+      <p>Press Play once — P30 finishes while Hamming is still counting. Live op bars, synchronized encoders, same corpus.</p>
+      <span class="go">Open comparison →</span>
+    </a>
+    <a class="card" href="hub.html">
+      <h2>Full visualization hub</h2>
+      <p>Prime 30 clock encoder, Hamming 584-op animation, datacenter impact panel, and Infoton-matched UI.</p>
+      <span class="go">Browse all demos →</span>
+    </a>
+    <a class="card" href="impact.html">
+      <h2>Datacenter impact (hypothesis)</h2>
+      <p>Infoton-style rack extrapolation — illustrative only; lab thermal bench measures dev boards, not facility kW.</p>
+      <span class="go">View impact panel →</span>
+    </a>
+  </div>
+
+  <div class="note">
+    <strong>Scope.</strong> Interactive demos reproduce Infoton&apos;s published op model.
+    Hardware power/thermal claims follow our
+    <a href="https://github.com/eromanowski/Infoton/blob/main/docs/bench/thermal-claim-chain.md">publishable claim chain</a>
+    (FPGA soak pending). Source:
+    <a href="https://github.com/eromanowski/Infoton">github.com/eromanowski/Infoton</a>
+  </div>
+
+  <footer>
+    Infoton mission: exalt dignity and promote happiness of humankind, intelligence, and all life.
+    · <a href="https://infoton.ai/infoton-p30">Infoton P30 demo</a>
+  </footer>
+</div>
+</body>
+</html>
