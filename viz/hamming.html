@@ -364,7 +364,7 @@ body.embed-compare .caption{height:auto;min-height:52px;font-size:15px}
           <span class="p30-name">P30 Encoding</span>
           <span class="p30-val" id="p30Val">0</span>
         </div>
-        <div class="p30-cap">Reaches its result in <b>3 operations</b> and waits. The gap you see while Hamming is still counting is the entire argument.</div>
+        <div class="p30-cap">Reaches its result in <b>3 operations per character</b> &mdash; about <b>24</b> for these 8 bytes &mdash; and waits. The gap you see while Hamming is still counting is the entire argument.</div>
       </div>
     </div>
   </div>
@@ -649,7 +649,7 @@ function updatePanel(){
   el.barWork.style.width=(64/584*90)+'%';
   el.barOver.style.width='90%';
   el.ratioBig.textContent=(TOTAL/WORK).toFixed(1)+'\u00d7';
-  el.p30.textContent=(playing||idx>0||curWord>0)?(3*totalWords):0;
+  el.p30.textContent=(playing||idx>0||curWord>0)?(mode==='tweet'?489:24):0;
   const ePer=landauerPerOp(opTemp);
   el.ePerOp.textContent=fmtJ(ePer);
   el.eOps.textContent=total;
@@ -760,9 +760,9 @@ function finishAll(){
   stop();el.phaseTag.textContent='Complete';
   const total=accWrite+accRead;
   if(mode==='tweet'){
-    el.caption.innerHTML='Whole tweet verified: <b>'+totalWords+'</b> words, <b>'+total.toLocaleString()+'</b> operations, every one of them spent only to confirm the message did not change. P30 would have finished in <b>'+(3*totalWords)+'</b>.';
+    el.caption.innerHTML='Whole tweet verified: <b>'+totalWords+'</b> words, <b>'+total.toLocaleString()+'</b> bit-level operations, every one spent only to confirm the message did not change. P30 covers the same 163 characters in <b>489</b> symbol-level operations (3 per character).';
   }else{
-    el.caption.innerHTML='Round trip complete: <b>584</b> operations to protect <b>64</b> bits, all eight bytes recomputed as one unit. P30 finished at <b>3</b>.';
+    el.caption.innerHTML='Round trip complete: <b>584</b> bit-level operations to protect <b>64</b> bits, all eight bytes recomputed as one unit. P30 covers these 8 bytes in about <b>24</b> symbol-level operations (3 per character).';
   }
   setBytesTouched(8);
   if(mode==='tweet'){tweetCharEls.forEach(s=>{s.classList.remove('tw-active');s.classList.add('tw-done');});}

@@ -20,6 +20,9 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
 .top h1{font:700 1.35rem/1.2 'Cinzel',serif;color:var(--space)}
 .top p{font:400 1rem/1.45 'Cormorant Garamond',serif;color:var(--text-m);max-width:52rem;margin-top:.35rem}
 .top p b{color:var(--space);font-weight:600}
+.caveat{font:400 .82rem/1.45 'Cormorant Garamond',serif;color:var(--text-m);max-width:52rem;
+  margin-top:.55rem;padding:.5rem .7rem;border-left:3px solid var(--center);background:#fbf8ee;border-radius:0 4px 4px 0}
+.caveat b{color:var(--space);font-weight:600}.caveat i{font-style:italic}
 .home-link{font:500 11px/1 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase;
   color:var(--space);text-decoration:none;border:1px solid var(--border);padding:8px 12px;border-radius:5px;background:#fff;white-space:nowrap}
 .home-link:hover{background:var(--center);border-color:var(--center)}
@@ -77,6 +80,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
     <div>
       <h1>Same Sentence, Two Stacks</h1>
       <p>Both sides process the same <b>163-character</b> sentence one <b>operation at a time</b> in lockstep — P30 library (489 ops) vs Hamming SECDED (12,264 ops). Same tick, same delay; watch P30 reach the finish while traditional ECC is still counting.</p>
+      <p class="caveat"><b>Reading this honestly.</b> The two sides count <i>different kinds</i> of operation: P30 ops are <i>symbol-level</i> (one Locate / Emit / Verify per character); Hamming ops are <i>bit-level</i> (individual XORs across each 64-bit word), so part of the gap is granularity. They also guarantee different things — P30 Verify confirms <i>coprimality</i> (the value is structurally valid), while Hamming SECDED detects and <i>corrects</i> physical bit-flips. The <b>489</b> here is P30's conservative <i>library</i> profile; the native-silicon <i>BIOS</i> profile is 163 ops (the <b>75×</b> figure on the impact panel). On a sentence this short P30 storage is roughly break-even with UTF-8 — the win shown here is <b>operations, not size</b>.</p>
     </div>
     <a class="home-link" href="landing.html">Home</a>
   </div>

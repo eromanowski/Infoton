@@ -773,7 +773,7 @@ function finish(){
   else for(var i=0;i<tweetCharEls.length;i++){ tweetCharEls[i].classList.remove('tw-active'); tweetCharEls[i].classList.add('tw-done'); }
   if(p30mode==='encoder'){
     el.phaseTag.textContent='Complete';
-    el.caption.innerHTML='Sentence encoded: <b>163</b> characters, <b>163</b> operations at the floor, one lookup each, zero verification on clean data. Vectorized, the whole sentence encodes in <b>6</b> wide operations. A Hamming SECDED round trip would have spent <b>12,222</b>. The gap is the argument.';
+    el.caption.innerHTML='Sentence encoded: <b>163</b> characters, <b>163</b> operations at the floor, one lookup each, zero verification on clean data. Vectorized, the whole sentence encodes in <b>6</b> wide operations. A Hamming SECDED round trip would have spent <b>12,264</b>. The gap is the argument.';
   } else {
     // BIOS mode: first completion is the one-time ingress encode; further plays are pass-through reads.
     if(passCount===0){
