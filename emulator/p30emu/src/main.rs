@@ -50,7 +50,7 @@ fn main() -> ExitCode {
 fn print_usage() {
     let _ = io::Write::write_all(
         &mut io::stderr(),
-        b"p30emu — P30 Phase 2 monitor emulator (P30-ISA v0.1)
+        "p30emu — P30 Phase 2 monitor emulator (P30-ISA v0.1)
 
 Usage:
   p30emu monitor              Interactive LOAD / SAVE / VALIDATE REPL
@@ -58,6 +58,7 @@ Usage:
   p30emu help
 
 See docs/isa/P30-ISA-v0.1.md for command grammar.
-",
+"
+        .as_bytes(),
     );
 }
