@@ -119,17 +119,17 @@ footer{padding:1.2rem 3rem 1.6rem;border-top:2px solid var(--space);font:400 14p
   <div class="h-thesis">Byte-based data centers as they are designed today leverage water resources because the byte performs so many computations checking for parity in the message sent and received that, to keep the heat under control, additional cooling methods are required. The Infoton, because it performs low computations and follows cryptographic number theory, produces low amounts of heat and entropy. <b>One needs water. One does not.</b></div>
   <div class="h-model">
     <span><b>12,264</b> byte ops</span>
-    <span><b>163</b> P30 ops</span>
+    <span><b>489</b> P30 ops</span>
     <span><b>~30 kW</b> air ceiling</span>
     <span><b>130 kW</b> today's rack</span>
-    <span><b>75.2&times;</b> fewer operations</span>
+    <span><b>25.1&times;</b> fewer operations</span>
   </div>
 </header>
 <div class="stage">
   <div class="work">
     <div class="work-head">
       <div class="work-title">Heat Per Rack vs the Air Ceiling</div>
-      <div class="work-tag">130 kW &rarr; 1.73 kW</div>
+      <div class="work-tag">130 kW &rarr; 5.18 kW</div>
     </div>
     <div class="chart">
       <div class="yaxis" id="yaxis"></div>
@@ -149,7 +149,7 @@ footer{padding:1.2rem 3rem 1.6rem;border-top:2px solid var(--space);font:400 14p
             <div class="hc"><span class="hc-name">The Byte</span><span class="hc-val">130 kW</span><span class="hc-status">water required</span></div>
           </div></div>
           <div class="colwrap"><div class="heat p30" id="heatP30">
-            <div class="hc"><span class="hc-name">Infoton P30</span><span class="hc-val">1.73 kW</span><span class="hc-status">no water</span></div>
+            <div class="hc"><span class="hc-name">Infoton P30</span><span class="hc-val">5.18 kW</span><span class="hc-status">no water</span></div>
           </div></div>
         </div>
       </div>
@@ -161,32 +161,33 @@ footer{padding:1.2rem 3rem 1.6rem;border-top:2px solid var(--space);font:400 14p
       <div class="p-title">The Math, Step by Step</div>
       <div class="deriv">
         <div class="dstep"><span class="dnum">1</span><div class="dbody">
-          <span class="dmath">Operation ratio = <span class="by">12,264</span> / <span class="pp">163</span> = <span class="hl">75.2&times;</span></span>
-          <span class="dnote">P30 reaches the same result in 75.2&times; fewer irreversible operations.</span></div></div>
+          <span class="dmath">Operation ratio = <span class="by">12,264</span> / <span class="pp">489</span> = <span class="hl">25.1&times;</span></span>
+          <span class="dnote">Conservative <i>library</i> profile: P30 re-verifies every read (Locate + Emit + Verify), like-for-like with Hamming's read-side check. Native BIOS-native silicon (reads-free) reaches 163 ops &rarr; 75.2&times;, conditional on the coprime-integrity claim (pending BER validation).</span></div></div>
         <div class="dstep"><span class="dnum">2</span><div class="dbody">
           <span class="dmath">Power scales linearly: <span class="hl">P = N &times; ops &times; E<sub>op</sub></span></span>
           <span class="dnote">Same throughput N, same silicon E<sub>op</sub>: only the op-count differs.</span></div></div>
         <div class="dstep"><span class="dnum">3</span><div class="dbody">
-          <span class="dmath">P30 rack power = <span class="by">130 kW</span> &times; (<span class="pp">163</span> / <span class="by">12,264</span>) = <span class="pp">1.73 kW</span></span>
-          <span class="dnote">The byte's 130 kW load, recomputed at P30's op-count.</span></div></div>
+          <span class="dmath">P30 rack power = <span class="by">130 kW</span> &times; (<span class="pp">489</span> / <span class="by">12,264</span>) = <span class="pp">5.18 kW</span></span>
+          <span class="dnote">The byte's 130 kW load, recomputed at P30's library op-count. (Native reads-free profile: 1.73 kW.)</span></div></div>
         <div class="dstep"><span class="dnum">4</span><div class="dbody">
-          <span class="dmath">No-water: <span class="pp">1.73 kW</span> &le; <span class="hl">30 kW</span> air ceiling &nbsp;&#10003;</span>
-          <span class="dnote">Byte: 130 kW &gt; 30 kW &rarr; water required. P30: 1.73 kW &lt; 30 kW &rarr; air only.</span></div></div>
+          <span class="dmath">No-water: <span class="pp">5.18 kW</span> &le; <span class="hl">30 kW</span> air ceiling &nbsp;&#10003;</span>
+          <span class="dnote">Byte: 130 kW &gt; 30 kW &rarr; water required. P30: 5.18 kW &lt; 30 kW &rarr; air only.</span></div></div>
         <div class="dstep"><span class="dnum">5</span><div class="dbody">
-          <span class="dmath">Threshold: <span class="hl">N* = Q<sub>air</sub> / (ops &times; E<sub>op</sub>)</span> rises <span class="hl">75.2&times;</span></span>
-          <span class="dnote">P30 tolerates 75.2&times; the throughput before any water is ever needed.</span></div></div>
+          <span class="dmath">Threshold: <span class="hl">N* = Q<sub>air</sub> / (ops &times; E<sub>op</sub>)</span> rises <span class="hl">25.1&times;</span></span>
+          <span class="dnote">P30 tolerates 25.1&times; the throughput before any water is ever needed (up to 75.2&times; on native reads-free silicon).</span></div></div>
       </div>
     </div>
     <div class="p-block">
       <div class="p-title">Operations Per Message</div>
       <div class="row"><span class="r-name">Byte + Hamming ECC</span><span class="r-val byte">12,264</span></div>
-      <div class="row"><span class="r-name">Infoton P30</span><span class="r-val p30">163</span></div>
-      <div class="row"><span class="r-name">Reduction factor</span><span class="r-val neu">75.2&times;</span></div>
+      <div class="row"><span class="r-name">Infoton P30 (library, re-verify)</span><span class="r-val p30">489</span></div>
+      <div class="row"><span class="r-name">Reduction factor</span><span class="r-val neu">25.1&times;</span></div>
+      <div class="row"><span class="r-name">P30 native (reads-free, conditional)</span><span class="r-val p30">163 &middot; 75.2&times;</span></div>
     </div>
     <div class="p-block">
       <div class="p-title">Rack Power</div>
       <div class="big byte"><span class="big-lab">The Byte</span><span class="big-val">130 kW</span><span class="big-sub">4.3&times; over the air ceiling</span></div>
-      <div class="big p30"><span class="big-lab">Infoton P30</span><span class="big-val">1.73 kW</span><span class="big-sub">under the ceiling, air alone</span></div>
+      <div class="big p30"><span class="big-lab">Infoton P30</span><span class="big-val">5.18 kW</span><span class="big-sub">under the ceiling, air alone (1.73 kW native)</span></div>
     </div>
     <div class="p-block">
       <div class="p-title">Cooling Required</div>
@@ -197,8 +198,8 @@ footer{padding:1.2rem 3rem 1.6rem;border-top:2px solid var(--space);font:400 14p
     </div>
     <div class="p-block">
       <div class="p-title">The Difference</div>
-      <div class="ratio"><div class="ratio-num">75.2&times;</div>
-        <div class="ratio-cap">fewer operations for the same message, dropping the rack out of the water-cooled regime entirely</div></div>
+      <div class="ratio"><div class="ratio-num">25.1&times;</div>
+        <div class="ratio-cap">fewer operations for the same message (conservative library profile), dropping the rack out of the water-cooled regime entirely &mdash; up to 75.2&times; on native reads-free silicon</div></div>
     </div>
     <div class="p-block">
       <div class="p-title">References</div>
@@ -214,8 +215,8 @@ footer{padding:1.2rem 3rem 1.6rem;border-top:2px solid var(--space);font:400 14p
   </div>
 </div>
 <footer>
-  <div class="eq">No-water condition: <b>P(N) = N &times; ops &times; E<sub>op</sub> &le; Q<sub>air</sub></b>. Threshold: <b>N* = Q<sub>air</sub> / (ops &times; E<sub>op</sub>)</b>. Cutting ops from 12,264 to 163 raises N* by exactly <b>75.2&times;</b>.</div>
-  <div>Air-cooling ceiling 20&ndash;35 kW per rack, GB200 NVL72 rack 120&ndash;132 kW, evaporative draw 2&ndash;5 million gallons per MW per year: 2025&ndash;2026 industry figures. The 75.2&times; operation ratio is exact and substrate-independent; absolute kW and water figures depend on the stated cooling and per-operation estimates. The kW figures scale the validation portion of the load by the operation ratio; total facility power includes compute, memory, and networking beyond validation.</div>
+  <div class="eq">No-water condition: <b>P(N) = N &times; ops &times; E<sub>op</sub> &le; Q<sub>air</sub></b>. Threshold: <b>N* = Q<sub>air</sub> / (ops &times; E<sub>op</sub>)</b>. Cutting ops from 12,264 to 489 raises N* by <b>25.1&times;</b> (to 163 ops &rarr; 75.2&times; on native reads-free silicon).</div>
+  <div>Air-cooling ceiling 20&ndash;35 kW per rack, GB200 NVL72 rack 120&ndash;132 kW, evaporative draw 2&ndash;5 million gallons per MW per year: 2025&ndash;2026 industry figures. Two P30 profiles: the <b>library</b> profile (489 ops, re-verify every read) gives the conservative <b>25.1&times;</b> shown here and in the interactive demo; the <b>BIOS-native</b> profile (163 ops, reads trusted without re-verification) gives <b>75.2&times;</b> but is contingent on the coprime-integrity claim, pending the dual-FPGA bit-error-rate validation. Operation ratios are exact and substrate-independent; absolute kW and water figures depend on the stated cooling and per-operation estimates, and scale only the validation portion of the load. Total facility power includes compute, memory, and networking beyond validation.</div>
 </footer>
 <script>
 "use strict";
@@ -230,7 +231,7 @@ footer{padding:1.2rem 3rem 1.6rem;border-top:2px solid var(--space);font:400 14p
     t.style.bottom=((kw/MAX_KW)*100)+'%';t.textContent=kw+' kW';ax.appendChild(t);
   });
   document.getElementById('heatByte').style.height=((130/MAX_KW)*100)+'%';
-  document.getElementById('heatP30').style.height=Math.max(0.8,(1.73/MAX_KW)*100)+'%';
+  document.getElementById('heatP30').style.height=Math.max(0.8,(5.18/MAX_KW)*100)+'%';
 })();
 </script>
 </body>
