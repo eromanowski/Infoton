@@ -31,7 +31,13 @@ header{padding:1.8rem 3rem 1.4rem;border-bottom:2px solid var(--space);
   background:linear-gradient(to right, var(--space) 0, var(--space) calc(100% - 340px), var(--bg) calc(100% - 340px), var(--bg) 100%)}
 .work{padding:1.3rem 2.4rem;position:relative;background:var(--space);
   display:flex;flex-direction:column;gap:.85rem;min-width:0;overflow-y:auto}
-.work-head{display:flex;justify-content:space-between;align-items:baseline}
+.work-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.work-head-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;margin-left:auto}
+.run-timer{display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+  padding:6px 12px;border-radius:6px;background:rgba(0,0,0,.22);border:1px solid rgba(250,218,36,.35)}
+.run-timer-elapsed{font:600 20px/1 'Cinzel',serif;color:var(--center);font-variant-numeric:tabular-nums}
+.run-timer-meta{font:400 13px/1 'Cormorant Garamond',serif;color:rgba(255,255,255,.72)}
+.run-timer-meta b{color:var(--center);font-weight:600}
 .work-title{font:600 16px/1 'Cinzel',serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.92)}
 .phase-tag{font:500 14px/1 'Cinzel',serif;letter-spacing:.1em;color:var(--center);
   padding:5px 14px;border:1px solid rgba(250,218,36,.4);border-radius:4px;text-transform:uppercase}
@@ -203,6 +209,7 @@ body.embed-compare #open-repro-banner,body.embed-compare>header,body.embed-compa
 body.embed-compare .stage{grid-template-columns:1fr;height:100%;max-height:none;background:var(--space)}
 body.embed-compare .work{height:100%;padding:1rem 1.2rem;overflow:hidden}
 body.embed-compare .demo-tabs,body.embed-compare .controls,body.embed-compare .speed-note,body.embed-compare #flipBtn{display:none!important}
+body.embed-compare .run-timer{padding:5px 10px}
 body.embed-compare .grid-wrap{flex:1;min-height:0;overflow:auto}
 body.embed-compare .caption{height:auto;min-height:52px;font-size:15px}
 .demo-tabs{display:flex;gap:6px}
@@ -263,7 +270,13 @@ body.embed-compare .caption{height:auto;min-height:52px;font-size:15px}
         <button class="demo-tab active" id="tabWord">Single Word &middot; One Bit</button>
         <button class="demo-tab" id="tabTweet">Full Tweet</button>
       </div>
-      <div class="phase-tag" id="phaseTag">Idle</div>
+      <div class="work-head-right">
+        <div class="phase-tag" id="phaseTag">Idle</div>
+        <div class="run-timer" id="runTimer" aria-live="polite">
+          <span class="run-timer-elapsed" id="timerElapsed">0 ms</span>
+          <span class="run-timer-meta" id="timerMeta">0 / 12,264 ops</span>
+        </div>
+      </div>
     </div>
     <div class="word-progress" id="wordTag"></div>
     <div class="tweet-banner" id="tweetBanner" style="display:none">
@@ -545,6 +558,56 @@ function buildSteps(){
 }
 buildSteps();
 let idx=0, playing=false, timer=null;
+const runClock={accumulated:0,running:false,t0:0,tick:null};
+
+function formatElapsed(ms){
+  if(ms<1000) return ms.toFixed(0)+' ms';
+  if(ms<60000) return (ms/1000).toFixed(2)+' s';
+  const m=Math.floor(ms/60000), s=((ms%60000)/1000).toFixed(1);
+  return m+'m '+s+'s';
+}
+function runClockMs(){
+  let t=runClock.accumulated;
+  if(runClock.running) t+=performance.now()-runClock.t0;
+  return t;
+}
+function updateRunTimer(){
+  const te=document.getElementById('timerElapsed');
+  const tm=document.getElementById('timerMeta');
+  if(!te||!tm) return;
+  const ms=runClockMs();
+  const total=accWrite+accRead+writeOps+readOps;
+  const opMax=(mode==='tweet')?TWEET_TOTAL:TOTAL;
+  te.textContent=formatElapsed(ms);
+  const perOp=(total>0&&ms>0)?(ms/total).toFixed(2):'—';
+  tm.innerHTML=total.toLocaleString()+' / '+opMax.toLocaleString()+' ops &middot; <b>'+perOp+'</b> ms/op';
+}
+function runClockStart(){
+  if(!runClock.running){
+    runClock.t0=performance.now();
+    runClock.running=true;
+  }
+  clearInterval(runClock.tick);
+  runClock.tick=setInterval(updateRunTimer,50);
+  updateRunTimer();
+}
+function runClockPause(){
+  if(runClock.running){
+    runClock.accumulated+=performance.now()-runClock.t0;
+    runClock.running=false;
+  }
+  clearInterval(runClock.tick);
+  runClock.tick=null;
+  updateRunTimer();
+}
+function runClockReset(){
+  runClock.accumulated=0;
+  runClock.running=false;
+  clearInterval(runClock.tick);
+  runClock.tick=null;
+  updateRunTimer();
+}
+
 let writeOps=0, readOps=0;
 let corrupted=null;
 let curWord=0;
@@ -592,6 +655,7 @@ function updatePanel(){
   el.eOps.textContent=total;
   el.eRun.textContent=fmtJ(total*ePer);
   if(wordTag) wordTag.textContent = (mode==='tweet') ? ('Word '+(Math.min(curWord+1,totalWords))+' / '+totalWords) : '';
+  updateRunTimer();
   broadcastEmbed();
 }
 function applyStep(s){
@@ -715,6 +779,7 @@ function stepDuration(){
 function play(){
   if(playing){stop();return;}
   playing=true;document.getElementById('playBtn').textContent='Pause';
+  runClockStart();
   const tick=()=>{
     if(!playing) return;
     if(idx>=steps.length){
@@ -726,9 +791,16 @@ function play(){
   timer=setTimeout(tick, stepDuration());
   updatePanel();
 }
-function stop(){playing=false;clearTimeout(timer);clearInterval(timer);document.getElementById('playBtn').textContent='Play';}
+function stop(){
+  playing=false;
+  clearTimeout(timer);
+  clearInterval(timer);
+  runClockPause();
+  document.getElementById('playBtn').textContent='Play';
+}
 function reset(){
   stop();idx=0;writeOps=0;readOps=0;accWrite=0;accRead=0;curWord=0;corrupted=null;setBytesTouched(0);
+  runClockReset();
   totalWords=(mode==='tweet')?TWEET_WORDS:1;
   clearBitStates();checkCells.forEach(c=>c.classList.remove('done','computing','reading','match','mismatch'));
   for(let i=0;i<N_CHECK;i++){const e=document.getElementById('cv'+i);if(e)e.textContent='\u00b7';}
@@ -814,7 +886,8 @@ function broadcastEmbed(){
     progress:curWord+(idx/Math.max(steps.length,1)),
     progressMax:TWEET_WORDS,
     playing:playing,finished:finished,
-    word:curWord+1
+    word:curWord+1,
+    ms:runClockMs()
   },'*');
 }
 if(EMBED_COMPARE){
@@ -825,9 +898,9 @@ if(EMBED_COMPARE){
     else if(d.cmd==='reset') reset();
     else if(d.cmd==='step'){
       if(el.phaseTag.textContent==='Complete') return;
+      if(!runClock.running) runClockStart();
       if(!playing) playing=true;
       step();
-      broadcastEmbed();
     }
     else if(d.cmd==='setSpeed'&&d.delay) stepDelay=parseInt(d.delay,10);
   });

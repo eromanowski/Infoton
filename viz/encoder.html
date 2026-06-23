@@ -621,6 +621,11 @@ function updateRunTimer(){
   var tm=document.getElementById('timerMeta');
   if(!te||!tm) return;
   te.textContent=formatElapsed(ms);
+  if(EMBED_COMPARE){
+    var perOp=(opIdx>0&&ms>0)?(ms/opIdx).toFixed(2):'—';
+    tm.innerHTML=opIdx+' / 489 ops &middot; <b>'+perOp+'</b> ms/op';
+    return;
+  }
   var n=Math.min(idx, CHARS);
   var perChar=(n>0&&ms>0)?(ms/n).toFixed(1):'—';
   var eta='';
@@ -724,6 +729,7 @@ function stepOp(){
   el.caption.innerHTML='Operation <b>'+(opIdx+1)+'</b> / 489: <b>'+labels[ph]+'</b> — character '+(ci+1)+' of '+CHARS+'.';
   opIdx++;
   if(val!==undefined && ph===2) tokensSoFar=ci+1;
+  if(ph===2) highlightChar(Math.min(ci+1, CHARS));
   el.cTotal.textContent=opIdx;
   el.cEmit.textContent=Math.min(Math.ceil(opIdx/3), CHARS);
   el.cLocate.textContent=Math.floor(opIdx/3)*2+Math.min(opIdx%3,2);
@@ -763,7 +769,8 @@ function stepChar(){
 function finish(){
   stop(); finished=true;
   litRes=-1; litVal=null; draw();
-  for(var i=0;i<tweetCharEls.length;i++){ tweetCharEls[i].classList.remove('tw-active'); tweetCharEls[i].classList.add('tw-done'); }
+  if(EMBED_COMPARE) highlightChar(CHARS);
+  else for(var i=0;i<tweetCharEls.length;i++){ tweetCharEls[i].classList.remove('tw-active'); tweetCharEls[i].classList.add('tw-done'); }
   if(p30mode==='encoder'){
     el.phaseTag.textContent='Complete';
     el.caption.innerHTML='Sentence encoded: <b>163</b> characters, <b>163</b> operations at the floor, one lookup each, zero verification on clean data. Vectorized, the whole sentence encodes in <b>6</b> wide operations. A Hamming SECDED round trip would have spent <b>12,222</b>. The gap is the argument.';
