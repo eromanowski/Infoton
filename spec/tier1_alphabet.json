@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "description": "Infoton Tier-1 alphabet (P30 v2.0) from embedded calculator JS",
-  "source": "viz/index.html",
+  "source": "viz/encoder.html",
   "tier1": [
     [" ", 1], ["e", 7], ["t", 11], ["a", 13], ["o", 17], ["i", 19], ["n", 23], ["s", 29],
     ["h", 31], ["\n", 37], ["r", 41], ["d", 43], ["l", 47], ["c", 49], ["u", 53], ["m", 59],

@@ -184,14 +184,14 @@ def prepare(name: str, src: str, dst: str, inject_banner: bool = True) -> None:
         text = text.replace(old, new)
     if inject_banner:
         text = text.replace("<body>", "<body>" + BANNER, 1)
-    if dst == "index.html":
+    if dst == "encoder.html":
         text = inject_encoder_timer(text)
     (OUT / dst).write_text(text, encoding="utf-8")
     print("wrote", dst, len(text))
 
 
 def main() -> None:
-    prepare("encoder", "widget_2.html", "index.html")
+    prepare("encoder", "widget_2.html", "encoder.html")
     prepare("hamming", "widget_1.html", "hamming.html")
     prepare("impact", "widget_3.html", "impact.html")
     prepare("video", "widget_0.html", "video.html", inject_banner=False)
@@ -221,12 +221,12 @@ def main() -> None:
      Metrics verified via <code>tools/verify_demo.py</code>.</p>
 </header>
 <nav>
-  <a href="index.html" target="viz">P30 Encoder + Panel</a>
+  <a href="encoder.html" target="viz">P30 Encoder + Panel</a>
   <a href="hamming.html" target="viz">Hamming SECDED (584 ops)</a>
   <a href="impact.html" target="viz">Datacenter Impact</a>
   <a href="video.html" target="viz">Video</a>
 </nav>
-<iframe name="viz" src="index.html" height="920" title="P30 visualization"></iframe>
+<iframe name="viz" src="encoder.html" height="920" title="P30 visualization"></iframe>
 </body>
 </html>
 """

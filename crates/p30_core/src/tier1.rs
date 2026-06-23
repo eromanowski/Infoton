@@ -1,6 +1,6 @@
 //! Infoton Tier-1 alphabet (P30 v2.0) — fixed coprime value per character.
 //!
-//! Source: embedded calculator JS in `viz/index.html` / `viz/infoton_reference/widget_2.html`.
+//! Source: embedded calculator JS in `viz/encoder.html` / `viz/infoton_reference/widget_2.html`.
 
 /// Tier-1 characters in Infoton table order (68 entries).
 pub const TIER1_CHARS: [char; 68] = [

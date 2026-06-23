@@ -20,6 +20,9 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
 .top h1{font:700 1.35rem/1.2 'Cinzel',serif;color:var(--space)}
 .top p{font:400 1rem/1.45 'Cormorant Garamond',serif;color:var(--text-m);max-width:52rem;margin-top:.35rem}
 .top p b{color:var(--space);font-weight:600}
+.home-link{font:500 11px/1 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--space);text-decoration:none;border:1px solid var(--border);padding:8px 12px;border-radius:5px;background:#fff;white-space:nowrap}
+.home-link:hover{background:var(--center);border-color:var(--center)}
 
 .controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:.85rem}
 .btn{font:500 12px/1 'Cinzel',serif;letter-spacing:.06em;padding:9px 16px;border-radius:5px;cursor:pointer;
@@ -58,7 +61,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
   border-bottom:1px solid rgba(250,218,36,.25);flex-shrink:0}
 .pane-title{font:600 11px/1 'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
 .pane-sub{font:400 12px/1 'Cormorant Garamond',serif;color:rgba(255,255,255,.55);font-style:italic}
-.pane iframe{flex:1;border:0;width:100%;min-height:0;background:var(--space)}
+.pane iframe{flex:1;border:0;width:100%;min-height:0;background:var(--space);display:block}
 
 .status{padding:6px 1.6rem;font:400 14px/1.4 'Cormorant Garamond',serif;color:var(--text-m);
   border-top:1px solid var(--border);background:#fff;flex-shrink:0}
@@ -80,6 +83,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
       <h1>Same Sentence, Two Stacks</h1>
       <p>Both sides process the same <b>163-character</b> Great Salt Lake sentence. Left: P30 coprime encoding (489 operations, library mode). Right: byte + Hamming SECDED (21 words &times; 584 = <b>12,264</b> operations). Press Play once — watch P30 finish while traditional ECC is still counting.</p>
     </div>
+    <a class="home-link" href="landing.html">Home</a>
   </div>
   <div class="controls">
     <button class="btn primary" id="playBtn">Play</button>
@@ -121,7 +125,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
       <span class="pane-title">P30 Prime 30 Clock</span>
       <span class="pane-sub" id="p30Phase">Idle</span>
     </div>
-    <iframe id="p30Frame" src="index.html?embed=compare" title="P30 encoder"></iframe>
+    <iframe id="p30Frame" src="encoder.html?embed=compare" title="P30 encoder"></iframe>
   </div>
   <div class="divider" aria-hidden="true"></div>
   <div class="pane">

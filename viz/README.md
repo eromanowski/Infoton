@@ -8,7 +8,7 @@ Interactive demos extracted from [infoton.ai/infoton-p30](https://infoton.ai/inf
 |------|----------------|-------------|
 | [`landing.html`](landing.html) | — | Pages home — links to comparison + hub |
 | [`compare.html`](compare.html) | — | **P30 vs Hamming** side-by-side race (489 vs 12,264 ops) |
-| [`index.html`](index.html) | Main encoder | Prime 30 clock, Play/Step, Library vs BIOS panel |
+| [`encoder.html`](encoder.html) | Main encoder | Prime 30 clock, Play/Step, Library vs BIOS panel |
 | [`hamming.html`](hamming.html) | Byte cost | 584-op Hamming SECDED animation per 64-bit word |
 | [`impact.html`](impact.html) | Datacenter | Rack power / no-water extrapolation panel |
 | [`hub.html`](hub.html) | — | Navigation shell for all views |
@@ -21,7 +21,7 @@ python -m http.server 8080 --directory viz
 
 Open [http://localhost:8080/hub.html](http://localhost:8080/hub.html)
 
-Or open `index.html` directly in a browser (file:// works for the encoder).
+Or open `encoder.html` directly in a browser (file:// works for the encoder).
 
 ## Canonical demo sentence (163 chars)
 
