@@ -90,8 +90,8 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
     <button class="btn" id="resetBtn">Reset</button>
     <div class="speed">
       <span class="speed-lab">Speed</span>
-      <button class="tier active" data-p30="150" data-ham="8">Demo</button>
-      <button class="tier" data-p30="55" data-ham="3">Fast</button>
+      <button class="tier" data-p30="150" data-ham="8">Demo</button>
+      <button class="tier active" data-p30="55" data-ham="3">Fast</button>
       <button class="tier" data-p30="14" data-ham="1">Turbo</button>
     </div>
   </div>
@@ -143,7 +143,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
 "use strict";
 var P30_MAX=489, HAM_MAX=12264, CHARS=163, WORDS=21;
 var playing=false;
-var p30Delay=150, hamDelay=8;
+var p30Delay=55, hamDelay=3;
 var state={p30:{ops:0,progress:0,finished:false,playing:false},ham:{ops:0,progress:0,finished:false,playing:false,word:0}};
 
 var p30Frame=document.getElementById('p30Frame');
@@ -186,6 +186,19 @@ function setSpeed(p30,ham){
   hamFrame.contentWindow.postMessage({cmd:'setSpeed',delay:ham},'*');
 }
 
+function idleStatus(){
+  document.getElementById('status').innerHTML='Press <b>Play</b> to run both encoders on the same sentence. P30 resolves each character to a coprime spoke; Hamming runs a full 584-operation round trip per 64-bit word.';
+}
+
+function resetState(){
+  playing=false;
+  document.getElementById('playBtn').textContent='Play';
+  state.p30={ops:0,progress:0,finished:false,playing:false};
+  state.ham={ops:0,progress:0,finished:false,playing:false,word:0};
+  postBoth('reset');
+  updateRace();
+}
+
 function play(){
   if(playing){
     playing=false;
@@ -193,24 +206,15 @@ function play(){
     postBoth('pause');
     return;
   }
-  // Fresh synchronized start — both sides reset together (P30 alone auto-restarts when done)
-  state.p30={ops:0,progress:0,finished:false,playing:false};
-  state.ham={ops:0,progress:0,finished:false,playing:false,word:0};
-  postBoth('reset');
-  updateRace();
+  resetState();
   playing=true;
   document.getElementById('playBtn').textContent='Pause';
   postBoth('play');
 }
 
 function reset(){
-  playing=false;
-  document.getElementById('playBtn').textContent='Play';
-  state.p30={ops:0,progress:0,finished:false,playing:false};
-  state.ham={ops:0,progress:0,finished:false,playing:false,word:0};
-  postBoth('reset');
-  updateRace();
-  document.getElementById('status').innerHTML='Press <b>Play</b> to run both encoders on the same sentence. P30 resolves each character to a coprime spoke; Hamming runs a full 584-operation round trip per 64-bit word.';
+  resetState();
+  idleStatus();
 }
 
 window.addEventListener('message',function(e){
@@ -237,8 +241,9 @@ document.querySelectorAll('.tier').forEach(function(btn){
   btn.addEventListener('click',function(){
     document.querySelectorAll('.tier').forEach(function(b){b.classList.remove('active');});
     btn.classList.add('active');
+    resetState();
     setSpeed(parseInt(btn.dataset.p30,10),parseInt(btn.dataset.ham,10));
-    if(playing){ postBoth('pause'); playing=true; document.getElementById('playBtn').textContent='Pause'; postBoth('play'); }
+    idleStatus();
   });
 });
 
