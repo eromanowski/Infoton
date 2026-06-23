@@ -579,8 +579,12 @@ function updateRunTimer(){
   const total=accWrite+accRead+writeOps+readOps;
   const opMax=(mode==='tweet')?TWEET_TOTAL:TOTAL;
   te.textContent=formatElapsed(ms);
-  const perOp=(total>0&&ms>0)?(ms/total).toFixed(2):'—';
-  tm.innerHTML=total.toLocaleString()+' / '+opMax.toLocaleString()+' ops &middot; <b>'+perOp+'</b> ms/op';
+  if(EMBED_COMPARE){
+    tm.innerHTML='<b>'+total.toLocaleString()+'</b> / '+opMax.toLocaleString()+' ops';
+  }else{
+    const perOp=(total>0&&ms>0)?(ms/total).toFixed(2):'—';
+    tm.innerHTML=total.toLocaleString()+' / '+opMax.toLocaleString()+' ops &middot; <b>'+perOp+'</b> ms/op';
+  }
 }
 function runClockStart(){
   if(!runClock.running){

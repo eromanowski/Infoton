@@ -23,6 +23,8 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
 .caveat{font:400 .82rem/1.45 'Cormorant Garamond',serif;color:var(--text-m);max-width:52rem;
   margin-top:.55rem;padding:.5rem .7rem;border-left:3px solid var(--center);background:#fbf8ee;border-radius:0 4px 4px 0}
 .caveat b{color:var(--space);font-weight:600}.caveat i{font-style:italic}
+.replay-note{font:italic 400 12px/1.4 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.7rem;opacity:.9}
+.replay-note b{color:var(--space);font-weight:600;font-style:normal}.replay-note sup{font-size:.7em}
 .home-link{font:500 11px/1 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase;
   color:var(--space);text-decoration:none;border:1px solid var(--border);padding:8px 12px;border-radius:5px;background:#fff;white-space:nowrap}
 .home-link:hover{background:var(--center);border-color:var(--center)}
@@ -110,6 +112,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
       <div class="track-meta" id="hamMeta">Word 0 / 21</div>
     </div>
   </div>
+  <div class="replay-note">Timers show <b>slow-motion replay pace</b>, not hardware speed &mdash; real silicon runs this roughly 10<sup>8</sup>&times; faster. This race compares <i>operation counts</i>, not wall-clock time.</div>
 </div>
 
 <div class="panes">
@@ -164,7 +167,7 @@ function updateRace(){
   }else if(p.finished&&!h.finished){
     st.innerHTML='P30 is <b>done</b> at '+fmt(p.ops)+' operations. Hamming is still at '+fmt(h.ops)+' ('+(h.ops/HAM_MAX*100).toFixed(0)+'% of its total). The gap is the argument.';
   }else if(playing){
-    st.innerHTML='Lockstep: both sides advance one operation per tick ('+opDelay+' ms/op).';
+    st.innerHTML='Lockstep: both sides advance one operation per tick (slow-motion replay, not hardware speed).';
   }
 }
 

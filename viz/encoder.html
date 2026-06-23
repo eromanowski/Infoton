@@ -622,8 +622,7 @@ function updateRunTimer(){
   if(!te||!tm) return;
   te.textContent=formatElapsed(ms);
   if(EMBED_COMPARE){
-    var perOp=(opIdx>0&&ms>0)?(ms/opIdx).toFixed(2):'—';
-    tm.innerHTML=opIdx+' / 489 ops &middot; <b>'+perOp+'</b> ms/op';
+    tm.innerHTML='<b>'+opIdx+'</b> / 489 ops';
     return;
   }
   var n=Math.min(idx, CHARS);
