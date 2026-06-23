@@ -8,8 +8,12 @@ Normative storage layouts remain in [P30-SPEC v0.2](../P30-SPEC.md). This docume
 
 ### 1.1 P30 unit (30 bits)
 
+The P30 unit is the **fundamental, addressable storage cell** — memory is an
+array of units, not bytes. There is no byte substrate in the architectural view;
+bytes appear only at the host/DRAM serialization boundary (§1.3).
+
 ```
-unit : u30     // bits [29:0], high 2 bits of each stored byte lane are zero in software view
+unit : u30     // bits [29:0]; the unit is the native memory cell
 valid(unit)    := gcd(unit, 30) = 1
 invalid(unit)  := unit = 0 or gcd(unit, 30) > 1
 residue(unit)  := unit mod 30   // ∈ {1,7,11,13,17,19,23,29} when valid
@@ -30,20 +34,27 @@ Four contiguous units in **little-unit order** (unit0 = least significant 30 bit
 quad = { u0, u1, u2, u3 }   // each u* is u30
 ```
 
-### 1.3 Byte packing (15-byte lane)
+### 1.3 Serialization (15-byte lane) — host/DRAM boundary only
 
-One quad maps to **15 bytes** on byte-backed DRAM (no padding nibble in v0.1 reference):
+P30 memory stores units natively (§1.1). When a quad must cross into a
+**byte-addressed** host or DRAM (file I/O, RV32 byte bus, off-chip DRAM), it is
+serialized into a **15-byte lane** (120 bits, no padding nibble in the v0.1
+reference). This packing is a transport codec, **not** the in-core storage form:
 
 ```
 byte[k] contains bits [8k .. 8k+7] of the 120-bit little-endian bit stream
 bit i of stream = bit (i mod 30) of unit (i div 30)
 ```
 
-Reference: `emulator/p30emu` module `unit::pack_quad` / `unpack_quad`.
+Reference: `emulator/p30emu` module `unit::pack_quad` / `unpack_quad`, exposed on
+`P30Memory::to_packed_bytes` / `from_packed_bytes`.
 
 ### 1.4 Addresses
 
-P30 address space uses **30-bit byte addresses** (1 GiB theoretical). RV32 host accesses P30 memory through the pack/unpack controller or `PLOAD`/`PSTORE`.
+P30 address space is **unit-addressed**: an address is a 30-bit *unit index*
+(2³⁰ units theoretical). `PLOAD`/`PSTORE` move one unit per address; byte
+serialization (§1.3) only occurs through the pack/unpack controller when bridging
+to a host byte bus or DRAM.
 
 ## 2. Register file
 
@@ -63,14 +74,17 @@ Common fields: `rd`, `rs1`, `rs2` are RV32 GPR indices. 120-bit ops use **pair e
 | Mnemonic | funct7 | funct3 | Operands | Operation |
 |----------|--------|--------|----------|-----------|
 | `PVALID` | `0x00` | `0` | `rd, rs1` | `rd ← valid(x[rs1][29:0]) ? 1 : 0` |
-| `PLOAD` | `0x01` | `0` | `rd, rs1` | Load one u30 from P30 mem `[rs1]` into `rd[29:0]` |
-| `PSTORE` | `0x02` | `0` | `rs1, rs2` | Store `rs2[29:0]` to P30 mem `[rs1]` |
+| `PLOAD` | `0x01` | `0` | `rd, rs1` | Load one u30 from P30 mem **unit** `[rs1]` into `rd[29:0]` |
+| `PSTORE` | `0x02` | `0` | `rs1, rs2` | Store `rs2[29:0]` to P30 mem **unit** `[rs1]` |
 | `PRES` | `0x03` | `0` | `rd, rs1` | `rd[29:0] ← residue(x[rs1])` (5-bit wheel slot) |
-| `PPACK` | `0x10` | `0` | `pd, rs1` | Load 15 bytes at `[rs1]` into `p[pd]` |
-| `PUNPK` | `0x11` | `0` | `ps, rs1` | Store `p[ps]` to 15 bytes at `[rs1]` |
-| `PVALL` | `0x20` | `0` | `rd, rs1, rs2` | Validate `rs2` units starting at `[rs1]`; `rd ← fail count |
+| `PPACK` | `0x10` | `0` | `pd, rs1` | Serialize host 15-byte lane at byte addr `[rs1]` into `p[pd]` |
+| `PUNPK` | `0x11` | `0` | `ps, rs1` | Serialize `p[ps]` to host 15-byte lane at byte addr `[rs1]` |
+| `PVALL` | `0x20` | `0` | `rd, rs1, rs2` | Validate `rs2` units starting at unit `[rs1]`; `rd ← fail count` |
 
-**Trap behaviour (v0.1):** `PVALID`/`PVALL` **do not trap**; they set GPR results. Misaligned 15-byte `PPACK`/`PUNPK` raises `Store/LoadAddrMisaligned` on the host if `[rs1] mod 15 ≠ 0`.
+`PLOAD`/`PSTORE`/`PVALL` take **unit addresses** (native P30 memory).
+`PPACK`/`PUNPK` are the serialization bridge and take a **host byte address**.
+
+**Trap behaviour (v0.1):** `PVALID`/`PVALL` **do not trap**; they set GPR results. `PPACK`/`PUNPK` raise `Store/LoadAddrMisaligned` on the host when the *host byte address* `[rs1] mod 15 ≠ 0`. Native unit accesses (`PLOAD`/`PSTORE`) have no alignment constraint — a unit is one cell.
 
 ## 4. Memory-mapped monitor (FPGA)
 
@@ -81,7 +95,7 @@ When no OS is present, a **monitor ROM** on the RV32 core exposes a UART command
 | `0x1000_0000` | `UART_TX` | W |
 | `0x1000_0004` | `UART_RX` | R |
 | `0x1000_0010` | `UART_STATUS` | R (bit0 = RX ready) |
-| `0x1001_0000` | `P30_MEM` | byte array, maps to pack/unpack controller |
+| `0x1001_0000` | `P30_MEM` | unit array; byte-bus reads/writes go through the pack/unpack controller |
 
 Monitor firmware parses line-oriented UTF-8 commands (115200 8N1 default).
 
@@ -94,7 +108,7 @@ LOAD <path>
 SAVE <path> [char|packed]
 VALIDATE
 STATS
-MEM [hex_addr] [hex_len]
+MEM [hex_unit_addr] [hex_unit_count]
 HELP
 QUIT
 ```
@@ -125,7 +139,9 @@ Print CCP-0 snapshot (library ops, BIOS ops, Hamming ops, storage sizes) for loa
 
 ### MEM
 
-Hex dump of P30 byte memory (15-byte lanes annotated when length is multiple of 15).
+Dump of P30 **unit** memory: addresses are unit indices, values are decimal
+30-bit unit cells. The first quad's 15-byte serialization (§1.3) is shown as a
+`lane[0..4] -> 15B` hex line to illustrate the host/DRAM transport form.
 
 ## 6. Phase 2 deliverables map
 

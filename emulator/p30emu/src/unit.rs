@@ -1,6 +1,11 @@
-//! Pack/unpack 30-bit P30 units into 15-byte DRAM lanes (P30-ISA v0.1 §1.3).
+//! 30-bit P30 unit helpers + the host/DRAM serialization codec.
+//!
+//! In the unit-native model (P30-ISA v0.1 §1) the unit is the addressable cell;
+//! `pack_quad` / `unpack_quad` are *only* the 4-units <-> 15-byte transport used
+//! when crossing the host byte boundary, never the in-core storage form.
 
-const UNIT_MASK: u32 = 0x3FFF_FFFF;
+/// Mask for the low 30 bits that make up a P30 unit.
+pub const UNIT_MASK: u32 = 0x3FFF_FFFF;
 
 /// Returns true when the low 30 bits form a valid P30 unit.
 pub fn valid_unit(value: u32) -> bool {

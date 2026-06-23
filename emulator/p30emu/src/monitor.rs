@@ -4,7 +4,7 @@ use p30_core::ops::CalculatorSnapshot;
 use p30_core::storage::{
     decode_char, decode_packed, encode_char, encode_packed, verify_char_payload,
 };
-use p30_core::{position_value, storage_residue};
+use p30_core::position_value;
 use std::io::{self, Write};
 use std::path::Path;
 
@@ -69,7 +69,7 @@ impl Monitor {
                 self.text = Some(text);
                 self.format = Some(LoadedFormat::Packed);
                 let blob = encode_packed(self.text.as_ref().unwrap());
-                if self.mem.write(self.mem_base, &blob).is_err() {
+                if self.materialize_residue_lanes().is_err() {
                     return vec!["ERR LOAD mem write".into()];
                 }
                 return vec![format!(
@@ -86,7 +86,7 @@ impl Monitor {
                     self.text = Some(text);
                     self.format = Some(LoadedFormat::Char);
                     let blob = encode_char(self.text.as_ref().unwrap());
-                    if self.mem.write(self.mem_base, &blob).is_err() {
+                    if self.materialize_residue_lanes().is_err() {
                         return vec!["ERR LOAD mem write".into()];
                     }
                     return vec![format!(
@@ -108,7 +108,7 @@ impl Monitor {
                 let blob = encode_char(&text);
                 self.text = Some(text);
                 self.format = Some(LoadedFormat::Text);
-                if self.mem.write(self.mem_base, &blob).is_err() {
+                if self.materialize_residue_lanes().is_err() {
                     return vec!["ERR LOAD mem write".into()];
                 }
                 vec![format!(
@@ -185,81 +185,57 @@ impl Monitor {
         } else {
             self.mem_base
         };
-        let len = args
+        let count = args
             .get(1)
             .and_then(|s| parse_hex_usize(s))
-            .unwrap_or(64)
-            .min(256);
-        let Ok(chunk) = self.mem.read(addr, len) else {
+            .unwrap_or(32)
+            .min(128);
+        let Ok(cells) = self.mem.read_units(addr, count) else {
             return vec!["ERR MEM out of range".into()];
         };
-        let mut lines = vec![format!("MEM @{addr:04x} len={len}")];
-        for (row, line) in chunk.chunks(16).enumerate() {
-            let hex: String = line
+        let mut lines = vec![format!("MEM @{addr:04x} units={count}")];
+        for (row, line) in cells.chunks(8).enumerate() {
+            let cols: String = line
                 .iter()
-                .map(|b| format!("{b:02x}"))
+                .map(|u| format!("{u:>8}"))
                 .collect::<Vec<_>>()
                 .join(" ");
-            lines.push(format!("  {:04x}: {hex}", addr + row * 16));
+            lines.push(format!("  {:04x}: {cols}", addr + row * 8));
         }
-        // Annotate 15-byte lanes if aligned
-        if addr % 15 == 0 && len >= 15 {
-            if let Ok(units) = self.mem.read_lane(addr) {
-                lines.push(format!(
-                    "  lane: [{}, {}, {}, {}]",
-                    units[0], units[1], units[2], units[3]
-                ));
+        // Physical transport view: how the first quad serializes to a 15-byte lane.
+        if count >= 4 {
+            if let Ok(bytes) = self.mem.to_packed_bytes(addr, 4) {
+                let hex: String = bytes
+                    .iter()
+                    .map(|b| format!("{b:02x}"))
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                lines.push(format!("  lane[0..4] -> 15B: {hex}"));
             }
         }
         lines
     }
 
     /// Encode loaded text residues into 15-byte lanes in memory (BIOS Emit path).
-    /// Base address for materialized lanes: above the raw-residue scratch area
-    /// (`mem_base + 4096`) and rounded up to a 15-byte boundary so `write_lane`
-    /// / `read_lane` alignment checks pass.
-    fn lane_base(&self) -> usize {
-        let raw = self.mem_base + 4096;
-        raw.div_ceil(15) * 15
-    }
-
+    /// Materialize loaded text into P30 unit cells at `mem_base`: one 30-bit
+    /// unit (full coprime position) per character. Returns the unit count.
+    /// Units are the native storage cell, so no byte packing or lane alignment
+    /// is involved here.
     pub fn materialize_residue_lanes(&mut self) -> Result<usize, &'static str> {
-        let text = self.text.as_ref().ok_or("nothing loaded")?;
-        let residues: Vec<u8> = text
-            .chars()
-            .enumerate()
-            .map(|(i, ch)| storage_residue(ch, i))
-            .collect();
-        // Store raw residue bytes at mem_base for inspection; lanes use full positions
-        let lane_base = self.lane_base();
-        let mut offset = lane_base;
-        let mut lane = [0u32; 4];
-        let mut li = 0usize;
-        for (i, ch) in text.chars().enumerate() {
-            lane[li] = position_value(ch, i);
-            li += 1;
-            if li == 4 {
-                self.mem.write_lane(offset, lane)?;
-                offset += 15;
-                lane = [0; 4];
-                li = 0;
-            }
-        }
-        if li > 0 {
-            while li < 4 {
-                lane[li] = 1; // pad with valid unit
-                li += 1;
-            }
-            self.mem.write_lane(offset, lane)?;
-            offset += 15;
-        }
-        let _ = residues;
-        Ok(offset - lane_base)
+        let units: Vec<u32> = {
+            let text = self.text.as_ref().ok_or("nothing loaded")?;
+            text.chars()
+                .enumerate()
+                .map(|(i, ch)| position_value(ch, i))
+                .collect()
+        };
+        self.mem.write_units(self.mem_base, &units)?;
+        Ok(units.len())
     }
 
-    /// PVALL-style: count invalid units in materialized lanes.
+    /// PVALL-style: count invalid units among the materialized cells.
     pub fn validate_materialized_lanes(&self, unit_count: usize) -> Result<usize, &'static str> {
-        self.mem.validate_lanes(self.lane_base(), unit_count)
+        self.mem.validate_lanes(self.mem_base, unit_count)
     }
 }
 
@@ -355,8 +331,8 @@ mod tests {
         let mut mon = Monitor::new();
         mon.text = Some("Hi".into());
         mon.format = Some(LoadedFormat::Text);
-        let nbytes = mon.materialize_residue_lanes().unwrap();
-        assert!(nbytes >= 15);
+        let units = mon.materialize_residue_lanes().unwrap();
+        assert_eq!(units, 2);
         assert_eq!(mon.validate_materialized_lanes(2).unwrap(), 0);
     }
 }
