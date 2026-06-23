@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infoton P30 Computational Efficiencies Eliminate the Need for Water Cooling</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=optional" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;--center:#fada24;--w1:#fba238;--w2:#e97158;--w3:#cc4778;
+  --w4:#a31e9a;--w5:#6f00a8;--space:#350498;--grid:#6e54a3;--okgreen:#1d9e75;
+  --text:#1a1a1a;--text-m:rgba(53,4,152,.72);--text-d:rgba(53,4,152,.45);
+  --border:rgba(53,4,152,.15);--border-s:rgba(53,4,152,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.5;overflow-x:hidden}
+header{padding:1.8rem 3rem 1.5rem;border-bottom:2px solid var(--space);display:flex;flex-direction:column;gap:.4rem}
+.h-author{font:500 11px/1 'Cinzel',serif;letter-spacing:.25em;text-transform:uppercase;color:var(--grid)}
+.h-title{font:700 clamp(1.5rem,3vw,2.3rem)/1.12 'Cinzel',serif;color:var(--space)}
+.h-thesis{font:400 clamp(1.08rem,1.7vw,1.26rem)/1.6 'Cormorant Garamond',serif;color:var(--text);margin-top:.2rem}
+.h-thesis b{color:var(--space);font-weight:600}
+.h-model{display:flex;gap:1.6rem;flex-wrap:wrap;margin-top:.5rem;font:400 15px/1 'Cinzel',serif;color:var(--text-d);letter-spacing:.03em}
+.h-model b{color:var(--space);font-weight:600}
+.stage{display:grid;grid-template-columns:1fr 340px;align-items:stretch;
+  height:640px;max-height:80vh;
+  background:linear-gradient(to right,var(--space) 0,var(--space) calc(100% - 340px),var(--bg) calc(100% - 340px),var(--bg) 100%)}
+.work{padding:1.6rem 2.2rem 1.8rem;background:var(--space);display:flex;flex-direction:column;gap:1rem;min-width:0;overflow-y:auto}
+.work-head{display:flex;justify-content:space-between;align-items:baseline}
+.work-title{font:600 15px/1 'Cinzel',serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.9)}
+.work-tag{font:500 14px/1 'Cinzel',serif;letter-spacing:.1em;color:var(--center);padding:5px 14px;border:1px solid rgba(250,218,36,.4);border-radius:4px;text-transform:uppercase}
+.chart{display:grid;grid-template-columns:50px 1fr;gap:0;height:400px;flex:0 0 auto}
+.yaxis{position:relative}
+.ytick{position:absolute;right:9px;transform:translateY(50%);font:500 13px/1 'Cinzel',serif;color:rgba(255,255,255,.5);white-space:nowrap}
+.plot{position:relative;border-left:1.5px solid rgba(255,255,255,.18);border-bottom:1.5px solid rgba(255,255,255,.18)}
+.gridline{position:absolute;left:0;right:0;height:1px;background:rgba(255,255,255,.07)}
+.zone-water{position:absolute;left:0;right:0;top:0;background:rgba(204,71,120,.07);pointer-events:none}
+.zone-air{position:absolute;left:0;right:0;bottom:0;background:rgba(29,158,117,.06);pointer-events:none}
+.zone-tag{position:absolute;right:10px;font:600 11px/1.3 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase}
+.zt-water{top:8px;color:rgba(237,147,177,.85)}
+.zt-air{bottom:8px;color:rgba(93,202,165,.9)}
+.ceiling{position:absolute;left:0;right:0;height:3px;background:#fff;z-index:5}
+.ceiling .dash{position:absolute;left:0;right:0;top:3px;border-top:2px dashed rgba(255,255,255,.4)}
+.ceil-lab{position:absolute;right:8px;top:-42px;text-align:right}
+.cl-1{font:600 12px/1 'Cinzel',serif;letter-spacing:.1em;text-transform:uppercase;color:#fff;display:block}
+.cl-2{font:italic 400 15px/1 'Cormorant Garamond',serif;color:rgba(255,255,255,.65)}
+.cols{position:absolute;inset:0;display:flex;justify-content:space-around;align-items:flex-end}
+.colwrap{position:relative;width:120px;height:100%;display:flex;align-items:flex-end;justify-content:center}
+.heat{width:100%;border-radius:7px 7px 0 0;position:relative;animation:rise 1.2s cubic-bezier(.45,.05,.3,1) both}
+.heat.byte{background:linear-gradient(to top,var(--w1),var(--w2) 45%,var(--w3) 78%,var(--w4))}
+.heat.p30{background:linear-gradient(to top,var(--center),var(--w1));animation-delay:.28s}
+@keyframes rise{from{height:0!important}}
+.hc{position:absolute;left:50%;transform:translateX(-50%);bottom:100%;margin-bottom:8px;text-align:center;white-space:nowrap}
+.hc-name{font:600 13px/1.2 'Cinzel',serif;letter-spacing:.04em;text-transform:uppercase;display:block;margin-bottom:3px}
+.hc-val{font:700 22px/1 'Cinzel',serif}
+.heat.byte .hc-name{color:rgba(237,147,177,.9)}.heat.byte .hc-val{color:#fff}
+.heat.p30 .hc-name{color:rgba(250,218,36,.85)}.heat.p30 .hc-val{color:var(--center)}
+.hc-status{font:500 12px/1.2 'Cinzel',serif;letter-spacing:.05em;text-transform:uppercase;display:block;margin-top:4px}
+.heat.byte .hc-status{color:#ed93b1}.heat.p30 .hc-status{color:#5dcaa5}
+.caption{font:400 16px/1.45 'Cormorant Garamond',serif;color:rgba(255,255,255,.82);
+  background:rgba(0,0,0,.22);border-left:3px solid var(--center);border-radius:6px;padding:11px 15px;margin-top:auto}
+.caption b{color:var(--center);font-weight:600}
+.panel{background:var(--bg);padding:1.5rem 1.6rem;display:flex;flex-direction:column;gap:1.25rem;border-left:2px solid var(--space);
+  overflow-y:auto;scrollbar-width:thin}
+.panel::-webkit-scrollbar{width:9px}
+.panel::-webkit-scrollbar-track{background:rgba(53,4,152,.06)}
+.panel::-webkit-scrollbar-thumb{background:var(--grid);border-radius:5px}
+.p-block{display:flex;flex-direction:column;gap:.5rem}
+.p-title{font:500 11px/1 'Cinzel',serif;letter-spacing:.16em;text-transform:uppercase;color:var(--grid)}
+.row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--border)}
+.row:last-child{border-bottom:none}
+.r-name{font:400 16px/1.2 'Cormorant Garamond',serif;color:var(--text-m)}
+.r-val{font:600 17px/1 'Cinzel',serif;font-variant-numeric:tabular-nums}
+.r-val.byte{color:var(--w3)}.r-val.p30{color:var(--okgreen)}.r-val.neu{color:var(--space)}
+.big{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:9px}
+.big.byte{background:rgba(204,71,120,.1);border:1px solid rgba(204,71,120,.35)}
+.big.p30{background:rgba(29,158,117,.1);border:1px solid rgba(29,158,117,.35)}
+.big-lab{font:500 11px/1 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase}
+.big.byte .big-lab{color:var(--w3)}.big.p30 .big-lab{color:var(--okgreen)}
+.big-val{font:700 26px/1 'Cinzel',serif}
+.big.byte .big-val{color:var(--w3)}.big.p30 .big-val{color:var(--okgreen)}
+.big-sub{font:italic 400 14px/1.3 'Cormorant Garamond',serif;color:var(--text-m)}
+.ratio{text-align:center;padding:8px 0 2px}
+.ratio-num{font:700 34px/1 'Cinzel',serif;color:var(--w4)}
+.ratio-cap{font:400 15px/1.35 'Cormorant Garamond',serif;color:var(--text-m)}
+.refs{display:flex;flex-direction:column;gap:8px}
+.ref{font:400 13.5px/1.4 'Cormorant Garamond',serif;color:var(--text-m);padding-left:16px;text-indent:-16px;word-break:break-word}
+.ref i{font-style:italic}
+.deriv{display:flex;flex-direction:column;gap:0}
+.dstep{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--border)}
+.dstep:first-of-type{border-top:none}
+.dnum{font:600 13px/1 'Cinzel',serif;color:var(--text-d);padding-top:3px}
+.dbody{display:flex;flex-direction:column;gap:3px}
+.dmath{font:500 16px/1.45 'Cormorant Garamond',serif;color:var(--text)}
+.dmath .hl{color:var(--w4);font-weight:600}
+.dmath .by{color:var(--w3);font-weight:600}
+.dmath .pp{color:var(--okgreen);font-weight:600}
+.dnote{font:italic 400 14px/1.32 'Cormorant Garamond',serif;color:var(--text-m)}
+footer{padding:1.2rem 3rem 1.6rem;border-top:2px solid var(--space);font:400 14px/1.65 'Cormorant Garamond',serif;color:var(--text-m)}
+.eq{font:500 16px/1.55 'Cormorant Garamond',serif;color:var(--text);
+  background:rgba(250,218,36,.16);border:1px solid rgba(250,218,36,.5);border-radius:8px;padding:11px 14px;margin-bottom:.7rem}
+.eq b{color:var(--w4);font-weight:600}
+@media(max-width:1000px){.stage{grid-template-columns:1fr;height:auto;max-height:none;background:var(--space)}
+  .work{overflow:visible}.panel{border-left:none;border-top:2px solid var(--space);overflow:visible}
+  header,footer{padding-left:1.4rem;padding-right:1.4rem}.work{padding-left:1.4rem;padding-right:1.4rem}}
+</style>
+</head>
+<body>
+<div id="open-repro-banner" style="background:#1a1a1a;color:#fada24;font:600 11px/1.4 Cinzel,serif;
+  letter-spacing:.12em;text-transform:uppercase;text-align:center;padding:6px 12px;
+  border-bottom:2px solid #350498">
+  Open P30 reproduction &mdash; visualization adapted from
+  <a href="https://infoton.ai/infoton-p30" style="color:#fff">infoton.ai/infoton-p30</a>
+  (reference in viz/infoton_reference/)
+</div>
+
+<header>
+  <div class="h-author">January Natatia Walker &middot; Januarian Physics 2026 &middot; Salt Lake City, Utah</div>
+  <div class="h-title">Infoton P30 Computational Efficiencies Eliminate the Need for Water Cooling</div>
+  <div class="h-thesis">Byte-based data centers as they are designed today leverage water resources because the byte performs so many computations checking for parity in the message sent and received that, to keep the heat under control, additional cooling methods are required. The Infoton, because it performs low computations and follows cryptographic number theory, produces low amounts of heat and entropy. <b>One needs water. One does not.</b></div>
+  <div class="h-model">
+    <span><b>12,264</b> byte ops</span>
+    <span><b>163</b> P30 ops</span>
+    <span><b>~30 kW</b> air ceiling</span>
+    <span><b>130 kW</b> today's rack</span>
+    <span><b>75.2&times;</b> fewer operations</span>
+  </div>
+</header>
+<div class="stage">
+  <div class="work">
+    <div class="work-head">
+      <div class="work-title">Heat Per Rack vs the Air Ceiling</div>
+      <div class="work-tag">130 kW &rarr; 1.73 kW</div>
+    </div>
+    <div class="chart">
+      <div class="yaxis" id="yaxis"></div>
+      <div class="plot">
+        <div class="zone-water" id="zw"></div>
+        <div class="zone-air" id="za"></div>
+        <div class="zone-tag zt-water">water-cooled zone</div>
+        <div class="zone-tag zt-air">air-cooled zone</div>
+        <div class="gridline" style="bottom:20%"></div>
+        <div class="gridline" style="bottom:40%"></div>
+        <div class="gridline" style="bottom:60%"></div>
+        <div class="gridline" style="bottom:80%"></div>
+        <div class="ceiling" id="ceiling"><div class="dash"></div>
+          <div class="ceil-lab"><span class="cl-1">Air Ceiling</span><span class="cl-2">~30 kW</span></div></div>
+        <div class="cols">
+          <div class="colwrap"><div class="heat byte" id="heatByte">
+            <div class="hc"><span class="hc-name">The Byte</span><span class="hc-val">130 kW</span><span class="hc-status">water required</span></div>
+          </div></div>
+          <div class="colwrap"><div class="heat p30" id="heatP30">
+            <div class="hc"><span class="hc-name">Infoton P30</span><span class="hc-val">1.73 kW</span><span class="hc-status">no water</span></div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+    <div class="caption">The byte's column towers <b>4.3&times;</b> above the ceiling: the heat it dumps per rack cannot be carried by air, so liquid and evaporative water are forced on. P30 delivers the <b>identical message</b> and never reaches the line.</div>
+  </div>
+  <div class="panel">
+    <div class="p-block">
+      <div class="p-title">The Math, Step by Step</div>
+      <div class="deriv">
+        <div class="dstep"><span class="dnum">1</span><div class="dbody">
+          <span class="dmath">Operation ratio = <span class="by">12,264</span> / <span class="pp">163</span> = <span class="hl">75.2&times;</span></span>
+          <span class="dnote">P30 reaches the same result in 75.2&times; fewer irreversible operations.</span></div></div>
+        <div class="dstep"><span class="dnum">2</span><div class="dbody">
+          <span class="dmath">Power scales linearly: <span class="hl">P = N &times; ops &times; E<sub>op</sub></span></span>
+          <span class="dnote">Same throughput N, same silicon E<sub>op</sub>: only the op-count differs.</span></div></div>
+        <div class="dstep"><span class="dnum">3</span><div class="dbody">
+          <span class="dmath">P30 rack power = <span class="by">130 kW</span> &times; (<span class="pp">163</span> / <span class="by">12,264</span>) = <span class="pp">1.73 kW</span></span>
+          <span class="dnote">The byte's 130 kW load, recomputed at P30's op-count.</span></div></div>
+        <div class="dstep"><span class="dnum">4</span><div class="dbody">
+          <span class="dmath">No-water: <span class="pp">1.73 kW</span> &le; <span class="hl">30 kW</span> air ceiling &nbsp;&#10003;</span>
+          <span class="dnote">Byte: 130 kW &gt; 30 kW &rarr; water required. P30: 1.73 kW &lt; 30 kW &rarr; air only.</span></div></div>
+        <div class="dstep"><span class="dnum">5</span><div class="dbody">
+          <span class="dmath">Threshold: <span class="hl">N* = Q<sub>air</sub> / (ops &times; E<sub>op</sub>)</span> rises <span class="hl">75.2&times;</span></span>
+          <span class="dnote">P30 tolerates 75.2&times; the throughput before any water is ever needed.</span></div></div>
+      </div>
+    </div>
+    <div class="p-block">
+      <div class="p-title">Operations Per Message</div>
+      <div class="row"><span class="r-name">Byte + Hamming ECC</span><span class="r-val byte">12,264</span></div>
+      <div class="row"><span class="r-name">Infoton P30</span><span class="r-val p30">163</span></div>
+      <div class="row"><span class="r-name">Reduction factor</span><span class="r-val neu">75.2&times;</span></div>
+    </div>
+    <div class="p-block">
+      <div class="p-title">Rack Power</div>
+      <div class="big byte"><span class="big-lab">The Byte</span><span class="big-val">130 kW</span><span class="big-sub">4.3&times; over the air ceiling</span></div>
+      <div class="big p30"><span class="big-lab">Infoton P30</span><span class="big-val">1.73 kW</span><span class="big-sub">under the ceiling, air alone</span></div>
+    </div>
+    <div class="p-block">
+      <div class="p-title">Cooling Required</div>
+      <div class="row"><span class="r-name">Byte</span><span class="r-val byte">liquid + water</span></div>
+      <div class="row"><span class="r-name">P30</span><span class="r-val p30">air only</span></div>
+      <div class="row"><span class="r-name">Evaporative, byte</span><span class="r-val byte">2&ndash;5 M gal/MW&middot;yr</span></div>
+      <div class="row"><span class="r-name">Evaporative, P30</span><span class="r-val p30">none</span></div>
+    </div>
+    <div class="p-block">
+      <div class="p-title">The Difference</div>
+      <div class="ratio"><div class="ratio-num">75.2&times;</div>
+        <div class="ratio-cap">fewer operations for the same message, dropping the rack out of the water-cooled regime entirely</div></div>
+    </div>
+    <div class="p-block">
+      <div class="p-title">References</div>
+      <div class="refs">
+        <p class="ref">Adam Silva Consulting. (2026). <i>Data center cooling economics 2026: Liquid vs air vs immersion.</i> https://www.adamsilvaconsulting.com/insights/data-center-cooling-economics-2026</p>
+        <p class="ref">Horowitz, M. (2014). Computing's energy problem (and what we can do about it). <i>2014 IEEE International Solid-State Circuits Conference Digest of Technical Papers (ISSCC),</i> 10&ndash;14. https://doi.org/10.1109/ISSCC.2014.6757323</p>
+        <p class="ref">Landauer, R. (1961). Irreversibility and heat generation in the computing process. <i>IBM Journal of Research and Development, 5</i>(3), 183&ndash;191. https://doi.org/10.1147/rd.53.0183</p>
+        <p class="ref">Network World. (2026, March 25). <i>Why AI rack densities make liquid cooling nonnegotiable.</i> https://www.networkworld.com/article/4149069</p>
+        <p class="ref">Vopson, M. M. (2019). The mass-energy-information equivalence principle. <i>AIP Advances, 9</i>(9), 095206. https://doi.org/10.1063/1.5123794</p>
+        <p class="ref">Walker, J. (2026). <i>The Infoton: A fundamental particle of information-energy.</i> Infoton. https://doi.org/10.5281/zenodo.18210355</p>
+      </div>
+    </div>
+  </div>
+</div>
+<footer>
+  <div class="eq">No-water condition: <b>P(N) = N &times; ops &times; E<sub>op</sub> &le; Q<sub>air</sub></b>. Threshold: <b>N* = Q<sub>air</sub> / (ops &times; E<sub>op</sub>)</b>. Cutting ops from 12,264 to 163 raises N* by exactly <b>75.2&times;</b>.</div>
+  <div>Air-cooling ceiling 20&ndash;35 kW per rack, GB200 NVL72 rack 120&ndash;132 kW, evaporative draw 2&ndash;5 million gallons per MW per year: 2025&ndash;2026 industry figures. The 75.2&times; operation ratio is exact and substrate-independent; absolute kW and water figures depend on the stated cooling and per-operation estimates. The kW figures scale the validation portion of the load by the operation ratio; total facility power includes compute, memory, and networking beyond validation.</div>
+</footer>
+<script>
+"use strict";
+(function(){
+  var MAX_KW=150, CEIL_KW=30, CEIL_FRAC=CEIL_KW/MAX_KW;
+  document.getElementById('ceiling').style.bottom=(CEIL_FRAC*100)+'%';
+  document.getElementById('zw').style.bottom=(CEIL_FRAC*100)+'%';
+  document.getElementById('za').style.top=((1-CEIL_FRAC)*100)+'%';
+  var ax=document.getElementById('yaxis');
+  [0,30,60,90,120,150].forEach(function(kw){
+    var t=document.createElement('div');t.className='ytick';
+    t.style.bottom=((kw/MAX_KW)*100)+'%';t.textContent=kw+' kW';ax.appendChild(t);
+  });
+  document.getElementById('heatByte').style.height=((130/MAX_KW)*100)+'%';
+  document.getElementById('heatP30').style.height=Math.max(0.8,(1.73/MAX_KW)*100)+'%';
+})();
+</script>
+</body>
+</html></body>

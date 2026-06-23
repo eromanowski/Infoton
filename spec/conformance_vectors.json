@@ -1,0 +1,984 @@
+{
+  "version": "1.0.0",
+  "description": "P30 conformance vectors (Tier-1, round-trip, demo metrics)",
+  "vector_count": 102,
+  "vectors": [
+    {
+      "id": "tier1-001- ",
+      "kind": "tier1_mapping",
+      "text": " ",
+      "expect": {
+        "tier1_value": 1,
+        "residue_mod30": 1,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-002-e",
+      "kind": "tier1_mapping",
+      "text": "e",
+      "expect": {
+        "tier1_value": 7,
+        "residue_mod30": 7,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-003-t",
+      "kind": "tier1_mapping",
+      "text": "t",
+      "expect": {
+        "tier1_value": 11,
+        "residue_mod30": 11,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-004-a",
+      "kind": "tier1_mapping",
+      "text": "a",
+      "expect": {
+        "tier1_value": 13,
+        "residue_mod30": 13,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-005-o",
+      "kind": "tier1_mapping",
+      "text": "o",
+      "expect": {
+        "tier1_value": 17,
+        "residue_mod30": 17,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-006-i",
+      "kind": "tier1_mapping",
+      "text": "i",
+      "expect": {
+        "tier1_value": 19,
+        "residue_mod30": 19,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-007-n",
+      "kind": "tier1_mapping",
+      "text": "n",
+      "expect": {
+        "tier1_value": 23,
+        "residue_mod30": 23,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-008-s",
+      "kind": "tier1_mapping",
+      "text": "s",
+      "expect": {
+        "tier1_value": 29,
+        "residue_mod30": 29,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-009-h",
+      "kind": "tier1_mapping",
+      "text": "h",
+      "expect": {
+        "tier1_value": 31,
+        "residue_mod30": 1,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-010-\n",
+      "kind": "tier1_mapping",
+      "text": "\n",
+      "expect": {
+        "tier1_value": 37,
+        "residue_mod30": 7,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-011-r",
+      "kind": "tier1_mapping",
+      "text": "r",
+      "expect": {
+        "tier1_value": 41,
+        "residue_mod30": 11,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-012-d",
+      "kind": "tier1_mapping",
+      "text": "d",
+      "expect": {
+        "tier1_value": 43,
+        "residue_mod30": 13,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-013-l",
+      "kind": "tier1_mapping",
+      "text": "l",
+      "expect": {
+        "tier1_value": 47,
+        "residue_mod30": 17,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-014-c",
+      "kind": "tier1_mapping",
+      "text": "c",
+      "expect": {
+        "tier1_value": 49,
+        "residue_mod30": 19,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-015-u",
+      "kind": "tier1_mapping",
+      "text": "u",
+      "expect": {
+        "tier1_value": 53,
+        "residue_mod30": 23,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-016-m",
+      "kind": "tier1_mapping",
+      "text": "m",
+      "expect": {
+        "tier1_value": 59,
+        "residue_mod30": 29,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-017-w",
+      "kind": "tier1_mapping",
+      "text": "w",
+      "expect": {
+        "tier1_value": 61,
+        "residue_mod30": 1,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-018-f",
+      "kind": "tier1_mapping",
+      "text": "f",
+      "expect": {
+        "tier1_value": 67,
+        "residue_mod30": 7,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-019-g",
+      "kind": "tier1_mapping",
+      "text": "g",
+      "expect": {
+        "tier1_value": 71,
+        "residue_mod30": 11,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-020-y",
+      "kind": "tier1_mapping",
+      "text": "y",
+      "expect": {
+        "tier1_value": 73,
+        "residue_mod30": 13,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-021-p",
+      "kind": "tier1_mapping",
+      "text": "p",
+      "expect": {
+        "tier1_value": 77,
+        "residue_mod30": 17,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-022-'",
+      "kind": "tier1_mapping",
+      "text": "'",
+      "expect": {
+        "tier1_value": 79,
+        "residue_mod30": 19,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-023-b",
+      "kind": "tier1_mapping",
+      "text": "b",
+      "expect": {
+        "tier1_value": 83,
+        "residue_mod30": 23,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-024-v",
+      "kind": "tier1_mapping",
+      "text": "v",
+      "expect": {
+        "tier1_value": 89,
+        "residue_mod30": 29,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-025-k",
+      "kind": "tier1_mapping",
+      "text": "k",
+      "expect": {
+        "tier1_value": 91,
+        "residue_mod30": 1,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-026-,",
+      "kind": "tier1_mapping",
+      "text": ",",
+      "expect": {
+        "tier1_value": 97,
+        "residue_mod30": 7,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-027-.",
+      "kind": "tier1_mapping",
+      "text": ".",
+      "expect": {
+        "tier1_value": 101,
+        "residue_mod30": 11,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-028-1",
+      "kind": "tier1_mapping",
+      "text": "1",
+      "expect": {
+        "tier1_value": 103,
+        "residue_mod30": 13,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-029-I",
+      "kind": "tier1_mapping",
+      "text": "I",
+      "expect": {
+        "tier1_value": 107,
+        "residue_mod30": 17,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-030-0",
+      "kind": "tier1_mapping",
+      "text": "0",
+      "expect": {
+        "tier1_value": 109,
+        "residue_mod30": 19,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-031-A",
+      "kind": "tier1_mapping",
+      "text": "A",
+      "expect": {
+        "tier1_value": 113,
+        "residue_mod30": 23,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-032-T",
+      "kind": "tier1_mapping",
+      "text": "T",
+      "expect": {
+        "tier1_value": 119,
+        "residue_mod30": 29,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-033-E",
+      "kind": "tier1_mapping",
+      "text": "E",
+      "expect": {
+        "tier1_value": 121,
+        "residue_mod30": 1,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-034-2",
+      "kind": "tier1_mapping",
+      "text": "2",
+      "expect": {
+        "tier1_value": 127,
+        "residue_mod30": 7,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-035-C",
+      "kind": "tier1_mapping",
+      "text": "C",
+      "expect": {
+        "tier1_value": 131,
+        "residue_mod30": 11,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-036-S",
+      "kind": "tier1_mapping",
+      "text": "S",
+      "expect": {
+        "tier1_value": 133,
+        "residue_mod30": 13,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-037-D",
+      "kind": "tier1_mapping",
+      "text": "D",
+      "expect": {
+        "tier1_value": 137,
+        "residue_mod30": 17,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-038-N",
+      "kind": "tier1_mapping",
+      "text": "N",
+      "expect": {
+        "tier1_value": 139,
+        "residue_mod30": 19,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-039-R",
+      "kind": "tier1_mapping",
+      "text": "R",
+      "expect": {
+        "tier1_value": 143,
+        "residue_mod30": 23,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-040-3",
+      "kind": "tier1_mapping",
+      "text": "3",
+      "expect": {
+        "tier1_value": 149,
+        "residue_mod30": 29,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-041-B",
+      "kind": "tier1_mapping",
+      "text": "B",
+      "expect": {
+        "tier1_value": 151,
+        "residue_mod30": 1,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-042-H",
+      "kind": "tier1_mapping",
+      "text": "H",
+      "expect": {
+        "tier1_value": 157,
+        "residue_mod30": 7,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-043-M",
+      "kind": "tier1_mapping",
+      "text": "M",
+      "expect": {
+        "tier1_value": 161,
+        "residue_mod30": 11,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-044-O",
+      "kind": "tier1_mapping",
+      "text": "O",
+      "expect": {
+        "tier1_value": 163,
+        "residue_mod30": 13,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-045--",
+      "kind": "tier1_mapping",
+      "text": "-",
+      "expect": {
+        "tier1_value": 167,
+        "residue_mod30": 17,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-046-4",
+      "kind": "tier1_mapping",
+      "text": "4",
+      "expect": {
+        "tier1_value": 169,
+        "residue_mod30": 19,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-047-5",
+      "kind": "tier1_mapping",
+      "text": "5",
+      "expect": {
+        "tier1_value": 173,
+        "residue_mod30": 23,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-048-F",
+      "kind": "tier1_mapping",
+      "text": "F",
+      "expect": {
+        "tier1_value": 179,
+        "residue_mod30": 29,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-049-L",
+      "kind": "tier1_mapping",
+      "text": "L",
+      "expect": {
+        "tier1_value": 181,
+        "residue_mod30": 1,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-050-P",
+      "kind": "tier1_mapping",
+      "text": "P",
+      "expect": {
+        "tier1_value": 187,
+        "residue_mod30": 7,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-051-W",
+      "kind": "tier1_mapping",
+      "text": "W",
+      "expect": {
+        "tier1_value": 191,
+        "residue_mod30": 11,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-052-6",
+      "kind": "tier1_mapping",
+      "text": "6",
+      "expect": {
+        "tier1_value": 193,
+        "residue_mod30": 13,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-053-7",
+      "kind": "tier1_mapping",
+      "text": "7",
+      "expect": {
+        "tier1_value": 197,
+        "residue_mod30": 17,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-054-8",
+      "kind": "tier1_mapping",
+      "text": "8",
+      "expect": {
+        "tier1_value": 199,
+        "residue_mod30": 19,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-055-9",
+      "kind": "tier1_mapping",
+      "text": "9",
+      "expect": {
+        "tier1_value": 203,
+        "residue_mod30": 23,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-056-G",
+      "kind": "tier1_mapping",
+      "text": "G",
+      "expect": {
+        "tier1_value": 209,
+        "residue_mod30": 29,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-057-U",
+      "kind": "tier1_mapping",
+      "text": "U",
+      "expect": {
+        "tier1_value": 211,
+        "residue_mod30": 1,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-058-Y",
+      "kind": "tier1_mapping",
+      "text": "Y",
+      "expect": {
+        "tier1_value": 217,
+        "residue_mod30": 7,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-059-!",
+      "kind": "tier1_mapping",
+      "text": "!",
+      "expect": {
+        "tier1_value": 221,
+        "residue_mod30": 11,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-060-j",
+      "kind": "tier1_mapping",
+      "text": "j",
+      "expect": {
+        "tier1_value": 223,
+        "residue_mod30": 13,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-061-x",
+      "kind": "tier1_mapping",
+      "text": "x",
+      "expect": {
+        "tier1_value": 227,
+        "residue_mod30": 17,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-062-K",
+      "kind": "tier1_mapping",
+      "text": "K",
+      "expect": {
+        "tier1_value": 229,
+        "residue_mod30": 19,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-063-V",
+      "kind": "tier1_mapping",
+      "text": "V",
+      "expect": {
+        "tier1_value": 233,
+        "residue_mod30": 23,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-064-?",
+      "kind": "tier1_mapping",
+      "text": "?",
+      "expect": {
+        "tier1_value": 239,
+        "residue_mod30": 29,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-065-J",
+      "kind": "tier1_mapping",
+      "text": "J",
+      "expect": {
+        "tier1_value": 241,
+        "residue_mod30": 1,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-066-q",
+      "kind": "tier1_mapping",
+      "text": "q",
+      "expect": {
+        "tier1_value": 247,
+        "residue_mod30": 7,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-067-z",
+      "kind": "tier1_mapping",
+      "text": "z",
+      "expect": {
+        "tier1_value": 251,
+        "residue_mod30": 11,
+        "coprime": true
+      }
+    },
+    {
+      "id": "tier1-068-Q",
+      "kind": "tier1_mapping",
+      "text": "Q",
+      "expect": {
+        "tier1_value": 253,
+        "residue_mod30": 13,
+        "coprime": true
+      }
+    },
+    {
+      "id": "coprime-001",
+      "kind": "all_positions_coprime",
+      "text": "Hello",
+      "expect": {
+        "char_count": 5,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-002",
+      "kind": "all_positions_coprime",
+      "text": "Prime 30",
+      "expect": {
+        "char_count": 8,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-003",
+      "kind": "all_positions_coprime",
+      "text": "eeeeeeeeee",
+      "expect": {
+        "char_count": 10,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-004",
+      "kind": "all_positions_coprime",
+      "text": "The Great Salt Lake",
+      "expect": {
+        "char_count": 19,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-005",
+      "kind": "all_positions_coprime",
+      "text": "Utah's lake",
+      "expect": {
+        "char_count": 11,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-006",
+      "kind": "all_positions_coprime",
+      "text": "AF/yr",
+      "expect": {
+        "char_count": 5,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-007",
+      "kind": "all_positions_coprime",
+      "text": "0123456789",
+      "expect": {
+        "char_count": 10,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-008",
+      "kind": "all_positions_coprime",
+      "text": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "expect": {
+        "char_count": 26,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-009",
+      "kind": "all_positions_coprime",
+      "text": "abcdefghijklmnopqrstuvwxyz",
+      "expect": {
+        "char_count": 26,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-010",
+      "kind": "all_positions_coprime",
+      "text": "The Great Salt Lake can be fully restore",
+      "expect": {
+        "char_count": 40,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-011",
+      "kind": "all_positions_coprime",
+      "text": "d to full health within as little as 3 y",
+      "expect": {
+        "char_count": 40,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-012",
+      "kind": "all_positions_coprime",
+      "text": "ears by returning 1,150,000 AF/yr. Resul",
+      "expect": {
+        "char_count": 40,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "coprime-013",
+      "kind": "all_positions_coprime",
+      "text": "ting Utah's lake effect and water security.",
+      "expect": {
+        "char_count": 43,
+        "all_coprime": true
+      }
+    },
+    {
+      "id": "roundtrip-char-001",
+      "kind": "char_roundtrip",
+      "text": "eee",
+      "expect": {
+        "char_count": 3
+      }
+    },
+    {
+      "id": "roundtrip-char-002",
+      "kind": "char_roundtrip",
+      "text": "tttt",
+      "expect": {
+        "char_count": 4
+      }
+    },
+    {
+      "id": "roundtrip-char-003",
+      "kind": "char_roundtrip",
+      "text": "aaaaa",
+      "expect": {
+        "char_count": 5
+      }
+    },
+    {
+      "id": "roundtrip-char-004",
+      "kind": "char_roundtrip",
+      "text": "oooooo",
+      "expect": {
+        "char_count": 6
+      }
+    },
+    {
+      "id": "roundtrip-char-005",
+      "kind": "char_roundtrip",
+      "text": "iiiiiii",
+      "expect": {
+        "char_count": 7
+      }
+    },
+    {
+      "id": "roundtrip-char-006",
+      "kind": "char_roundtrip",
+      "text": "nnnnnnnn",
+      "expect": {
+        "char_count": 8
+      }
+    },
+    {
+      "id": "roundtrip-char-007",
+      "kind": "char_roundtrip",
+      "text": "sssssssss",
+      "expect": {
+        "char_count": 9
+      }
+    },
+    {
+      "id": "roundtrip-char-008",
+      "kind": "char_roundtrip",
+      "text": "hhhhhhhhhh",
+      "expect": {
+        "char_count": 10
+      }
+    },
+    {
+      "id": "roundtrip-char-009",
+      "kind": "char_roundtrip",
+      "text": "rrrrrrrrrrr",
+      "expect": {
+        "char_count": 11
+      }
+    },
+    {
+      "id": "roundtrip-char-010",
+      "kind": "char_roundtrip",
+      "text": "dddddddddddd",
+      "expect": {
+        "char_count": 12
+      }
+    },
+    {
+      "id": "roundtrip-char-011",
+      "kind": "char_roundtrip",
+      "text": "lllllllllllll",
+      "expect": {
+        "char_count": 13
+      }
+    },
+    {
+      "id": "roundtrip-char-012",
+      "kind": "char_roundtrip",
+      "text": "cccccccccccccc",
+      "expect": {
+        "char_count": 14
+      }
+    },
+    {
+      "id": "roundtrip-char-013",
+      "kind": "char_roundtrip",
+      "text": "uuuuuuuuuuuuuuu",
+      "expect": {
+        "char_count": 15
+      }
+    },
+    {
+      "id": "roundtrip-char-014",
+      "kind": "char_roundtrip",
+      "text": "mmmmmmmmmmmmmmmm",
+      "expect": {
+        "char_count": 16
+      }
+    },
+    {
+      "id": "roundtrip-char-015",
+      "kind": "char_roundtrip",
+      "text": "wwwwwwwwwwwwwwwww",
+      "expect": {
+        "char_count": 17
+      }
+    },
+    {
+      "id": "roundtrip-packed-001",
+      "kind": "packed_roundtrip",
+      "text": "Hi",
+      "expect": {
+        "char_count": 2
+      }
+    },
+    {
+      "id": "roundtrip-packed-002",
+      "kind": "packed_roundtrip",
+      "text": "P30",
+      "expect": {
+        "char_count": 3
+      }
+    },
+    {
+      "id": "roundtrip-packed-003",
+      "kind": "packed_roundtrip",
+      "text": "Salt Lake",
+      "expect": {
+        "char_count": 9
+      }
+    },
+    {
+      "id": "roundtrip-packed-004",
+      "kind": "packed_roundtrip",
+      "text": "1,150,000",
+      "expect": {
+        "char_count": 9
+      }
+    },
+    {
+      "id": "roundtrip-packed-005",
+      "kind": "packed_roundtrip",
+      "text": "The Great Salt Lake can be fully restored to full health within as little as 3 years by returning 1,150,000 AF/yr. Resulting Utah's lake effect and water security.",
+      "expect": {
+        "char_count": 163
+      }
+    },
+    {
+      "id": "demo-canonical-corpus",
+      "kind": "infoton_demo",
+      "text": "The Great Salt Lake can be fully restored to full health within as little as 3 years by returning 1,150,000 AF/yr. Resulting Utah's lake effect and water security.",
+      "expect": {
+        "char_count": 163,
+        "utf8_bytes": 163,
+        "library_ops": 489,
+        "bios_ops": 163,
+        "hamming_ops": 12264,
+        "char_bytes": 167,
+        "packed_bytes": 171,
+        "huffman_total": 533,
+        "huffman_payload": 103,
+        "direct_bytes": 116,
+        "tier1_escapes": [
+          "/"
+        ]
+      }
+    }
+  ]
+}

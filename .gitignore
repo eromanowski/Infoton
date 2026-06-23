@@ -1,0 +1,10 @@
+/target/
+**/*.rs.bk
+.idea/
+.vscode/
+*.pdb
+__pycache__/
+*.pyc
+_infoton_page.html
+/benches/thermal/*.csv
+/out/

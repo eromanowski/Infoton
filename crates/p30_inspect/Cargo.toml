@@ -1,0 +1,15 @@
+[package]
+name = "p30_inspect"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "P30 inspect CLI: validate, stats, transcode, conformance"
+
+[[bin]]
+name = "p30inspect"
+path = "src/main.rs"
+
+[dependencies]
+p30_core = { path = "../p30_core" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"

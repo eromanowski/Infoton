@@ -1,0 +1,39 @@
+{
+  "version": "0.2.0",
+  "description": "Open P30 conformance targets from Infoton demo calculator (June 2026)",
+  "canonical_corpus": "spec/canonical_corpus.txt",
+  "expected": {
+    "char_count": 163,
+    "utf8_bytes": 163,
+    "library_ops": 489,
+    "bios_ops": 163,
+    "hamming_secded_ops": 12264,
+    "hamming_ops_per_64bit_word": 584,
+    "hamming_words": 21,
+    "storage_bytes": {
+      "char_round_trip": 167,
+      "packed_round_trip": 171,
+      "huffman_total": 533,
+      "huffman_payload": 103,
+      "direct_write_only": 116
+    },
+    "landauer_zj_per_op_at_350k": 3.349,
+    "ratios": {
+      "hamming_vs_bios": 75.2,
+      "hamming_vs_library": 25.1
+    }
+  },
+  "ccp0": {
+    "library_ops_per_char": {
+      "locate": 1,
+      "emit": 1,
+      "verify": 1
+    },
+    "bios_ops_per_char": {
+      "ingress_encode": 1,
+      "reverify_on_read": 0
+    }
+  },
+  "conformance_vectors": "spec/conformance_vectors.json",
+  "tier1_alphabet": "spec/tier1_alphabet.json"
+}

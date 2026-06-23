@@ -1,0 +1,13 @@
+[package]
+name = "p30_calculator"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Reproduce Infoton P30 demo calculator metrics"
+
+[[bin]]
+name = "p30-calculator"
+path = "src/main.rs"
+
+[dependencies]
+p30_core = { path = "../p30_core" }

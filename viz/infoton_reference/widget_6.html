@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Send Your Message</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f6f6; --center:#fada24; --w3:#cc4778; --w4:#a31e9a;
+    --space:#350498; --grid:#6e54a3;
+    --text:#1a1a1a; --text-m:rgba(53,4,152,.7); --text-d:rgba(53,4,152,.42);
+    --border:rgba(53,4,152,.15); --border-s:rgba(53,4,152,.3);
+    --gmail:#ea4335; --outlook:#0a5ad4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  body{
+    font-family:'Cormorant Garamond',serif;
+    background:#ffffff;
+    color:var(--text);
+    min-height:100vh;
+    display:flex; align-items:flex-start; justify-content:center;
+    padding:2.5rem 1.5rem; line-height:1.5;
+  }
+
+  .card{
+    width:100%; max-width:1100px;
+    background:#ffffff;
+    border:none;
+    box-shadow:none;
+    padding:1rem 0 2rem;
+  }
+
+  .eyebrow{
+    font:500 12px/1 'Cinzel',serif; letter-spacing:.25em; text-transform:uppercase;
+    color:var(--grid); margin-bottom:.9rem;
+  }
+
+  h1{
+    font:400 clamp(2rem,5.5vw,2.9rem)/1.05 'Cinzel',serif;
+    color:var(--space); letter-spacing:-.01em; margin-bottom:1.1rem;
+  }
+
+  .lede{
+    font:400 clamp(1.05rem,1.7vw,1.2rem)/1.55 'Cormorant Garamond',serif;
+    color:var(--text-m); margin-bottom:2rem; max-width:none;
+  }
+
+  .field{ margin-bottom:1.2rem; }
+
+  label{
+    display:block; font:600 11px/1 'Cinzel',serif; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--grid); margin-bottom:.45rem;
+  }
+
+  input{
+    width:100%; font-family:'Cormorant Garamond',serif; font-size:1.05rem;
+    color:var(--text); background:#fff; border:none;
+    border-radius:5px; padding:.7rem .85rem;
+    box-shadow:0 1px 2px rgba(53,4,152,.06), 0 6px 16px rgba(53,4,152,.10);
+    transition:box-shadow .15s;
+  }
+  input:focus{
+    outline:none; box-shadow:0 1px 2px rgba(53,4,152,.06), 0 8px 20px rgba(53,4,152,.16);
+  }
+
+  .letter-sheet{
+    background:#fffefb;
+    border:none;
+    border-radius:2px;
+    box-shadow:0 1px 2px rgba(53,4,152,.08), 0 16px 40px rgba(53,4,152,.18);
+    padding:0;
+    transition:box-shadow .18s;
+    overflow:hidden;
+  }
+  .letter-sheet:focus-within{
+    box-shadow:0 1px 2px rgba(53,4,152,.08), 0 18px 46px rgba(53,4,152,.26);
+  }
+  .letterhead{
+    background:var(--space);
+    color:#fff;
+    padding:1.5rem 3.25rem 1.3rem;
+    display:flex; flex-direction:column; gap:.15rem;
+  }
+  .lh-name{ font:600 1.4rem/1.1 'Cinzel',serif; letter-spacing:.02em; color:#fff; }
+  .lh-sub{ font:400 1.02rem/1.3 'Cormorant Garamond',serif; color:rgba(250,218,36,.92); letter-spacing:.04em; }
+  .lh-accent{ height:3px; background:var(--center); }
+
+  .letter-body{ padding:2.6rem 3.25rem 3rem; display:flex; flex-direction:column; gap:1.3rem; }
+  .ed{
+    font-family:'Cormorant Garamond',serif; color:var(--text);
+    border:none; outline:none; background:transparent; width:100%;
+    box-shadow:none;
+    border-bottom:1px solid transparent; transition:border-color .15s, background .15s;
+    border-radius:2px; padding:.1rem .15rem;
+  }
+  .ed:hover{ background:rgba(53,4,152,.03); }
+  .ed:focus{ box-shadow:none; border-bottom:1px solid rgba(163,30,154,.4); background:rgba(163,30,154,.04); }
+  .ed.date{ font-size:1.08rem; color:var(--text-m); text-align:right; }
+  .ed.recip{ font-size:1.08rem; line-height:1.45rem; resize:none; min-height:4.3rem; }
+  .ed.salut{ font-size:1.18rem; }
+  .ed.body{
+    font-size:1.18rem; line-height:2.05rem; resize:vertical; min-height:300px;
+    background-image:repeating-linear-gradient(
+      to bottom, transparent 0, transparent calc(2.05rem - 1px),
+      rgba(53,4,152,.07) calc(2.05rem - 1px), rgba(53,4,152,.07) 2.05rem);
+    background-attachment:local;
+  }
+  .ed.body:hover, .ed.body:focus{ background-color:transparent; }
+  .ed::placeholder{ color:var(--text-d); font-style:italic; }
+  .sign-block{ display:flex; flex-direction:column; gap:.1rem; margin-top:.4rem; }
+  .sign-rule{ width:200px; border-top:1px solid var(--border-s); margin:1.4rem 0 .5rem; }
+  .ed.signoff{ font-size:1.18rem; }
+  .ed.signname{ font-size:1.18rem; font-weight:500; color:var(--space); }
+  .ed.signtitle{ font-size:1.02rem; color:var(--text-m); font-style:italic; }
+
+  .buttons{ display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-top:2.1rem; }
+
+  .btn{
+    appearance:none; border:none; border-radius:6px;
+    background:#fff; color:var(--space);
+    font:600 13px/1 'Cinzel',serif; letter-spacing:.06em; text-transform:uppercase;
+    padding:1.05rem; cursor:pointer; text-decoration:none;
+    display:flex; align-items:center; justify-content:center; gap:.55rem;
+    transition:box-shadow .15s, transform .1s;
+    box-shadow:0 1px 2px rgba(53,4,152,.06), 0 6px 16px rgba(53,4,152,.10);
+  }
+  .btn:hover{ box-shadow:0 1px 2px rgba(53,4,152,.06), 0 10px 24px rgba(53,4,152,.18); transform:translateY(-1px); }
+  .btn:active{ transform:translateY(0); box-shadow:0 1px 2px rgba(53,4,152,.06), 0 4px 12px rgba(53,4,152,.12); }
+
+  .btn .dot{ width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .btn.gmail .dot{ background:var(--gmail); }
+  .btn.outlook .dot{ background:var(--outlook); }
+  .btn.default{ grid-column:1 / -1; background:#fff; color:var(--space); }
+  .btn.default .dot{ background:var(--space); }
+
+  .note{
+    margin-top:1.8rem; padding-top:1.25rem; border-top:1px solid var(--border);
+    font:italic 400 15px/1.5 'Cormorant Garamond',serif; color:var(--text-m);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Send your message</h1>
+    <p class="lede">Edit the fields below, then choose how you'd like to send. Each button opens your email pre-filled — you review and hit send yourself.</p>
+
+    <div class="field">
+      <label for="to">Recipient</label>
+      <input id="to" type="text" value="https://www.ibm.com/support/pages/feedback/security-psirt" oninput="rebuild()">
+    </div>
+
+    <div class="field">
+      <label for="subject">Subject</label>
+      <input id="subject" type="text" value="Regarding data center energy and efficiency" oninput="rebuild()">
+    </div>
+
+    <div class="field">
+      <label for="body">Letter</label>
+      <div class="letter-sheet">
+        <div class="letter-body">
+          <input class="ed date" id="lDate" value="" oninput="rebuild()" aria-label="Date">
+          <textarea class="ed recip" id="lRecip" oninput="rebuild()" aria-label="Recipient block">Name of Recipient
+Title / Organization</textarea>
+          <input class="ed salut" id="lSalut" value="Dear IBM," oninput="rebuild()" aria-label="Salutation">
+          <textarea class="ed body" id="body" oninput="rebuild()" aria-label="Letter body">
+
+The IBM Byte changed the course of humanity, and allowed us to build incredible technologies which even 30 years ago were unimaginable. With the scaling of the byte based data centers today and seeing how hot they have become and how much water is used, and how much energy is being demanded the time has come to revise the design with physics equations from IBM.
+
+In 1961 Rolf Landauer at IBM discovered information costs energy with E=kBTln(2) and by applying Landauers limit to the design of data we can eliminate the need for water. 
+
+The Infoton P30 update which is prime based byte replacement, for more efficient error checking, eliminates the need for water, nuclear energy, and scaling in data centers.  A demo of the Infoton P30 update is available here: https://infoton.ai/infoton-p30
+
+I invite you to remember the future isn't just about producing more power, it is also about discovering the elegant ways to process information so that less power is needed in the first place. When we align our computation to natural number theory the data centers don't need, or evaporate water resources critical for human existence.
+
+Please contact January Walker the Planetary Information Security Officer at Infoton and collaborate and provide her the resources she needs to deploy the Infoton P30 update so our water and energy is safe.
+
+</textarea>
+          <div class="sign-block">
+            <input class="ed signoff" id="lSignoff" value="Sincerely," oninput="rebuild()" aria-label="Sign-off">
+            <div class="sign-rule"></div>
+            <input class="ed signname" id="lSignName" value="" placeholder="[Your name]" oninput="rebuild()" aria-label="Signature name">
+            <input class="ed signtitle" id="lSignTitle" value="" placeholder="[Title / Organization, optional]" oninput="rebuild()" aria-label="Signature title">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <a class="btn gmail" id="gmailBtn" target="_blank" rel="noopener"><span class="dot"></span>Gmail</a>
+      <a class="btn outlook" id="outlookBtn" target="_blank" rel="noopener"><span class="dot"></span>Outlook</a>
+      <a class="btn default" id="defaultBtn"><span class="dot"></span>Default mail app</a>
+    </div>
+
+  </div>
+
+<script>
+  function val(id){ var e=document.getElementById(id); return e?e.value:''; }
+
+  (function setDate(){
+    var d=document.getElementById('lDate');
+    if(d){
+      d.value=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+    }
+  })();
+
+  function assembleLetter(){
+    var recip=val('lRecip').trim();
+    var parts=[];
+    parts.push(val('lDate').trim());
+    parts.push('');
+    if(recip){ parts.push(recip); parts.push(''); }
+    parts.push(val('lSalut').trim());
+    parts.push('');
+    parts.push(val('body').trim());
+    parts.push('');
+    parts.push(val('lSignoff').trim());
+    parts.push('');
+    parts.push(val('lSignName').trim());
+    var st=val('lSignTitle').trim();
+    if(st) parts.push(st);
+    return parts.join('\n');
+  }
+
+  function rebuild() {
+    const to = val('to').trim();
+    const subject = val('subject');
+    const body = assembleLetter();
+
+    const es = encodeURIComponent(subject);
+    const eb = encodeURIComponent(body);
+    const et = encodeURIComponent(to);
+
+    document.getElementById('gmailBtn').href =
+      `https://mail.google.com/mail/?view=cm&fs=1&to=${et}&su=${es}&body=${eb}`;
+    document.getElementById('outlookBtn').href =
+      `https://outlook.office.com/mail/deeplink/compose?to=${et}&subject=${es}&body=${eb}`;
+    document.getElementById('defaultBtn').href =
+      `mailto:$https://www.ibm.com/support/pages/feedback/security-psirt}?subject=${es}&body=${eb}`;
+  }
+  rebuild();
+</script>
+</body>
+</html></body>

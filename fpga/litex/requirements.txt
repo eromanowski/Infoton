@@ -1,0 +1,6 @@
+# LiteX SoC generation for P30 Phase 2
+# Install in a venv; versions are minimum tested stubs — pin after first green build.
+litex-boards>=2024.4
+litex-hub>=2024.4
+migen
+pyyaml

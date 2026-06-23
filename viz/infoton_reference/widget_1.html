@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cost of a Byte | Januarian Physics</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&display=optional" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --center:#fada24; --w1:#fba238; --w2:#e97158; --w3:#cc4778;
+  --w4:#a31e9a; --w5:#6f00a8; --space:#350498; --grid:#6e54a3;
+  --text:#1a1a1a; --text-m:rgba(53,4,152,.7); --text-d:rgba(53,4,152,.42);
+  --border:rgba(53,4,152,.15); --border-s:rgba(53,4,152,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;
+  font-size:18px;line-height:1.5;overflow-x:hidden}
+header{padding:1.8rem 3rem 1.4rem;border-bottom:2px solid var(--space);
+  display:flex;flex-direction:column;gap:.35rem}
+.h-author{font:500 11px/1 'Cinzel',serif;letter-spacing:.25em;text-transform:uppercase;color:var(--grid)}
+.h-title{font:700 clamp(1.6rem,3.4vw,2.5rem)/1.1 'Cinzel',serif;color:var(--space)}
+.h-desc{font:400 clamp(1.05rem,1.6vw,1.2rem)/1.55 'Cormorant Garamond',serif;color:var(--text-m);max-width:none}
+.h-thesis{font:400 clamp(1.1rem,1.7vw,1.28rem)/1.62 'Cormorant Garamond',serif;color:var(--text);max-width:none;margin-top:.2rem}
+.cit{font:600 12px/1 'Cinzel',serif;color:var(--w4);text-decoration:none;vertical-align:super;padding:0 1px}
+.cit:hover{color:var(--w3)}
+.h-model{display:flex;gap:1.6rem;flex-wrap:wrap;margin-top:.5rem;
+  font:400 15px/1 'Cinzel',serif;color:var(--text-d);letter-spacing:.03em}
+.h-model b{color:var(--space);font-weight:600}
+.stage{display:grid;grid-template-columns:1fr 340px;gap:0;align-items:stretch;
+  height:calc(100vh - 60px);max-height:760px;
+  background:linear-gradient(to right, var(--space) 0, var(--space) calc(100% - 340px), var(--bg) calc(100% - 340px), var(--bg) 100%)}
+.work{padding:1.3rem 2.4rem;position:relative;background:var(--space);
+  display:flex;flex-direction:column;gap:.85rem;min-width:0;overflow-y:auto}
+.work-head{display:flex;justify-content:space-between;align-items:baseline}
+.work-title{font:600 16px/1 'Cinzel',serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.92)}
+.phase-tag{font:500 14px/1 'Cinzel',serif;letter-spacing:.1em;color:var(--center);
+  padding:5px 14px;border:1px solid rgba(250,218,36,.4);border-radius:4px;text-transform:uppercase}
+.grid-wrap{display:flex;flex-direction:column;gap:6px}
+.grid-row{display:flex;gap:6px;align-items:center}
+.row-label{font:500 14px/1 'Cinzel',serif;color:rgba(255,255,255,.4);min-width:54px;text-align:right;letter-spacing:.05em}
+.cell{flex:1;aspect-ratio:1.42/1;border-radius:6px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;position:relative;
+  border:1.5px solid rgba(255,255,255,.16);transition:all .12s ease;
+  font-family:'Cinzel',serif}
+.cell .lab{font:600 15px/1 'Cinzel',serif;letter-spacing:.02em}
+.cell .pos{font:400 11px/1 'Cormorant Garamond',serif;opacity:.5;margin-top:1px}
+.cell.data{background:rgba(255,255,255,.05);color:rgba(255,255,255,.66)}
+.cell.check{background:rgba(250,218,36,.1);border-color:rgba(250,218,36,.45);color:var(--center)}
+.cell.watched{background:rgba(233,113,88,.5);border-color:var(--w2);color:#fff;
+  box-shadow:0 0 14px rgba(233,113,88,.55)}
+.cell.active{background:var(--center);border-color:#fff;color:var(--space);
+  box-shadow:0 0 22px rgba(250,218,36,.9);transform:scale(1.06);z-index:3}
+.cell.check.computing{background:var(--w3);border-color:#fff;color:#fff;
+  box-shadow:0 0 24px rgba(204,71,120,.85);transform:scale(1.06);z-index:3}
+.cell.check.done{background:rgba(111,0,168,.55);border-color:var(--w5);color:#fff}
+.cell.corrupted{background:#ff3b3b!important;border-color:#fff!important;color:#fff!important;
+  box-shadow:0 0 26px rgba(255,59,59,.9)!important;animation:pulse-err .7s infinite}
+@keyframes pulse-err{0%,100%{box-shadow:0 0 14px rgba(255,59,59,.6)}50%{box-shadow:0 0 30px rgba(255,59,59,1)}}
+.word-grid{display:flex;gap:14px;align-items:flex-start}
+.bytes-col{display:flex;flex-direction:column;gap:5px;flex:1 1 0;min-width:0}
+.byte-row{display:flex;gap:5px;align-items:center;padding:2px 5px;border-radius:7px;
+  border:1.5px solid transparent;transition:all .14s ease}
+.byte-row.examining{border-color:var(--w2);background:rgba(233,113,88,.12);
+  box-shadow:0 0 18px rgba(233,113,88,.3)}
+.byte-row.done-sweep{border-color:rgba(111,0,168,.5);background:rgba(111,0,168,.1)}
+.byte-tag{font:600 13px/1 'Cinzel',serif;color:rgba(255,255,255,.5);min-width:62px;letter-spacing:.04em}
+.byte-char{font:700 15px/1 'Cinzel',serif;color:var(--center);margin-left:1px}
+.byte-row.examining .byte-tag{color:var(--w2)}
+.byte-row.active-byte{border-color:var(--center)!important;background:rgba(250,218,36,.16)!important;
+  box-shadow:0 0 22px rgba(250,218,36,.45)!important}
+.bit{flex:1 1 0;min-width:0;height:33px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+  border:1.5px solid rgba(255,255,255,.16);background:rgba(255,255,255,.05);
+  font:600 13px/1 'Cinzel',serif;color:rgba(255,255,255,.6);transition:all .1s ease}
+.bit .bn{font:400 15px/1 'Cormorant Garamond',serif;opacity:.85}
+.bit.active .bn,.bit.watched .bn,.bit.corrupted .bn,.bit.fixed .bn{opacity:1;color:inherit}
+.bit.active{background:var(--center);border-color:#fff;color:var(--space);
+  box-shadow:0 0 18px rgba(250,218,36,.9);transform:scale(1.08);z-index:3}
+.bit.watched{background:rgba(233,113,88,.55);border-color:var(--w2);color:#fff;
+  box-shadow:0 0 12px rgba(233,113,88,.5)}
+.bit.corrupted{background:#ff3b3b!important;border-color:#fff!important;color:#fff!important;
+  box-shadow:0 0 22px rgba(255,59,59,.95)!important;animation:pulse-err .7s infinite}
+.bit.fixed{background:#3ddc84!important;border-color:#fff!important;color:#08240f!important;
+  box-shadow:0 0 20px rgba(61,220,132,.9)!important}
+.check-col{display:flex;flex-direction:column;gap:7px;min-width:96px;flex:0 0 auto;
+  padding:8px 10px;border-radius:8px;background:rgba(250,218,36,.07);
+  border:1.5px solid rgba(250,218,36,.3)}
+.check-col .ctitle{font:600 12px/1.2 'Cinzel',serif;color:var(--center);
+  letter-spacing:.06em;text-align:center;margin-bottom:2px}
+.ctitle-sub{display:block;font:400 10px/1.2 'Cormorant Garamond',serif;color:rgba(250,218,36,.7);
+  font-style:italic;letter-spacing:.02em;margin-top:1px}
+.check-cell{display:flex;align-items:center;gap:6px;justify-content:flex-start;
+  padding:5px 9px;border-radius:5px;background:rgba(250,218,36,.1);
+  border:1.5px solid rgba(250,218,36,.4);font:600 14px/1 'Cinzel',serif;color:var(--center);
+  transition:all .12s ease;cursor:help}
+.check-cell .ccov{font:400 10px/1 'Cormorant Garamond',serif;color:rgba(250,218,36,.6);
+  font-style:italic;margin-left:auto;margin-right:4px}
+.check-cell .cval{font:600 16px/1 'Cormorant Garamond',serif;opacity:.9;
+  background:rgba(255,255,255,.12);border-radius:4px;min-width:22px;text-align:center;padding:1px 0}
+.check-cell.cov-active{background:rgba(233,113,88,.45);border-color:var(--w2);color:#fff;
+  box-shadow:0 0 16px rgba(233,113,88,.6)}
+.bit.coverage{background:rgba(233,113,88,.55);border-color:var(--w2);
+  box-shadow:0 0 10px rgba(233,113,88,.5)}
+.check-cell.computing{background:var(--w3);border-color:#fff;color:#fff;
+  box-shadow:0 0 18px rgba(204,71,120,.8);transform:scale(1.04)}
+.check-cell.done{background:rgba(111,0,168,.5);border-color:var(--w5);color:#fff}
+.check-cell.match{background:rgba(61,220,132,.5);border-color:#3ddc84;color:#fff}
+.check-cell.mismatch{background:#ff3b3b;border-color:#fff;color:#fff;
+  box-shadow:0 0 18px rgba(255,59,59,.9);animation:pulse-err .7s infinite}
+.ninth-tag{font:400 10px/1.3 'Cormorant Garamond',serif;color:rgba(250,218,36,.75);
+  text-align:center;font-style:italic;margin-top:4px}
+.store-readout{display:flex;flex-direction:column;gap:5px}
+.store-row{display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0;border-bottom:1px solid var(--border)}
+.store-row.total{border-bottom:none;padding-top:7px}
+.store-lab{font:400 16px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+.store-val{font:600 16px/1 'Cinzel',serif}
+.store-val.data{color:var(--space)}
+.store-val.check{color:var(--w2)}
+.store-row.total .store-lab{font-weight:600;color:var(--space);font-size:17px}
+.store-val.total{font-size:19px;color:var(--space)}
+.store-cap{font:italic 400 15px/1.4 'Cormorant Garamond',serif;color:var(--text-m);margin-top:6px}
+.bytes-readout{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.bytes-lab{font:400 15px/1.3 'Cormorant Garamond',serif;color:var(--text-m)}
+.bytes-val{font:700 24px/1 'Cinzel',serif;color:var(--w2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.byte-pips{display:flex;gap:5px;margin-top:2px}
+.pip{flex:1;height:16px;border-radius:3px;background:rgba(53,4,152,.1);
+  border:1.5px solid var(--border-s);transition:all .15s ease}
+.pip.lit{background:var(--w2);border-color:var(--w2);box-shadow:0 0 10px rgba(233,113,88,.55)}
+.bytes-cap{font:italic 400 15px/1.4 'Cormorant Garamond',serif;color:var(--text-m);margin-top:4px}
+.caption{height:76px;display:flex;align-items:center;overflow-y:auto;
+  font:400 17px/1.4 'Cormorant Garamond',serif;
+  color:rgba(255,255,255,.82);padding:8px 14px;background:rgba(0,0,0,.22);
+  border-radius:6px;border-left:3px solid var(--center)}
+.caption b{color:var(--center);font-weight:600}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-top:2px}
+.btn{font:500 13px/1 'Cinzel',serif;letter-spacing:.08em;padding:9px 18px;border-radius:5px;
+  cursor:pointer;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.85);transition:all .14s;text-transform:uppercase}
+.btn:hover{background:rgba(255,255,255,.16);color:#fff}
+.btn.primary{background:var(--center);border-color:var(--center);color:var(--space);font-weight:600}
+.btn.primary:hover{background:#ffe45a}
+.btn.danger{background:rgba(255,59,59,.18);border-color:rgba(255,59,59,.5);color:#ff8080}
+.btn.danger:hover{background:rgba(255,59,59,.32);color:#fff}
+.speed-tiers{display:flex;align-items:center;gap:6px;margin-left:auto}
+.speed-lab{color:rgba(255,255,255,.55);font:400 15px/1 'Cormorant Garamond',serif;margin-right:2px}
+.tier-btn{font:500 12px/1 'Cinzel',serif;letter-spacing:.05em;padding:7px 12px;border-radius:5px;
+  cursor:pointer;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.7);transition:all .14s;text-transform:uppercase}
+.tier-btn:hover:not(.active){background:rgba(255,255,255,.14);color:#fff}
+.tier-btn.active{background:var(--center);border-color:var(--center);color:var(--space);font-weight:600}
+.speed-note{height:38px;overflow-y:auto;font:italic 400 14px/1.4 'Cormorant Garamond',serif;color:rgba(255,255,255,.6);
+  margin-top:-2px;padding:0 2px}
+.panel-wrap{position:relative;border-left:2px solid var(--space);overflow:hidden;height:100%}
+.panel{background:var(--bg);padding:1.3rem 1.5rem;display:flex;flex-direction:column;gap:1rem;
+  height:100%;max-height:100%;overflow-y:auto;scrollbar-width:thin}
+.panel::-webkit-scrollbar{width:8px}
+.panel::-webkit-scrollbar-thumb{background:var(--grid);border-radius:4px}
+.scroll-hint{position:absolute;left:0;right:0;bottom:0;height:46px;pointer-events:none;
+  background:linear-gradient(to bottom, rgba(255,255,255,0), var(--bg) 78%);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;
+  font:600 11px/1 'Cinzel',serif;letter-spacing:.14em;color:var(--grid);text-transform:uppercase;
+  transition:opacity .2s}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint .arrow{margin-left:6px;animation:bob 1.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+.p-block{display:flex;flex-direction:column;gap:.45rem}
+.p-title{font:500 11px/1 'Cinzel',serif;letter-spacing:.18em;text-transform:uppercase;color:var(--grid)}
+.counter{display:flex;justify-content:space-between;align-items:baseline;
+  padding:7px 0;border-bottom:1px solid var(--border)}
+.counter .c-name{font:400 16px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+.counter .c-val{font:600 22px/1 'Cinzel',serif;color:var(--space);font-variant-numeric:tabular-nums}
+.counter.write .c-val{color:var(--w1)}
+.counter.read .c-val{color:var(--w3)}
+.counter.total{border-bottom:none;padding-top:10px}
+.counter.total .c-name{font-size:18px;color:var(--space);font-weight:600}
+.counter.total .c-val{font-size:30px;color:var(--space)}
+.counter.energy{border-bottom:none;padding-top:2px}
+.counter.energy .c-name{font-size:15px;color:var(--w4)}
+.counter.energy .c-val{font-size:18px;color:var(--w4)}
+.ratio-wrap{display:flex;flex-direction:column;gap:6px}
+.bar-row{display:flex;align-items:center;gap:8px}
+.bar-lab{font:500 13px/1 'Cinzel',serif;color:var(--text-m);min-width:84px}
+.bar-track{flex:1;height:22px;background:rgba(53,4,152,.07);border-radius:4px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:4px;transition:width .25s ease;width:0%}
+.bar-fill.work{background:var(--center)}
+.bar-fill.over{background:linear-gradient(90deg,var(--w1),var(--w2),var(--w3),var(--w4))}
+.bar-num{font:600 14px/1 'Cinzel',serif;color:var(--space);min-width:42px;text-align:right;font-variant-numeric:tabular-nums}
+.ratio-big{text-align:center;font:700 30px/1 'Cinzel',serif;color:var(--w3);margin-top:4px}
+.ratio-cap{text-align:center;font:400 15px/1.4 'Cormorant Garamond',serif;color:var(--text-m)}
+.p30{background:rgba(250,218,36,.08);border:1px solid rgba(250,218,36,.4);border-radius:8px;padding:12px 14px;
+  display:flex;flex-direction:column;gap:6px}
+.p30-head{display:flex;justify-content:space-between;align-items:baseline}
+.p30-name{font:600 14px/1 'Cinzel',serif;letter-spacing:.08em;color:var(--w4);text-transform:uppercase}
+.p30-val{font:700 30px/1 'Cinzel',serif;color:var(--w4);font-variant-numeric:tabular-nums}
+.p30-cap{font:400 15px/1.35 'Cormorant Garamond',serif;color:var(--text-m)}
+.p30-cap b{color:var(--w4);font-weight:600}
+footer{padding:.85rem 3rem;border-top:2px solid var(--space);
+  font:400 14px/1.7 'Cormorant Garamond',serif;color:var(--text-m)}
+footer a{color:var(--space)}
+@media(max-width:1080px){.stage{grid-template-columns:1fr}.panel{border-left:none;border-top:2px solid var(--space)}}
+.demo-tabs{display:flex;gap:6px}
+.demo-tab{font:500 13px/1 'Cinzel',serif;letter-spacing:.06em;padding:8px 16px;border-radius:5px;
+  cursor:pointer;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.6);transition:all .14s;text-transform:uppercase}
+.demo-tab.active{background:var(--center);border-color:var(--center);color:var(--space);font-weight:600}
+.demo-tab:hover:not(.active){background:rgba(255,255,255,.13);color:#fff}
+.tweet-banner{background:rgba(0,0,0,.25);border:1px solid rgba(250,218,36,.3);border-radius:8px;
+  padding:9px 14px;display:flex;flex-direction:column;gap:4px;max-width:100%;overflow:hidden}
+.tweet-text{font:italic 400 16px/1.4 'Cormorant Garamond',serif;color:rgba(255,255,255,.92);
+  word-break:break-word;overflow-wrap:break-word}
+.tw-ch{transition:all .08s ease;border-radius:2px;padding:0 .5px}
+.tw-ch.tw-done{color:var(--center);font-style:normal}
+.tw-ch.tw-active{background:var(--center);color:var(--space);font-style:normal;font-weight:600;
+  box-shadow:0 0 12px rgba(250,218,36,.8);padding:1px 2px}
+.tweet-meta{font:500 13px/1 'Cinzel',serif;letter-spacing:.05em;color:var(--center)}
+.word-progress{font:600 14px/1 'Cinzel',serif;letter-spacing:.08em;color:var(--w2);text-align:right;min-height:16px}
+.temp-sel{display:flex;flex-direction:column;gap:5px;margin-bottom:8px}
+.temp-lab{font:400 15px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+#tempSel{font:500 15px/1.2 'Cormorant Garamond',serif;padding:7px 10px;border-radius:5px;
+  border:1.5px solid var(--border-s);background:var(--bg);color:var(--space);cursor:pointer}
+.energy-readout{display:flex;flex-direction:column;gap:5px}
+.erow{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--border)}
+.erow:last-child{border-bottom:none}
+.elab{font:400 16px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+.eval{font:600 17px/1 'Cinzel',serif;color:var(--w4);font-variant-numeric:tabular-nums}
+.energy-cap{font:italic 400 14px/1.4 'Cormorant Garamond',serif;color:var(--text-m);margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <div class="h-author">January Natatia Walker &nbsp;&middot;&nbsp; Januarian Physics 2026</div>
+  <div class="h-title">The Cost of a 64-Bit Word</div>
+  <div class="h-thesis">Information is a state of matter <a class="cit" target="_blank" rel="noopener" href="references.html#ref1">[1]</a><a class="cit" target="_blank" rel="noopener" href="references.html#ref2">[2]</a>, and because it is a state of matter it has density <a class="cit" target="_blank" rel="noopener" href="references.html#ref3">[3]</a>, viscosity, energy transfer, energy conservation, and is subject to manipulation and mutation <a class="cit" target="_blank" rel="noopener" href="references.html#ref4">[4]</a>. Any system that wants to guarantee the bits it reads match the bits it wrote must continuously spend computation detecting and correcting the drift caused by heat, leakage, radiation, and noise <a class="cit" target="_blank" rel="noopener" href="references.html#ref5">[5]</a>. These checks cost computation, computation costs energy <a class="cit" target="_blank" rel="noopener" href="references.html#ref6">[6]</a><a class="cit" target="_blank" rel="noopener" href="references.html#ref7">[7]</a>, and that energy is dissipated as heat and entropy <a class="cit" target="_blank" rel="noopener" href="references.html#ref8">[8]</a>, the very disturbances the checking exists to fight.</div>
+  <div class="h-desc">Error correction cannot be paid for one byte at a time. A single flipped bit anywhere in the word forces the machine to read and recompute across all sixty-four data bits, all eight bytes, because the redundancy that locates the error is spread across the entire word, not stored per byte. This is that tax, made visible: every operation the machine performs simply to verify the data did not change.</div>
+  <div class="h-model">
+    <span><b>64</b> data bits</span>
+    <span><b>7</b> check bits</span>
+    <span><b>71</b> positions</span>
+    <span>2<sup>r</sup> &ge; n + r + 1</span>
+    <span><b>584</b> operations per round trip</span>
+    <span><b>9.1&times;</b> waste ratio</span>
+  </div>
+</header>
+<div class="stage">
+  <div class="work">
+    <div class="work-head">
+      <div class="demo-tabs">
+        <button class="demo-tab active" id="tabWord">Single Word &middot; One Bit</button>
+        <button class="demo-tab" id="tabTweet">Full Tweet</button>
+      </div>
+      <div class="phase-tag" id="phaseTag">Idle</div>
+    </div>
+    <div class="word-progress" id="wordTag"></div>
+    <div class="tweet-banner" id="tweetBanner" style="display:none">
+      <div class="tweet-text" id="tweetText"></div>
+      <div class="tweet-meta"><span id="tweetMeta">163 characters &middot; 1,304 bits &middot; 21 words of 64 bits</span></div>
+    </div>
+    <div class="grid-wrap" id="gridWrap"></div>
+    <div class="caption" id="caption">Press <b>Play</b> to watch the machine encode, then read, one 64-bit word. Or step through one operation at a time. Then press <b>Flip a Bit</b> to see why a single error obligates all eight bytes.</div>
+    <div class="controls">
+      <button class="btn primary" id="playBtn">Play</button>
+      <button class="btn" id="stepBtn">Step</button>
+      <button class="btn" id="resetBtn">Reset</button>
+      <button class="btn danger" id="flipBtn">Flip a Bit</button>
+      <div class="speed-tiers" id="speedTiers">
+        <span class="speed-lab">Speed</span>
+        <button class="tier-btn active" data-delay="156">Demo</button>
+        <button class="tier-btn" data-delay="40">Fast</button>
+        <button class="tier-btn" data-delay="8">Turbo</button>
+        <button class="tier-btn" data-delay="6">Real&#8209;ish</button>
+      </div>
+    </div>
+    <div class="speed-note" id="speedNote">Demo &middot; ~156 ms per operation, slow enough to narrate. Real hardware runs a word's full round trip in about a nanosecond, roughly 100 million times faster than even Real&#8209;ish; every visible speed is a slow-motion replay.</div>
+  </div>
+  <div class="panel-wrap">
+  <div class="panel" id="panel">
+    <div class="p-block">
+      <div class="p-title">Operations Performed</div>
+      <div class="counter write"><span class="c-name">Write overhead</span><span class="c-val" id="cWrite">0</span></div>
+      <div class="counter read"><span class="c-name">Read overhead</span><span class="c-val" id="cRead">0</span></div>
+      <div class="counter total"><span class="c-name">Total ECC</span><span class="c-val" id="cTotal">0</span></div>
+    </div>
+    <div class="p-block">
+      <div class="p-title">Storage Tax</div>
+      <div class="store-readout">
+        <div class="store-row"><span class="store-lab">Data delivered</span><span class="store-val data">64 bits &middot; 8 bytes</span></div>
+        <div class="store-row"><span class="store-lab">Check bits stored</span><span class="store-val check">8 bits &middot; 1 byte</span></div>
+        <div class="store-row total"><span class="store-lab">Physically stored</span><span class="store-val total">72 bits &middot; 9 bytes</span></div>
+        <div class="store-row"><span class="store-lab">Space spent on checks</span><span class="store-val check">12.5% &middot; 1 byte in 9</span></div>
+      </div>
+      <div class="store-cap">A ninth byte of pure overhead rides with every eight. The 8 check bits follow a Hsiao (72,64) matrix <a class="cit" target="_blank" rel="noopener" href="references.html#ref9">[9]</a><a class="cit" target="_blank" rel="noopener" href="references.html#ref10">[10]</a>, each covering 26 of the 64 data bits. This 12.5% is the floor for one ECC scheme; real facilities layer replication or erasure coding on top <a class="cit" target="_blank" rel="noopener" href="references.html#ref11">[11]</a>. It is a storage tax, separate from the per-access energy cost.</div>
+    </div>
+    <div class="p-block">
+      <div class="p-title">Landauer Energy Floor</div>
+      <div class="temp-sel">
+        <label class="temp-lab">Operating temperature</label>
+        <select id="tempSel">
+          <option value="300">300 K &middot; 27&deg;C (lab reference)</option>
+          <option value="350" selected>350 K &middot; 77&deg;C (typical DRAM junction)</option>
+          <option value="358">358 K &middot; 85&deg;C (DRAM spec maximum)</option>
+          <option value="398">398 K &middot; 125&deg;C (silicon junction max)</option>
+        </select>
+      </div>
+      <div class="energy-readout">
+        <div class="erow"><span class="elab">Per operation</span><span class="eval" id="ePerOp">&mdash;</span></div>
+        <div class="erow"><span class="elab">This run (<span id="eOps">0</span> ops)</span><span class="eval" id="eRun">&mdash;</span></div>
+      </div>
+      <div class="energy-cap">E = k<sub>B</sub> T ln(2) per irreversible operation. The floor rises with temperature: hotter silicon means a higher thermodynamic minimum, before any real switching loss.</div>
+    </div>
+    <div class="p-block">
+      <div class="p-title">Granularity of Correction</div>
+      <div class="bytes-readout">
+        <span class="bytes-lab">Bytes the machine must touch to locate one flipped bit</span>
+        <span class="bytes-val" id="bytesVal">0 / 8</span>
+      </div>
+      <div class="byte-pips" id="bytePips"></div>
+      <div class="bytes-cap">You cannot pay for one byte. The redundancy is spread across the whole word.</div>
+    </div>
+    <div class="p-block">
+      <div class="p-title">Signal vs Overhead</div>
+      <div class="ratio-wrap">
+        <div class="bar-row"><span class="bar-lab">Real work</span>
+          <div class="bar-track"><div class="bar-fill work" id="barWork"></div></div>
+          <span class="bar-num">64</span></div>
+        <div class="bar-row"><span class="bar-lab">Checking</span>
+          <div class="bar-track"><div class="bar-fill over" id="barOver"></div></div>
+          <span class="bar-num">584</span></div>
+      </div>
+      <div class="ratio-big" id="ratioBig">9.1&times;</div>
+      <div class="ratio-cap">operations of checking per 64-bit word, for every 64 operations of real work</div>
+    </div>
+    <div class="p-block">
+      <div class="p-title">The Alternative</div>
+      <div class="p30">
+        <div class="p30-head">
+          <span class="p30-name">P30 Encoding</span>
+          <span class="p30-val" id="p30Val">0</span>
+        </div>
+        <div class="p30-cap">Reaches its result in <b>3 operations</b> and waits. The gap you see while Hamming is still counting is the entire argument.</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint" id="scrollHint">Scroll for more<span class="arrow">&#8595;</span></div>
+  </div>
+</div>
+<script>
+"use strict";
+const N_BYTES=8, BITS_PER_BYTE=8, N_DATA=64, N_CHECK=8;
+const TOTAL=584, WRITE_MAX=128, READ_MAX=456, WORK=64;
+const kB=1.380649e-23, ln2=Math.log(2);
+let opTemp=350;
+function landauerPerOp(T){return kB*T*ln2;}
+const TWEET_WORDS=21;
+const TWEET_TOTAL=TWEET_WORDS*TOTAL;
+let mode='word';
+let stepDelay=156;
+const TWEET_STR="The Great Salt Lake can be fully restored to full health within as little as 3 years by returning 1,150,000 AF/yr. Resulting Utah's lake effect and water security.";
+function wordChars(w){
+  const slice=TWEET_STR.slice(w*8,w*8+8);
+  const out=[];
+  for(let i=0;i<8;i++) out.push(slice[i]!==undefined?slice[i]:' ');
+  return out;
+}
+function charBits(ch){
+  const code=ch.charCodeAt(0)&0xFF;
+  return code.toString(2).padStart(8,'0').split('').map(Number);
+}
+function dispChar(ch){
+  if(ch===' ')return '\u2423';
+  return ch;
+}
+const HSIAO_WATCHERS={0:[0,1,2],1:[0,1,3],2:[0,1,4],3:[0,1,5],4:[0,1,6],5:[0,1,7],6:[0,2,3],7:[0,2,4],8:[0,2,5],9:[0,2,6],10:[0,2,7],11:[0,3,4],12:[0,3,5],13:[0,3,6],14:[0,3,7],15:[0,4,5],16:[0,4,6],17:[0,4,7],18:[0,5,6],19:[0,5,7],20:[0,6,7],21:[1,2,3],22:[1,2,4],23:[1,2,5],24:[1,2,6],25:[1,2,7],26:[1,3,4],27:[1,3,5],28:[1,3,6],29:[1,3,7],30:[1,4,5],31:[1,4,6],32:[1,4,7],33:[1,5,6],34:[1,5,7],35:[1,6,7],36:[2,3,4],37:[2,3,5],38:[2,3,6],39:[2,3,7],40:[2,4,5],41:[2,4,6],42:[2,4,7],43:[2,5,6],44:[2,5,7],45:[2,6,7],46:[3,4,5],47:[3,4,6],48:[3,4,7],49:[3,5,6],50:[3,5,7],51:[3,6,7],52:[4,5,6],53:[4,5,7],54:[4,6,7],55:[5,6,7],56:[3,4,5,6,7],57:[2,4,5,6,7],58:[2,3,5,6,7],59:[0,1,5,6,7],60:[0,1,3,4,7],61:[0,1,2,4,6],62:[0,1,2,3,5],63:[0,1,2,3,4]};
+function checksWatching(globalBit){
+  return HSIAO_WATCHERS[globalBit] ? HSIAO_WATCHERS[globalBit].slice() : [];
+}
+function highlightCoverage(ci){
+  for(let g=0;g<64;g++){
+    if(checksWatching(g).includes(ci)){
+      const b=Math.floor(g/8), i=g%8;
+      if(bitCells[b]&&bitCells[b][i]) bitCells[b][i].classList.add('coverage');
+    }
+  }
+  if(checkCells[ci]) checkCells[ci].classList.add('cov-active');
+  if(el&&el.caption&&!playing){
+    el.caption.innerHTML='<b>C'+ci+'</b> watches these 26 highlighted data bits. Each of the 64 data bits is watched by a unique set of 3 or 5 check bits, so any single flip leaves a unique fingerprint across C0 to C7.';
+  }
+}
+function clearCoverage(){
+  for(let b=0;b<N_BYTES;b++)for(let i=0;i<BITS_PER_BYTE;i++){
+    if(bitCells[b]&&bitCells[b][i]) bitCells[b][i].classList.remove('coverage');
+  }
+  checkCells.forEach(c=>c.classList.remove('cov-active'));
+}
+function checkParity(ci){
+  let bits;
+  if(mode==='tweet'){
+    const chars=wordChars(curWord);
+    bits=[];
+    for(let b=0;b<N_BYTES;b++) bits=bits.concat(charBits(chars[b]));
+  }else{
+    bits=[];for(let k=0;k<64;k++) bits.push(k%3===0?1:0);
+  }
+  let p=0;
+  for(let k=0;k<64;k++){ if(checksWatching(k).includes(ci) && bits[k]) p^=1; }
+  return p;
+}
+function showCheckValue(ci){
+  const e=document.getElementById('cv'+ci);
+  if(e) e.textContent=checkParity(ci);
+}
+function fmtJ(j){
+  if(j===0)return '0 J';
+  const units=[['J',1],['mJ',1e-3],['\u00b5J',1e-6],['nJ',1e-9],['pJ',1e-12],['fJ',1e-15],['aJ',1e-18],['zJ',1e-21]];
+  for(const [u,scale] of units){ if(j>=scale){ return (j/scale).toFixed(3)+' '+u; } }
+  return (j/1e-21).toFixed(3)+' zJ';
+}
+const gridWrap=document.getElementById('gridWrap');
+const bitCells=[];
+const byteRows=[];
+const checkCells=[];
+function buildGrid(){
+  gridWrap.innerHTML='';
+  const wrap=document.createElement('div');wrap.className='word-grid';
+  const dataCol=document.createElement('div');dataCol.className='bytes-col';
+  for(let b=0;b<N_BYTES;b++){
+    const row=document.createElement('div');row.className='byte-row';
+    const tag=document.createElement('div');tag.className='byte-tag';
+    tag.innerHTML='Byte '+b+'<span class="byte-char" id="bc'+b+'"></span>';row.appendChild(tag);
+    const rowCells=[];
+    for(let i=0;i<BITS_PER_BYTE;i++){
+      const globalBit=b*BITS_PER_BYTE+i;
+      const c=document.createElement('div');c.className='bit';
+      c.innerHTML='<span class="bn">'+globalBit+'</span>';
+      rowCells.push(c);row.appendChild(c);
+    }
+    bitCells.push(rowCells);byteRows.push(row);dataCol.appendChild(row);
+  }
+  wrap.appendChild(dataCol);
+  const checkCol=document.createElement('div');checkCol.className='check-col';
+  const ct=document.createElement('div');ct.className='ctitle';ct.innerHTML='8 Check Bits<span class="ctitle-sub">Hsiao (72,64)</span>';checkCol.appendChild(ct);
+  for(let i=0;i<N_CHECK;i++){
+    const cc=document.createElement('div');cc.className='check-cell';
+    cc.innerHTML='C'+i+'<span class="ccov">watches 26</span><span class="cval" id="cv'+i+'">&middot;</span>';
+    cc.addEventListener('mouseenter',()=>highlightCoverage(i));
+    cc.addEventListener('mouseleave',()=>clearCoverage());
+    checkCells.push(cc);checkCol.appendChild(cc);
+  }
+  const nt=document.createElement('div');nt.className='ninth-tag';nt.textContent='the 9th byte: pure overhead';checkCol.appendChild(nt);
+  wrap.appendChild(checkCol);
+  gridWrap.appendChild(wrap);
+}
+buildGrid();
+function loadWord(w){
+  const chars=wordChars(w);
+  for(let b=0;b<N_BYTES;b++){
+    const bcEl=document.getElementById('bc'+b);
+    if(mode==='tweet'){
+      bcEl.textContent=' \u2192 '+dispChar(chars[b]);
+      const bits=charBits(chars[b]);
+      for(let i=0;i<BITS_PER_BYTE;i++){
+        bitCells[b][i].innerHTML='<span class="bn">'+bits[i]+'</span>';
+      }
+    }else{
+      bcEl.textContent='';
+      for(let i=0;i<BITS_PER_BYTE;i++){
+        const gb=b*BITS_PER_BYTE+i;
+        bitCells[b][i].innerHTML='<span class="bn">'+gb+'</span>';
+      }
+    }
+  }
+}
+const tweetCharEls=[];
+(function buildTweetText(){
+  const host=document.getElementById('tweetText');
+  host.innerHTML='';
+  host.appendChild(document.createTextNode('\u201c'));
+  for(let i=0;i<TWEET_STR.length;i++){
+    const s=document.createElement('span');
+    s.className='tw-ch';
+    s.textContent=TWEET_STR[i]===' ' ? '\u00a0' : TWEET_STR[i];
+    tweetCharEls.push(s);
+    host.appendChild(s);
+  }
+  host.appendChild(document.createTextNode('\u201d \u2014 January Walker'));
+})();
+function clearTweetHighlight(){
+  tweetCharEls.forEach(s=>s.classList.remove('tw-active','tw-done'));
+}
+function highlightTweetChar(globalCharIdx){
+  tweetCharEls.forEach((s,i)=>{
+    s.classList.toggle('tw-done', i<globalCharIdx);
+    s.classList.toggle('tw-active', i===globalCharIdx);
+  });
+}
+const bytePips=[];
+(function buildPips(){
+  const wrap=document.getElementById('bytePips');
+  for(let b=0;b<N_BYTES;b++){const p=document.createElement('div');p.className='pip';wrap.appendChild(p);bytePips.push(p);}
+})();
+let steps=[];
+function buildSteps(){
+  steps=[];
+  for(let b=0;b<N_BYTES;b++){
+    for(let i=0;i<BITS_PER_BYTE;i++){
+      const gb=b*BITS_PER_BYTE+i;
+      steps.push({phase:'WRITE',type:'databit',byte:b,bit:i,write:2,
+        cap:'Writing bit <b>'+gb+'</b> (Byte '+b+'): XOR into the running check total, AND with a mask to route it to its check groups.'});
+    }
+  }
+  for(let i=0;i<N_CHECK;i++){
+    steps.push({phase:'WRITE',type:'checkdone',check:i,
+      cap:'Check bit <b>C'+i+'</b> computed and stored alongside the word.'});
+  }
+  for(let i=0;i<N_CHECK;i++){
+    steps.push({phase:'READ',type:'checkstart',check:i,
+      cap:'Recomputing <b>C'+i+'</b>. To do it, the machine must re-examine data bits spread across every byte.'});
+    steps.push({phase:'READ',type:'checksweep',check:i,read:64,
+      cap:'<b>C'+i+'</b> recompute: 64 XOR operations sweeping across all eight bytes of the word.'});
+    steps.push({phase:'READ',type:'checkcompare',check:i,read:1,
+      cap:'Compare recomputed <b>C'+i+'</b> against the stored value. (+1 comparison)'});
+  }
+  steps.push({phase:'READ',type:'correct',read:1,
+    cap:'The syndrome points to the flipped bit. One XOR flips it back. (+1 correction)'});
+}
+buildSteps();
+let idx=0, playing=false, timer=null;
+let writeOps=0, readOps=0;
+let corrupted=null;
+let curWord=0;
+let totalWords=1;
+let accWrite=0, accRead=0;
+const el={
+  cWrite:document.getElementById('cWrite'),cRead:document.getElementById('cRead'),
+  cTotal:document.getElementById('cTotal'),barWork:document.getElementById('barWork'),
+  barOver:document.getElementById('barOver'),
+  ratioBig:document.getElementById('ratioBig'),p30:document.getElementById('p30Val'),
+  caption:document.getElementById('caption'),phaseTag:document.getElementById('phaseTag'),
+  bytesVal:document.getElementById('bytesVal'),
+  ePerOp:document.getElementById('ePerOp'),eRun:document.getElementById('eRun'),eOps:document.getElementById('eOps')
+};
+const wordTag=document.getElementById('wordTag');
+function clearBitStates(){
+  for(let b=0;b<N_BYTES;b++){
+    byteRows[b].classList.remove('examining','done-sweep','active-byte');
+    for(let i=0;i<BITS_PER_BYTE;i++){
+      const c=bitCells[b][i];
+      c.classList.remove('active','watched','fixed');
+      if(corrupted&&corrupted.byte===b&&corrupted.bit===i)c.classList.add('corrupted');
+      else c.classList.remove('corrupted');
+    }
+  }
+  checkCells.forEach(c=>c.classList.remove('computing','reading','match','mismatch'));
+}
+function setBytesTouched(n){
+  el.bytesVal.textContent=n+' / 8';
+  bytePips.forEach((p,b)=>p.classList.toggle('lit',b<n));
+}
+function updatePanel(){
+  const wTot = accWrite + writeOps;
+  const rTot = accRead + readOps;
+  const total = wTot + rTot;
+  el.cWrite.textContent=wTot;
+  el.cRead.textContent=rTot;
+  el.cTotal.textContent=total;
+  el.barWork.style.width=(64/584*90)+'%';
+  el.barOver.style.width='90%';
+  el.ratioBig.textContent=(TOTAL/WORK).toFixed(1)+'\u00d7';
+  el.p30.textContent=(playing||idx>0||curWord>0)?(3*totalWords):0;
+  const ePer=landauerPerOp(opTemp);
+  el.ePerOp.textContent=fmtJ(ePer);
+  el.eOps.textContent=total;
+  el.eRun.textContent=fmtJ(total*ePer);
+  if(wordTag) wordTag.textContent = (mode==='tweet') ? ('Word '+(Math.min(curWord+1,totalWords))+' / '+totalWords) : '';
+}
+function applyStep(s){
+  clearBitStates();
+  el.phaseTag.textContent=s.phase;
+  el.caption.innerHTML=s.cap;
+  if(s.type==='databit'){
+    bitCells[s.byte][s.bit].classList.add('active');
+    byteRows[s.byte].classList.add('examining','active-byte');
+    writeOps=Math.min(WRITE_MAX,writeOps+s.write);
+    if(mode==='tweet'){
+      const ch=dispChar(wordChars(curWord)[s.byte]);
+      el.caption.innerHTML='Encoding character "<b>'+ch+'</b>" (Byte '+s.byte+'), bit '+s.bit+': XOR into the running check total, AND with a mask to route it. Every bit of every character pays these two operations, the XOR and the mask, just to be checked.';
+      highlightTweetChar(curWord*8+s.byte);
+    }else{
+      const gb=s.byte*8+s.bit;
+      el.caption.innerHTML='Encoding data bit <b>'+gb+'</b> (Byte '+s.byte+'): XOR into the running check total, AND with a mask to route it. Two operations per bit, just to be checked.';
+    }
+  }else if(s.type==='checkdone'){
+    checkCells[s.check].classList.add('done');
+    showCheckValue(s.check);
+  }else if(s.type==='checkstart'){
+    checkCells.forEach(c=>c.classList.remove('done','computing'));
+    checkCells[s.check].classList.remove('match','mismatch');
+    checkCells[s.check].classList.add('computing');
+    showCheckValue(s.check);
+    let touchedBytes=new Set();
+    for(let g=0;g<64;g++){
+      if(checksWatching(g).includes(s.check)){
+        const b=Math.floor(g/8), i=g%8;
+        bitCells[b][i].classList.add('watched');
+        byteRows[b].classList.add('examining');
+        touchedBytes.add(b);
+      }
+    }
+    el.caption.innerHTML='Recomputing <b>C'+s.check+'</b>: it watches 26 data bits, now highlighted across '+touchedBytes.size+' of the 8 bytes.';
+  }else if(s.type==='checksweep'){
+    checkCells[s.check].classList.add('computing');
+    showCheckValue(s.check);
+    let touchedBytes=new Set();
+    for(let g=0;g<64;g++){
+      if(checksWatching(g).includes(s.check)){
+        const b=Math.floor(g/8), i=g%8;
+        bitCells[b][i].classList.add('watched');
+        byteRows[b].classList.add('examining');
+        touchedBytes.add(b);
+      }
+    }
+    setBytesTouched(touchedBytes.size);
+    el.caption.innerHTML='<b>C'+s.check+'</b> recompute: XOR over its 26 watched data bits (highlighted). They span '+touchedBytes.size+' of the 8 bytes, so locating any error still pulls in most of the word.';
+    readOps=Math.min(READ_MAX,readOps+s.read);
+  }else if(s.type==='checkcompare'){
+    showCheckValue(s.check);
+    if(corrupted){
+      const gbit=corrupted.byte*8+corrupted.bit;
+      const watchers=checksWatching(gbit);
+      if(watchers.includes(s.check)){
+        checkCells[s.check].classList.add('mismatch');
+        el.caption.innerHTML='<b>C'+s.check+'</b> watches the flipped bit, so its recomputed parity <b>disagrees</b> with the stored value. C'+s.check+' is part of the error fingerprint. (+1 comparison)';
+      }else{
+        checkCells[s.check].classList.add('match');
+        el.caption.innerHTML='<b>C'+s.check+'</b> does not watch the flipped bit, so it still <b>matches</b>. The pattern of which checks disagree is the syndrome that locates the error. (+1 comparison)';
+      }
+    }else{
+      checkCells[s.check].classList.add('match');
+      el.caption.innerHTML='Reading stored <b>C'+s.check+'</b> back: it <b>matches</b> the recompute. No error in the bits it watches. (+1 comparison)';
+    }
+    readOps=Math.min(READ_MAX,readOps+s.read);
+  }else if(s.type==='correct'){
+    readOps=Math.min(READ_MAX,readOps+s.read);
+    setBytesTouched(8);
+    if(corrupted){
+      const gbit=corrupted.byte*8+corrupted.bit;
+      const watchers=checksWatching(gbit);
+      watchers.forEach(c=>checkCells[c].classList.add('mismatch'));
+      const cell=bitCells[corrupted.byte][corrupted.bit];
+      cell.classList.remove('corrupted');cell.classList.add('fixed');
+      const synd=watchers.map(c=>'C'+c).join('+');
+      el.caption.innerHTML='Syndrome <b>'+synd+'</b> fingerprints bit <b>'+gbit+'</b> (Byte '+corrupted.byte+') uniquely. One XOR flips it back. In this Hsiao code, the pattern of disagreeing check bits <b>is</b> the address of the error.';
+    }
+  }
+  updatePanel();
+}
+function step(){
+  if(idx>=steps.length){ advanceWord(); return; }
+  applyStep(steps[idx]);idx++;
+}
+function advanceWord(){
+  accWrite+=writeOps; accRead+=readOps;
+  writeOps=0; readOps=0;
+  curWord++;
+  if(curWord>=totalWords){ finishAll(); return; }
+  idx=0;
+  checkCells.forEach(c=>c.classList.remove('done','computing','reading','match','mismatch'));
+  if(mode==='tweet') loadWord(curWord);
+  el.phaseTag.textContent='WRITE';
+  el.caption.innerHTML='Word <b>'+(curWord+1)+'</b> of '+totalWords+' ("'+wordChars(curWord).map(dispChar).join('')+'"): the machine begins the entire 584-operation round trip again, from scratch, for the next 64 bits.';
+  updatePanel();
+  if(!playing){ }
+}
+function finishAll(){
+  stop();el.phaseTag.textContent='Complete';
+  const total=accWrite+accRead;
+  if(mode==='tweet'){
+    el.caption.innerHTML='Whole tweet verified: <b>'+totalWords+'</b> words, <b>'+total.toLocaleString()+'</b> operations, every one of them spent only to confirm the message did not change. P30 would have finished in <b>'+(3*totalWords)+'</b>.';
+  }else{
+    el.caption.innerHTML='Round trip complete: <b>584</b> operations to protect <b>64</b> bits, all eight bytes recomputed as one unit. P30 finished at <b>3</b>.';
+  }
+  setBytesTouched(8);
+  if(mode==='tweet'){tweetCharEls.forEach(s=>{s.classList.remove('tw-active');s.classList.add('tw-done');});}
+  updatePanel();
+}
+function stepDuration(){
+  const s=steps[idx];
+  if(s && s.type==='correct') return Math.max(stepDelay, 250);
+  const prev=steps[idx-1];
+  if(prev && prev.type==='checkcompare') return stepDelay+220;
+  return stepDelay;
+}
+function play(){
+  if(playing){stop();return;}
+  playing=true;document.getElementById('playBtn').textContent='Pause';
+  const tick=()=>{
+    if(!playing) return;
+    if(idx>=steps.length){
+      advanceWord();
+      if(!playing) return;
+    } else { step(); }
+    timer=setTimeout(tick, stepDuration());
+  };
+  timer=setTimeout(tick, stepDuration());
+  updatePanel();
+}
+function stop(){playing=false;clearTimeout(timer);clearInterval(timer);document.getElementById('playBtn').textContent='Play';}
+function reset(){
+  stop();idx=0;writeOps=0;readOps=0;accWrite=0;accRead=0;curWord=0;corrupted=null;setBytesTouched(0);
+  totalWords=(mode==='tweet')?TWEET_WORDS:1;
+  clearBitStates();checkCells.forEach(c=>c.classList.remove('done','computing','reading','match','mismatch'));
+  for(let i=0;i<N_CHECK;i++){const e=document.getElementById('cv'+i);if(e)e.textContent='\u00b7';}
+  loadWord(0);clearTweetHighlight();
+  el.phaseTag.textContent='Idle';
+  if(mode==='tweet'){
+    el.caption.innerHTML='Full tweet mode: the machine will run the complete 584-operation round trip <b>'+TWEET_WORDS+'</b> times, once per 64-bit word, for <b>'+TWEET_TOTAL.toLocaleString()+'</b> operations total. Press <b>Play</b>.';
+  }else{
+    el.caption.innerHTML='Press <b>Play</b> to watch the machine encode, then read, one 64-bit word. Or step through one operation at a time. Then press <b>Flip a Bit</b> to see why a single error obligates all eight bytes.';
+  }
+  updatePanel();el.p30.textContent=0;
+}
+function flipBit(){
+  stop();
+  const b=Math.floor(Math.random()*N_BYTES), i=Math.floor(Math.random()*BITS_PER_BYTE);
+  corrupted={byte:b,bit:i};
+  accWrite=0;accRead=0;curWord=0;totalWords=1;
+  setBytesTouched(0);
+  clearBitStates();
+  checkCells.forEach(c=>c.classList.remove('done','computing','reading','match','mismatch'));
+  el.caption.innerHTML='A bit at position <b>'+(b*8+i)+'</b> in Byte '+b+' has silently flipped. Watch: to find this one bit, the read must sweep <b>all eight bytes</b>. Press <b>Play</b> or <b>Step</b> through the read.';
+  let readStart=steps.findIndex(s=>s.phase==='READ');
+  idx=readStart>=0?readStart:0;
+  writeOps=WRITE_MAX;readOps=0;
+  checkCells.forEach(c=>c.classList.add('done'));
+  updatePanel();
+}
+document.getElementById('playBtn').addEventListener('click',play);
+document.getElementById('stepBtn').addEventListener('click',()=>{stop();step();});
+document.getElementById('resetBtn').addEventListener('click',reset);
+document.getElementById('flipBtn').addEventListener('click',flipBit);
+document.getElementById('tempSel').addEventListener('change',function(){
+  opTemp=parseFloat(this.value);updatePanel();
+});
+const tierNotes={
+  '156':'Demo &middot; ~156 ms per operation, slow enough to narrate. Real hardware runs a word\'s full round trip in about a nanosecond, roughly 100 million times faster than even Real&#8209;ish; every visible speed is a slow-motion replay.',
+  '40':'Fast &middot; ~40 ms per operation. Quick enough to move through a word in a few seconds, still readable step to step.',
+  '8':'Turbo &middot; ~8 ms per operation, near the edge of what the eye can follow. The full tweet runs through in under two minutes.',
+  '6':'Real&#8209;ish &middot; ~6 ms per operation, faster than the eye can resolve individual steps. The whole round trip blurs into a single rush. Real silicon is still ~100 million times faster, this is past the floor of human perception.'
+};
+document.querySelectorAll('.tier-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    stepDelay=parseInt(this.dataset.delay);
+    document.querySelectorAll('.tier-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+    const note=document.getElementById('speedNote');
+    if(note) note.innerHTML=tierNotes[this.dataset.delay]||'';
+    if(playing){stop();play();}
+  });
+});
+const tabWord=document.getElementById('tabWord'),tabTweet=document.getElementById('tabTweet');
+const tweetBanner=document.getElementById('tweetBanner');
+function setMode(m){
+  mode=m;
+  totalWords=(m==='tweet')?TWEET_WORDS:1;
+  reset();
+  tabWord.classList.toggle('active',m==='word');
+  tabTweet.classList.toggle('active',m==='tweet');
+  tweetBanner.style.display=(m==='tweet')?'flex':'none';
+}
+tabWord.addEventListener('click',()=>setMode('word'));
+tabTweet.addEventListener('click',()=>setMode('tweet'));
+setBytesTouched(0);
+setMode('tweet');
+(function(){
+  const panel=document.getElementById('panel'), hint=document.getElementById('scrollHint');
+  if(!panel||!hint) return;
+  function upd(){
+    const more=panel.scrollHeight - panel.clientHeight - panel.scrollTop > 8;
+    hint.classList.toggle('hidden', !more);
+  }
+  panel.addEventListener('scroll',upd);
+  window.addEventListener('resize',upd);
+  setTimeout(upd,100);
+})();
+</script>
+</body>
+</html></body>

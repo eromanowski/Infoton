@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infoton P30 | Januarian Physics</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&display=optional" rel="stylesheet">
+<style>
+:root{
+  --bg:##f6f6f6; --center:#fada24; --w1:#fba238; --w2:#e97158; --w3:#cc4778;
+  --w4:#a31e9a; --w5:#6f00a8; --space:#350498; --grid:#6e54a3;
+  --text:#1a1a1a; --text-m:rgba(53,4,152,.7); --text-d:rgba(53,4,152,.42);
+  --border:rgba(53,4,152,.15); --border-s:rgba(53,4,152,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;
+  font-size:18px;line-height:1.5;overflow-x:hidden}
+
+header{padding:1.1rem 3rem 0.9rem;border-bottom:2px solid var(--space);
+  display:flex;flex-direction:column;gap:.25rem}
+.h-author{font:500 12px/1 'Cinzel',serif;letter-spacing:.25em;text-transform:uppercase;color:var(--grid)}
+.h-title{font:700 clamp(1.6rem,3.4vw,2.5rem)/1.1 'Cinzel',serif;color:var(--space)}
+.cit{font:600 12px/1 'Cinzel',serif;color:var(--w4);text-decoration:none;vertical-align:super;padding:0 1px}
+.h-thesis{font:400 clamp(1.1rem,1.7vw,1.28rem)/1.62 'Cormorant Garamond',serif;color:var(--text);max-width:none;margin-top:.2rem}
+.h-desc{font:400 clamp(1.05rem,1.6vw,1.2rem)/1.55 'Cormorant Garamond',serif;color:var(--text-m);max-width:none}
+.h-model{display:flex;gap:1.6rem;flex-wrap:wrap;margin-top:.5rem;
+  font:400 15px/1 'Cinzel',serif;color:var(--text-d);letter-spacing:.03em}
+.h-model b{color:var(--space);font-weight:600}
+
+.stage{display:grid;grid-template-columns:1fr 340px;gap:0;align-items:stretch;
+  height:860px;max-height:860px;
+  background:linear-gradient(to right, var(--space) 0, var(--space) calc(100% - 340px), var(--bg) calc(100% - 340px), var(--bg) 100%)}
+.work{padding:1.3rem 2.4rem;position:relative;background:var(--space);
+  display:flex;flex-direction:column;gap:.85rem;min-width:0;overflow:hidden}
+.work-head{display:flex;justify-content:space-between;align-items:baseline}
+.work-tabs{display:flex;align-items:center;gap:7px}
+.work-tab{font:600 13px/1 'Cinzel',serif;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;color:rgba(255,255,255,.7);padding:8px 16px;border-radius:7px;
+  background:rgba(255,255,255,.08);border:1.4px solid rgba(255,255,255,.22);transition:all .16s}
+.work-tab.active{background:var(--center);border-color:var(--center);color:var(--space);
+  box-shadow:0 2px 10px rgba(250,218,36,.3)}
+.work-tab:hover:not(.active){background:rgba(255,255,255,.16);color:#fff}
+.work-tab-sep{display:none}
+
+.phase-tag{font:500 14px/1 'Cinzel',serif;letter-spacing:.1em;color:var(--center);
+  padding:5px 14px;border:1px solid rgba(250,218,36,.4);border-radius:4px;text-transform:uppercase}
+
+.clock-stage{height:600px;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#clock{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+.tweet-banner{background:rgba(0,0,0,.25);border:1px solid rgba(250,218,36,.3);border-radius:8px;
+  padding:9px 14px;display:flex;flex-direction:column;gap:4px;max-width:100%;overflow:hidden}
+.tweet-text{font:italic 400 16px/1.45 'Cormorant Garamond',serif;color:rgba(255,255,255,.92);
+  word-break:break-word;overflow-wrap:break-word}
+.tw-ch{transition:all .08s ease;border-radius:2px;padding:0 .5px}
+.tw-ch.tw-done{color:var(--center);font-style:normal}
+.tw-ch.tw-active{background:var(--center);color:var(--space);font-style:normal;font-weight:600;
+  box-shadow:0 0 12px rgba(250,218,36,.8);padding:1px 2px}
+.tweet-meta{font:500 13px/1 'Cinzel',serif;letter-spacing:.05em;color:var(--center)}
+
+.caption{min-height:64px;display:flex;align-items:center;
+  font:400 16px/1.45 'Cormorant Garamond',serif;
+  color:rgba(255,255,255,.82);padding:10px 14px;background:rgba(0,0,0,.22);
+  border-radius:6px;border-left:3px solid var(--center)}
+.caption b{color:var(--center);font-weight:600}
+
+.controls{display:flex;gap:7px;align-items:center;flex-wrap:nowrap;padding-top:2px;white-space:nowrap}
+.btn{font:500 13px/1 'Cinzel',serif;letter-spacing:.06em;padding:9px 13px;border-radius:5px;
+  cursor:pointer;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.85);transition:all .14s;text-transform:uppercase}
+.btn:hover{background:rgba(255,255,255,.16);color:#fff}
+.btn.primary{background:var(--center);border-color:var(--center);color:var(--space);font-weight:600}
+.btn.primary:hover{background:#ffe45a}
+.btn.err{background:var(--w3);border-color:var(--w3);color:#fff;font-weight:600}
+.btn.err:hover{background:#d85a89}
+.speed-tiers{display:flex;align-items:center;gap:6px;margin-left:auto}
+.speed-lab{color:rgba(255,255,255,.55);font:400 15px/1 'Cormorant Garamond',serif;margin-right:2px}
+.tier-btn{font:500 12px/1 'Cinzel',serif;letter-spacing:.03em;padding:7px 10px;border-radius:5px;
+  cursor:pointer;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.7);transition:all .14s;text-transform:uppercase}
+.tier-btn:hover:not(.active){background:rgba(255,255,255,.14);color:#fff}
+.tier-btn.active{background:var(--center);border-color:var(--center);color:var(--space);font-weight:600}
+.speed-note{height:38px;overflow-y:auto;font:italic 400 14px/1.4 'Cormorant Garamond',serif;color:rgba(255,255,255,.6);
+  margin-top:-2px;padding:0 2px}
+
+.panel-wrap{position:relative;border-left:2px solid var(--space);overflow:hidden;height:100%}
+.panel{background:var(--bg);padding:1.3rem 1.5rem;display:flex;flex-direction:column;gap:1rem;
+  height:100%;max-height:100%;overflow-y:auto;scrollbar-width:thin}
+.panel::-webkit-scrollbar{width:8px}
+.panel::-webkit-scrollbar-thumb{background:var(--grid);border-radius:4px}
+.scroll-hint{position:absolute;left:0;right:0;bottom:0;height:46px;pointer-events:none;
+  background:linear-gradient(to bottom, rgba(255,255,255,0), var(--bg) 78%);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;
+  font:600 11px/1 'Cinzel',serif;letter-spacing:.14em;color:var(--grid);text-transform:uppercase;
+  transition:opacity .2s}
+.scroll-hint.hidden{opacity:0}
+.scroll-hint .arrow{margin-left:6px;animation:bob 1.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(3px)}}
+.p-block{display:flex;flex-direction:column;gap:.45rem}
+.p-title{font:500 11px/1 'Cinzel',serif;letter-spacing:.18em;text-transform:uppercase;color:var(--grid)}
+.mode-tabs{display:flex;gap:6px;margin-bottom:2px}
+.mode-tab{flex:1;font:600 13px/1 'Cinzel',serif;letter-spacing:.04em;padding:9px 10px;border-radius:6px;
+  cursor:pointer;background:#f3eefb;border:1.4px solid var(--grid);color:#6a5a86;transition:all .14s}
+.mode-tab.active{background:var(--w4);border-color:var(--w4);color:#fff}
+.mode-tab:hover:not(.active){background:#e9e0f6}
+.mode-note{font:400 15px/1.4 'Cormorant Garamond',serif;color:#6a5a86;margin-top:8px;border-top:1px solid #ece6f6;padding-top:8px}
+
+.counter{display:flex;justify-content:space-between;align-items:baseline;
+  padding:7px 0;border-bottom:1px solid var(--border)}
+.counter .c-name{font:400 16px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+.counter .c-val{font:600 22px/1 'Cinzel',serif;color:var(--space);font-variant-numeric:tabular-nums}
+.counter.locate .c-val{color:var(--w1)}
+.counter.emit .c-val{color:var(--w3)}
+.counter.total{border-bottom:none;padding-top:10px}
+.counter.total .c-name{font-size:18px;color:var(--space);font-weight:600}
+.counter.total .c-val{font-size:30px;color:var(--space)}
+
+.store-readout{display:flex;flex-direction:column;gap:5px}
+.store-row{display:flex;justify-content:space-between;align-items:baseline;
+  padding:5px 0;border-bottom:1px solid var(--border)}
+.store-row.total{border-bottom:none;padding-top:7px}
+.store-lab{font:400 16px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+.store-val{font:600 16px/1 'Cinzel',serif}
+.store-val.data{color:var(--space)}
+.store-val.check{color:var(--w2)}
+.store-row.total .store-lab{font-weight:600;color:var(--space);font-size:17px}
+.store-val.total{font-size:19px;color:var(--space)}
+.store-cap{font:italic 400 15px/1.4 'Cormorant Garamond',serif;color:var(--text-m);margin-top:6px}
+
+.temp-sel{display:flex;flex-direction:column;gap:5px;margin-bottom:8px}
+.temp-lab{font:400 15px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+#tempSel{font:500 15px/1.2 'Cormorant Garamond',serif;padding:7px 10px;border-radius:5px;
+  border:1.5px solid var(--border-s);background:var(--bg);color:var(--space);cursor:pointer}
+.energy-readout{display:flex;flex-direction:column;gap:5px}
+.erow{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--border)}
+.erow:last-child{border-bottom:none}
+.elab{font:400 16px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+.eval{font:600 17px/1 'Cinzel',serif;color:var(--w4);font-variant-numeric:tabular-nums}
+.energy-cap{font:italic 400 14px/1.4 'Cormorant Garamond',serif;color:var(--text-m);margin-top:6px}
+.floor-ladder{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+.fl-title{font:600 11px/1 'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase;color:var(--grid);margin-bottom:9px}
+.fl-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.fl-name{font:400 15px/1.2 'Cormorant Garamond',serif;color:var(--text);width:165px;flex-shrink:0}
+.fl-bar{height:11px;border-radius:3px;background:var(--center);min-width:6px}
+.fl-bar.mram{background:var(--w4)}
+.fl-bar.dram{background:var(--w3)}
+.fl-mult{font:600 14px/1 'Cinzel',serif;color:var(--space);margin-left:auto;white-space:nowrap}
+.fl-cap{font:italic 400 14px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:9px}
+
+
+.ratio-wrap{display:flex;flex-direction:column;gap:6px}
+.bar-row{display:flex;align-items:center;gap:8px}
+.bar-lab{font:500 13px/1 'Cinzel',serif;color:var(--text-m);min-width:84px}
+.bar-track{flex:1;height:22px;background:rgba(53,4,152,.07);border-radius:4px;overflow:hidden;position:relative}
+.bar-fill{height:100%;border-radius:4px;transition:width .25s ease;width:0%}
+.bar-fill.sigwork{background:var(--center)}
+.bar-fill.over{background:linear-gradient(90deg,var(--w1),var(--w2),var(--w3),var(--w4))}
+.bar-num{font:600 14px/1 'Cinzel',serif;color:var(--space);min-width:48px;text-align:right;font-variant-numeric:tabular-nums}
+.ratio-big{text-align:center;font:700 30px/1 'Cinzel',serif;color:var(--w3);margin-top:4px}
+.ratio-cap{text-align:center;font:400 15px/1.4 'Cormorant Garamond',serif;color:var(--text-m)}
+
+.p30{background:rgba(250,218,36,.08);border:1px solid rgba(250,218,36,.4);border-radius:8px;padding:12px 14px;
+  display:flex;flex-direction:column;gap:6px}
+.p30-head{display:flex;justify-content:space-between;align-items:baseline}
+.p30-name{font:600 14px/1 'Cinzel',serif;letter-spacing:.08em;color:var(--w4);text-transform:uppercase}
+.p30-val{font:700 30px/1 'Cinzel',serif;color:var(--w4);font-variant-numeric:tabular-nums}
+.p30-cap{font:400 15px/1.35 'Cormorant Garamond',serif;color:var(--text-m)}
+.p30-cap b{color:var(--w4);font-weight:600}
+
+footer{padding:.85rem 3rem;border-top:2px solid var(--space);
+  font:400 14px/1.7 'Cormorant Garamond',serif;color:var(--text-m)}
+footer a{color:var(--space)}
+@media(max-width:1080px){.stage{grid-template-columns:1fr;max-height:none;height:auto}.panel{border-left:none;border-top:2px solid var(--space)}.clock-stage{height:420px;min-height:420px;max-height:420px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="h-author">January Natatia Walker &nbsp;&middot;&nbsp; Januarian Physics 2026</div>
+  <div class="h-title">Infoton P30</div>
+  <div class="h-thesis">The Infoton P30 update leverages cryptographic number theory, where the natural periodicity in the numbers coprime to 30 has been documented since 1993 in the prime spiral structure <a class="cit" target="_blank" rel="noopener" href="references.html#ref12">[12]</a>, with the underlying mathematics shown in 2020 in The Prime state and its quantum relatives <a class="cit" target="_blank" rel="noopener" href="references.html#ref13">[13]</a>. <span style="color:#6f00a8">By following cryptographic number theory, faster computation is enabled: the natural pauses in the numbers provide the error-correction check directly. Twenty-two of every thirty values are divisible by 2, 3, or 5, so 73.3% of the number line is structurally excluded, and a value either lands on one of the eight coprime spokes, where it is valid by construction, or it does not, where it is caught on sight. The integrity check is the structure itself, so no separate redundancy pass is owed. The lower the demand on energy, the less heat produced, which puts less wear on computation parts, and cascades outward into less water used for cooling, reduced demand for nuclear power, and less pressure to scale data centers.</span></div>
+  <div class="h-desc"></div>
+  <div class="h-model">
+    <span><b>11</b> basis primes</span>
+    <span><b>3</b> control: 2, 3, 5</span>
+    <span><b>8</b> data spokes</span>
+    <span>&phi;(30) = 8</span>
+    <span><b>1</b> lookup per character</span>
+    <span><b>0</b> checks on clean data</span>
+  </div>
+</header>
+
+<div class="stage">
+  <div class="work">
+    <div class="work-head">
+      <div class="work-tabs">
+        <button class="work-tab active" data-mode="encoder">P30 Encoding</button>
+        <span class="work-tab-sep">&middot;</span>
+        <button class="work-tab" data-mode="bios">P30 BIOS</button>
+      </div>
+      <div class="phase-tag" id="phaseTag">Idle</div>
+    </div>
+    <div class="tweet-banner" id="tweetBanner">
+      <div class="tweet-text" id="tweetText"></div>
+      <div class="tweet-meta"><span id="tweetMeta">163 characters &middot; 489 operations &middot; 167 positions</span></div>
+    </div>
+    <div class="clock-stage">
+      <canvas id="clock"></canvas>
+    </div>
+    <div class="caption" id="caption">Press <b>Play</b> to encode the sentence character by character, or <b>Step</b> through one at a time. Each character lights the spoke it lands on; a value on a spoke is valid by construction.</div>
+    <div class="controls">
+      <button class="btn primary" id="playBtn">Play</button>
+      <button class="btn" id="stepBtn">Step</button>
+      <button class="btn" id="resetBtn">Reset</button>
+      <button class="btn err" id="errBtn">Inject Error</button>
+      <div class="speed-tiers" id="speedTiers">
+        <span class="speed-lab">Speed</span>
+        <button class="tier-btn active" data-delay="150">Demo</button>
+        <button class="tier-btn" data-delay="55">Fast</button>
+        <button class="tier-btn" data-delay="14">Turbo</button>
+        <button class="tier-btn" data-delay="6">Real&#8209;ish</button>
+      </div>
+    </div>
+    <div class="speed-note" id="speedNote">Demo &middot; ~150 ms per character, slow enough to follow each value landing on its spoke. Real hardware resolves a character in well under a microsecond; every visible speed is a slow-motion replay.</div>
+  </div>
+
+  <div class="panel-wrap">
+  <div class="panel" id="panel">
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-mode="encoder">P30 Encoder</button>
+      <button class="mode-tab" data-mode="bios">P30 BIOS</button>
+    </div>
+    <div class="p-block">
+      <div class="p-title" id="opTitle">Operations Performed</div>
+      <div class="counter locate"><span class="c-name" id="cLocateName">Locate + Verify</span><span class="c-val" id="cLocate">0</span></div>
+      <div class="counter emit"><span class="c-name" id="cEmitName">Emit</span><span class="c-val" id="cEmit">0</span></div>
+      <div class="counter total"><span class="c-name" id="cTotalName">Total P30</span><span class="c-val" id="cTotal">0</span></div>
+      <div class="mode-note" id="modeNote">Library mode: each character is located, emitted, and verified, three operations apiece, because a library on top of a conventional stack cannot assume the surrounding system preserved validity. This is the conservative, runs-today cost.</div>
+    </div>
+
+    <div class="p-block">
+      <div class="p-title">Storage, verified against the codec</div>
+      <div class="store-readout">
+        <div class="store-row"><span class="store-lab">UTF-8 baseline</span><span class="store-val data">163 bytes</span></div>
+        <div class="store-row"><span class="store-lab">P30 positions (CHAR)</span><span class="store-val data" id="stTokens">0</span></div>
+        <div class="store-row"><span class="store-lab">CHAR mode, round-trips</span><span class="store-val data">167 bytes</span></div>
+        <div class="store-row"><span class="store-lab">PACKED mode, round-trips</span><span class="store-val data">171 bytes</span></div>
+        <div class="store-row"><span class="store-lab">HUFFMAN total, round-trips</span><span class="store-val data">533 bytes</span></div>
+        <div class="store-row"><span class="store-lab">HUFFMAN payload only</span><span class="store-val data">103 bytes</span></div>
+        <div class="store-row total"><span class="store-lab">DIRECT packed, write-only</span><span class="store-val total">116 bytes</span></div>
+      </div>
+      <div class="store-cap">At short lengths P30 is not about making files smaller; on this sentence it is within a few bytes of UTF-8. What it buys instead is built-in integrity: the data carries its own correctness, so no separate error-correction layer has to be stored or maintained alongside it. The size advantage arrives on longer data; the integrity advantage is there from the first character.</div>
+    </div>
+
+    <div class="p-block">
+      <div class="p-title">Landauer Energy Floor</div>
+      <div class="temp-sel">
+        <label class="temp-lab">Operating temperature</label>
+        <select id="tempSel">
+          <option value="300">300 K &middot; 27&deg;C (lab reference)</option>
+          <option value="350" selected>350 K &middot; 77&deg;C (typical DRAM junction)</option>
+          <option value="358">358 K &middot; 85&deg;C (DRAM spec maximum)</option>
+          <option value="398">398 K &middot; 125&deg;C (silicon junction max)</option>
+        </select>
+      </div>
+      <div class="energy-readout">
+        <div class="erow"><span class="elab">Per operation</span><span class="eval" id="ePerOp">&mdash;</span></div>
+        <div class="erow"><span class="elab">This run (<span id="eOps">0</span> ops)</span><span class="eval" id="eRun">&mdash;</span></div>
+      </div>
+      <div class="energy-cap">E = k<sub>B</sub> T ln(2) per irreversible operation. The floor rises with temperature: hotter silicon means a higher thermodynamic minimum, before any real switching loss.</div>
+      <div class="floor-ladder">
+        <div class="fl-title">Where real memory sits, per bit, log scale</div>
+        <div class="fl-row"><span class="fl-name">Landauer floor</span><span class="fl-bar" style="width:4%"></span><span class="fl-mult">1&times;</span></div>
+        <div class="fl-row"><span class="fl-name">Berkeley 2016, lab erase</span><span class="fl-bar" style="width:5%"></span><span class="fl-mult">1.4&times;</span></div>
+        <div class="fl-row"><span class="fl-name">STT-MRAM, buyable today</span><span class="fl-bar mram" style="width:81%"></span><span class="fl-mult">~10<sup>7.5</sup>&times;</span></div>
+        <div class="fl-row"><span class="fl-name">DRAM, with refresh</span><span class="fl-bar dram" style="width:100%"></span><span class="fl-mult">~10<sup>9.2</sup>&times;</span></div>
+        <div class="fl-cap">Only the lab experiment sits near the floor, and only because it switches adiabatically slowly. Of buyable memory, MRAM is roughly fifty times leaner than DRAM because it holds data with no refresh, yet both remain far above the thermodynamic minimum. Lowest energy comes from doing fewer operations, which is what P30 removes, not from reaching the floor.</div>
+      </div>
+    </div>
+
+    <div class="p-block">
+      <div class="p-title">Signal vs Overhead</div>
+      <div class="ratio-wrap">
+        <div class="bar-row"><span class="bar-lab">P30</span>
+          <div class="bar-track"><div class="bar-fill sigwork" id="barWork"></div></div>
+          <span class="bar-num" id="barP30Num">489</span></div>
+        <div class="bar-row"><span class="bar-lab">Hamming</span>
+          <div class="bar-track"><div class="bar-fill over" id="barOver"></div></div>
+          <span class="bar-num">12264</span></div>
+      </div>
+      <div class="ratio-big" id="ratioBig">25.1&times;</div>
+      <div class="ratio-cap" id="ratioCap">operations of Hamming SECDED checking for the same 163 characters, 21 sixty-four-bit words at 584 operations each, against P30's 489</div>
+    </div>
+
+    <div class="p-block">
+      <div class="p-title">The Alternative It Answers</div>
+      <div class="p30">
+        <div class="p30-head">
+          <span class="p30-name">Hamming SECDED</span>
+          <span class="p30-val">12264</span>
+        </div>
+        <div class="p30-cap">Spends <b>584 operations per 64-bit word</b> protecting bits that may never flip. P30 reaches the same verified result in <b>3 per character</b> because coprimality is the check.</div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint" id="scrollHint">Scroll for more<span class="arrow">&#8595;</span></div>
+  </div>
+</div>
+
+<footer>
+</footer>
+
+<script>
+"use strict";
+var KB=1.380649e-23, C=299792458, LN2=Math.log(2);
+var opTemp=350;
+function landauerPerOp(T){ return KB*T*LN2; }
+function fmtJ(j){
+  if(j===0) return '0 J';
+  var units=[['J',1],['mJ',1e-3],['\u00b5J',1e-6],['nJ',1e-9],['pJ',1e-12],['fJ',1e-15],['aJ',1e-18],['zJ',1e-21]];
+  for(var k=0;k<units.length;k++){ if(j>=units[k][1]) return (j/units[k][1]).toFixed(3)+' '+units[k][0]; }
+  return (j/1e-21).toFixed(3)+' zJ';
+}
+
+// Tier 1 alphabet (P30 v2.0), values coprime to 30
+var TIER1_CHARS=[' ','e','t','a','o','i','n','s','h','\n','r','d','l','c','u','m','w','f','g','y','p','\'','b','v','k',',','.','1','I','0','A','T','E','2','C','S','D','N','R','3','B','H','M','O','-','4','5','F','L','P','W','6','7','8','9','G','U','Y','!','j','x','K','V','?','J','q','z','Q'];
+var CHAR_VALS=[1,7,11,13,17,19,23,29,31,37,41,43,47,49,53,59,61,67,71,73,77,79,83,89,91,97,101,103,107,109,113,119,121,127,131,133,137,139,143,149,151,157,161,163,167,169,173,179,181,187,191,193,197,199,203,209,211,217,221,223,227,229,233,239,241,247,251,253];
+var CHAR_TO_VAL={};
+for(var ci=0;ci<TIER1_CHARS.length;ci++){ CHAR_TO_VAL[TIER1_CHARS[ci]]=CHAR_VALS[ci]; }
+function residue(v){ return ((v%30)+30)%30; }
+function isCoprime30(n){ return n%2!==0 && n%3!==0 && n%5!==0; }
+function isPrimeN(n){ if(n<2)return false; for(var i=2;i*i<=n;i++) if(n%i===0) return false; return true; }
+
+var SENTENCE="The Great Salt Lake can be fully restored to full health within as little as 3 years by returning 1,150,000 AF/yr. Resulting Utah's lake effect and water security.";
+var CHARS=SENTENCE.length;           // 163
+var HAMMING_OPS=21*584;
+
+// ── Clock geometry ──────────────────────────────────────────────
+var BASIS=[2,3,5,7,11,13,17,19,23,29,31];
+var CONTROL={2:1,3:1,5:1};
+var SPOKE_RES=[1,7,11,13,17,19,23,29];   // coprime data residues
+// colors per basis prime
+var BASIS_COL={2:'#fada24',3:'#f5a020',5:'#f06020',7:'#e83060',11:'#d420a0',13:'#a800c0',17:'#8000c8',19:'#7744dd',23:'#7755ee',29:'#6633cc',31:'#6644dd'};
+var RES_COL={1:'#6644dd',7:'#e83060',11:'#d420a0',13:'#a800c0',17:'#8000c8',19:'#7744dd',23:'#7755ee',29:'#6633cc'};
+var ANG_OFF=-Math.PI/2-(28/30)*2*Math.PI;
+function posAngle(pos){ return ANG_OFF+(pos/30)*2*Math.PI; }
+function modPos(p){ var r=p%30; return r===1?29:(r-2); }
+// dial angle, 30 at top clockwise
+function dialAngle(n){
+  var slot = (n===30) ? 0 : (n===31 ? 1 : n);
+  return -Math.PI/2 + (slot/30)*2*Math.PI;
+}
+// residue to dial position
+function resAngle(r){ return dialAngle(r===1?31:r); }
+
+// value to character
+var VAL_TO_CHAR={};
+for(var ci2=0;ci2<TIER1_CHARS.length;ci2++){ VAL_TO_CHAR[CHAR_VALS[ci2]]=TIER1_CHARS[ci2]; }
+function beadLabel(ch){
+  if(ch===' ') return '\u2423';   // space shown as open box
+  if(ch==='\n') return '\u21b5';  // newline shown as return arrow
+  if(ch==='\'') return '\u2019';  // apostrophe
+  return ch;
+}
+
+// 68 coprime values per spoke
+var SPOKE_VALS={};
+SPOKE_RES.forEach(function(r){ SPOKE_VALS[r]=[]; });
+for(var vi=0;vi<CHAR_VALS.length;vi++){ var r=residue(CHAR_VALS[vi]); if(SPOKE_VALS[r]!==undefined && SPOKE_VALS[r].indexOf(CHAR_VALS[vi])<0) SPOKE_VALS[r].push(CHAR_VALS[vi]); }
+SPOKE_RES.forEach(function(r){ SPOKE_VALS[r].sort(function(a,b){return a-b;}); });
+
+var cv=document.getElementById('clock'), ctx=cv.getContext('2d');
+var DPR=Math.min(window.devicePixelRatio||1,2);
+var cw=0, chh=0, cx0=0, cy0=0, R=0;
+var litRes=-1, litVal=null;
+
+// error injection + correction state
+var errState=null; // {corrupt, origVal, P, fix, phase}
+var COPRIME_RES=[1,7,11,13,17,19,23,29];
+function isPrimePosN(n){ if(n<2)return false; for(var i=2;i*i<=n;i++) if(n%i===0)return false; return true; }
+function layer1P(n){ var P=[]; if(n%2===0)P.push(2); if(n%3===0)P.push(3); if(n%5===0)P.push(5); return P; }
+function nearestCoprimeResidue(nr){
+  var best=null,bd=99;
+  for(var i=0;i<COPRIME_RES.length;i++){ var r=COPRIME_RES[i]; var d=Math.min(((nr-r)%30+30)%30,((r-nr)%30+30)%30); if(d<bd){bd=d;best=r;} }
+  return {res:best,dist:bd};
+}
+// dial position of a corrupt residue
+function dialPosForResidue(nr){
+  // map residue nr (0..29) to a dial slot number in 2..31; residue 1 -> 31, residue 0 -> 30
+  if(nr===0) return 30; if(nr===1) return 31; return nr;
+}
+
+function resize(){
+  var st=cv.parentElement.getBoundingClientRect();
+  cw=Math.max(280,Math.min(st.width,1200));
+  chh=Math.max(260,Math.min(st.height,600));
+  // size radius so the rim labels at R*1.14 plus glyph height fit inside the box
+  var halfH=chh/2-16;            // box half-height minus label glyph room
+  var rByH=halfH/1.16;           // labels sit at R*1.14, leave a hair extra
+  var rByW=cw*0.76/2;
+  R=Math.min(rByW, rByH);
+  cv.width=cw*DPR; cv.height=chh*DPR; cv.style.width=cw+'px'; cv.style.height=chh+'px';
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  cx0=cw/2; cy0=chh/2;
+  draw();
+}
+
+function draw(){
+  ctx.clearRect(0,0,cw,chh);
+  // rim
+  ctx.beginPath(); ctx.arc(cx0,cy0,R,0,2*Math.PI);
+  ctx.strokeStyle='rgba(110,84,163,0.7)'; ctx.lineWidth=1.5; ctx.stroke();
+
+  // spokes + beads for the 8 data residues
+  SPOKE_RES.forEach(function(r){
+    var ang=resAngle(r);
+    var col=RES_COL[r];
+    // spoke line
+    ctx.beginPath();
+    ctx.moveTo(cx0+Math.cos(ang)*R*0.17, cy0+Math.sin(ang)*R*0.17);
+    ctx.lineTo(cx0+Math.cos(ang)*R*0.97, cy0+Math.sin(ang)*R*0.97);
+    ctx.strokeStyle=hexA(col, litRes===r?0.95:0.4); ctx.lineWidth=litRes===r?2.4:1.4; ctx.stroke();
+    // beads: every Tier 1 coprime value on this spoke, radius by index
+    var vals=SPOKE_VALS[r], n=vals.length;
+    vals.forEach(function(vv,i){
+      var rad=R*0.28 + (i/(n-1||1))*R*0.62;
+      var bx=cx0+Math.cos(ang)*rad, by=cy0+Math.sin(ang)*rad;
+      var on=(litVal!==null && vv===litVal);
+      // bead sized to hold its glyph
+      ctx.beginPath(); ctx.arc(bx,by, on?8:6.5, 0,2*Math.PI);
+      ctx.fillStyle = on ? '#e97158' : hexA(col,0.9); ctx.fill();
+      if(on){ ctx.lineWidth=1.5; ctx.strokeStyle='#fff'; ctx.stroke(); }
+      // character-to-value mapping intentionally not rendered on the beads
+    });
+  });
+
+  // ── Full Period-30 dial: all positions 2..31 around the circle ──
+  // Prime positions in ket notation with color; composites as plain numbers.
+  function isPrimePos(n){ if(n<2)return false; for(var i=2;i*i<=n;i++) if(n%i===0)return false; return true; }
+  for(var n=2;n<=31;n++){
+    var ang=dialAngle(n);
+    var nx=cx0+Math.cos(ang)*R, ny=cy0+Math.sin(ang)*R;
+    var prime=isPrimePos(n);
+    var ctrl=(n===2||n===3||n===5);
+    var res=n%30;
+    var litThis = (litRes===res && SPOKE_RES.indexOf(res)>=0);
+    // node on the circle
+    ctx.beginPath(); ctx.arc(nx,ny, litThis?6:(prime?4.5:3), 0,2*Math.PI);
+    if(litThis) ctx.fillStyle='#e97158';
+    else if(ctrl) ctx.fillStyle='#fada24';
+    else if(prime) ctx.fillStyle=BASIS_COL[n]||'#cc4778';
+    else ctx.fillStyle='rgba(110,84,163,0.6)';
+    ctx.fill();
+    // rim label outside the ring, quantum ket notation for every position
+    var lr=R*1.14;
+    var lx=cx0+Math.cos(ang)*lr, ly=cy0+Math.sin(ang)*lr;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    if(ctrl){
+      ctx.fillStyle = litThis ? '#e97158' : '#fada24';
+      ctx.font='700 17px Cinzel, serif';
+      ctx.fillText('|'+n+'\u27e9', lx, ly);
+    } else if(prime){
+      ctx.fillStyle = litThis ? '#e97158' : (BASIS_COL[n]||'#cc4778');
+      ctx.font='700 17px Cinzel, serif';
+      ctx.fillText('|'+n+'\u27e9', lx, ly);
+    } else {
+      ctx.fillStyle = litThis ? '#e97158' : 'rgba(180,168,214,0.9)';
+      ctx.font='400 15px Cinzel, serif';
+      ctx.fillText(String(n), lx, ly);
+    }
+  }
+  // structural markers: Spine at 30 (top), Line of Symmetry 30->15
+  (function(){
+    var aTop=dialAngle(30), a15=dialAngle(15);
+    var tx=cx0+Math.cos(aTop)*R, ty=cy0+Math.sin(aTop)*R;
+    ctx.beginPath(); ctx.arc(tx,ty,5.5,0,2*Math.PI); ctx.fillStyle='#fada24'; ctx.fill();
+    var bx=cx0+Math.cos(a15)*R, by=cy0+Math.sin(a15)*R;
+    ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(bx,by);
+    ctx.strokeStyle='rgba(110,84,163,0.4)'; ctx.lineWidth=1; ctx.stroke();
+  })();
+
+  // ── Error injection + correction overlay ───────────────────────
+  if(errState){ drawError(); }
+
+  // hub
+  ctx.beginPath(); ctx.arc(cx0,cy0,R*0.12,0,2*Math.PI);
+  ctx.fillStyle='rgba(53,4,152,0.85)'; ctx.fill();
+  ctx.strokeStyle='rgba(250,218,36,0.4)'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle='#fada24'; ctx.font='700 21px Cinzel, serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('P30', cx0, cy0);
+}
+
+// radial position on a spoke
+function valueRadius(val){
+  var r=residue(val); var vals=SPOKE_VALS[r]; if(!vals||!vals.length) return R*0.5;
+  // map val between the spoke's min and max bead values to the bead radius band
+  var lo=vals[0], hi=vals[vals.length-1];
+  var frac=(hi>lo)?(val-lo)/(hi-lo):0;
+  if(frac<0)frac=0; if(frac>1)frac=1;
+  return R*0.28 + frac*R*0.62;
+}
+function valueAngle(val){ return resAngle(residue(val)); }
+
+// draw corruption + correction overlay
+function drawError(){
+  var e=errState;
+  // corrupt value sits at the radius/angle it WOULD occupy if it were a valid token,
+  // on the spoke of its own residue, so the recovery target is a near neighbor.
+  var rec=e.recVal;
+  // place corrupt marker just off the recovered bead, toward the corrupt magnitude
+  var ta=valueAngle(rec), trad=valueRadius(rec);
+  var txp=cx0+Math.cos(ta)*trad, typ=cy0+Math.sin(ta)*trad;
+  // corrupt marker offset radially by the slip distance (a few px per unit)
+  var slip=(e.corrupt-rec);
+  var crad=trad + slip*3.2;
+  var ca=ta;
+  var cxp=cx0+Math.cos(ca)*crad, cyp=cy0+Math.sin(ca)*crad;
+
+  // corrupt marker (red ring with X)
+  ctx.beginPath(); ctx.arc(cxp,cyp,8.5,0,2*Math.PI);
+  ctx.fillStyle='#cc4778'; ctx.fill();
+  ctx.lineWidth=2.5; ctx.strokeStyle='#fada24'; ctx.stroke();
+  ctx.fillStyle='#fff'; ctx.font='700 9px Cinzel, serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText('\u2717', cxp, cyp);
+  // value labels intentionally omitted
+
+  if(e.phase>=2){
+    // short correction arrow from corrupt marker to the adjacent recovered bead
+    ctx.beginPath(); ctx.moveTo(cxp,cyp); ctx.lineTo(txp,typ);
+    ctx.strokeStyle = e.phase>=3 ? '#7a4ddd' : 'rgba(122,77,221,0.7)';
+    ctx.lineWidth=2.4; ctx.setLineDash(e.phase>=3?[]:[4,4]); ctx.stroke(); ctx.setLineDash([]);
+    if(e.phase>=3){
+      // recovered bead lights violet; no value label
+      ctx.beginPath(); ctx.arc(txp,typ,8,0,2*Math.PI);
+      ctx.fillStyle='#7a4ddd'; ctx.fill(); ctx.lineWidth=2; ctx.strokeStyle='#fff'; ctx.stroke();
+    }
+  }
+}
+function hexA(hex,a){
+  var h=hex.replace('#',''); var r=parseInt(h.substr(0,2),16),g=parseInt(h.substr(2,2),16),b=parseInt(h.substr(4,2),16);
+  return 'rgba('+r+','+g+','+b+','+a+')';
+}
+
+// light a value bead on its spoke
+function beadForValue(val){
+  litRes=residue(val); litVal=val;
+}
+
+// ── encode steps ───────────────────────────────────────────────
+var tweetCharEls=[];
+(function buildTweet(){
+  var host=document.getElementById('tweetText'); host.innerHTML='';
+  host.appendChild(document.createTextNode('\u201c'));
+  for(var i=0;i<SENTENCE.length;i++){
+    var s=document.createElement('span'); s.className='tw-ch';
+    s.textContent=SENTENCE[i]===' '?'\u00a0':SENTENCE[i];
+    tweetCharEls.push(s); host.appendChild(s);
+  }
+  host.appendChild(document.createTextNode('\u201d  -  January Walker'));
+})();
+function highlightChar(idx){
+  for(var i=0;i<tweetCharEls.length;i++){
+    tweetCharEls[i].classList.toggle('tw-done', i<idx);
+    tweetCharEls[i].classList.toggle('tw-active', i===idx);
+  }
+}
+
+var idx=0, playing=false, timer=null, stepDelay=150, finished=false, tokensSoFar=0;
+var el={
+  cLocate:document.getElementById('cLocate'), cEmit:document.getElementById('cEmit'),
+  cTotal:document.getElementById('cTotal'), caption:document.getElementById('caption'),
+  phaseTag:document.getElementById('phaseTag'), stTokens:document.getElementById('stTokens'),
+  ePerOp:document.getElementById('ePerOp'), eRun:document.getElementById('eRun'), eOps:document.getElementById('eOps'),
+  barWork:document.getElementById('barWork'), barOver:document.getElementById('barOver')
+};
+
+var p30mode='encoder', passCount=0, errOps=0;
+
+function updatePanel(){
+  var per=landauerPerOp(opTemp);
+  el.ePerOp.textContent=fmtJ(per);
+  if(p30mode==='encoder'){
+    // real floor: 1 lookup per char encoded so far; verify = 0 on clean data;
+    // library mode: locate + emit + verify per character = 3 ops/char
+    var enc=idx*3;
+    var total=enc+errOps;
+    el.cEmit.textContent=idx;
+    el.cLocate.textContent=idx*2+errOps;
+    el.cTotal.textContent=total;
+    el.stTokens.textContent = idx===0 ? 0 : (finished ? 167 : tokensSoFar+1);
+    el.eOps.textContent=total;
+    el.eRun.textContent=fmtJ(total*per);
+  } else {
+    // BIOS: one-time ingress encode; reads add 0; checks only on injected errors.
+    var encodeNow = (passCount===0) ? idx : CHARS;
+    var total=encodeNow+errOps;
+    el.cLocate.textContent=errOps;
+    el.cEmit.textContent=encodeNow;
+    el.cTotal.textContent=total;
+    el.stTokens.textContent = (passCount===0 && idx===0) ? 0 : 167;
+    el.eOps.textContent=total;
+    el.eRun.textContent=fmtJ(total*per);
+  }
+  // Signal vs Overhead: Hamming is the full reference; P30 is its true fraction.
+  var p30Full = (p30mode==='bios') ? CHARS : CHARS*3;   // 163 BIOS, 489 encoder
+  var ratio = HAMMING_OPS / p30Full;
+  var p30Pct = (p30Full/HAMMING_OPS*100);
+  el.barWork.style.width = p30Pct.toFixed(2)+'%';
+  el.barOver.style.width = '100%';
+  var bn=document.getElementById('barP30Num'); if(bn) bn.textContent=p30Full;
+  var rb=document.getElementById('ratioBig'); if(rb) rb.innerHTML=ratio.toFixed(1)+'&times;';
+  var rc=document.getElementById('ratioCap');
+  if(rc) rc.textContent='operations of Hamming SECDED checking for the same 163 characters, 21 sixty-four-bit words at 584 operations each, against P30\u2019s '+p30Full;
+}
+
+function stepChar(){
+  if(idx>=CHARS){ finish(); return; }
+  var ch=SENTENCE[idx];
+  var val=CHAR_TO_VAL[ch];
+  var reading = (p30mode==='bios' && passCount>0);
+  el.phaseTag.textContent = reading ? 'Reading' : 'Encode';
+  highlightChar(idx);
+  if(val!==undefined){
+    beadForValue(val);
+    tokensSoFar+=1;
+    if(reading){
+      el.caption.innerHTML='Reading position '+(idx+1)+' of '+CHARS+'. It already sits on a spoke, so it is valid by construction. The number comes through; <b>no operation</b> is spent.';
+    } else if(p30mode==='bios'){
+      el.caption.innerHTML='Ingress encode '+(idx+1)+' of '+CHARS+'. The incoming character is converted to its coprime position once. From here on it stays a position, all the way through the system.';
+    } else {
+      el.caption.innerHTML='Character '+(idx+1)+' of '+CHARS+' resolves to a coprime position on one of the eight data spokes. <b>One lookup</b>. No verification needed: a position from the coprime set is valid by construction.';
+    }
+  } else {
+    litRes=-1; litVal=null;
+    tokensSoFar+=3;
+    el.caption.innerHTML='Character '+(idx+1)+' of '+CHARS+' falls outside Tier 1 and escapes to a multi-byte sequence.';
+  }
+  idx++;
+  draw(); updatePanel();
+}
+
+function finish(){
+  stop(); finished=true;
+  litRes=-1; litVal=null; draw();
+  for(var i=0;i<tweetCharEls.length;i++){ tweetCharEls[i].classList.remove('tw-active'); tweetCharEls[i].classList.add('tw-done'); }
+  if(p30mode==='encoder'){
+    el.phaseTag.textContent='Complete';
+    el.caption.innerHTML='Sentence encoded: <b>163</b> characters, <b>163</b> operations at the floor, one lookup each, zero verification on clean data. Vectorized, the whole sentence encodes in <b>6</b> wide operations. A Hamming SECDED round trip would have spent <b>12,222</b>. The gap is the argument.';
+  } else {
+    // BIOS mode: first completion is the one-time ingress encode; further plays are pass-through reads.
+    if(passCount===0){
+      el.phaseTag.textContent='Encoded';
+      el.caption.innerHTML='Ingress encode complete. All '+CHARS+' characters became coprime positions, once. Now press Play again to read the data back. The value is already a position, so reading it costs nothing. Watch the count stay flat.';
+    } else {
+      el.phaseTag.textContent='Read '+passCount;
+      el.caption.innerHTML='Read '+passCount+'. The data flowed through again and the count did not move. A valid value sits on a spoke, so it is correct by construction and nothing is re-checked. Conventional error correction would have paid its full cost on this pass, and on every pass.';
+    }
+    passCount++;
+  }
+  el.stTokens.textContent='167';
+  updatePanel();
+}
+
+function stepDuration(){ return stepDelay; }
+function play(){
+  if(playing){ stop(); return; }
+  if(idx>=CHARS){
+    // restart the sweep; in BIOS mode keep passCount so reads accumulate, in encoder mode full reset
+    idx=0; finished=false; tokensSoFar=0; litRes=-1; litVal=null; highlightChar(-1);
+    for(var i=0;i<tweetCharEls.length;i++){ tweetCharEls[i].classList.remove('tw-done'); }
+  }
+  playing=true; document.getElementById('playBtn').textContent='Pause';
+  el.phaseTag.textContent = (p30mode==='bios' && passCount>0) ? 'Reading' : 'Encode';
+  (function tick(){
+    if(!playing) return;
+    if(idx>=CHARS){ finish(); return; }
+    stepChar();
+    timer=setTimeout(tick, stepDuration());
+  })();
+}
+function stop(){ playing=false; clearTimeout(timer); document.getElementById('playBtn').textContent='Play'; }
+function reset(){
+  stop(); idx=0; finished=false; tokensSoFar=0; passCount=0; errOps=0; litRes=-1; litVal=null; errState=null;
+  highlightChar(-1); el.phaseTag.textContent='Idle';
+  el.caption.innerHTML='Press <b>Play</b> to encode the sentence character by character, or <b>Step</b> through one at a time. Each character lights the spoke it lands on; a value on a spoke is valid by construction.';
+  draw(); updatePanel();
+}
+
+// ── Inject a random corruption, then run the two-layer recovery ──
+// corrupt a valid value by a small slip, then recover the nearest valid value
+function nearestCoprimeValue(n){
+  for(var d=1;d<60;d++){
+    var lo=n-d, hi=n+d;
+    var loOK = lo>=1 && (lo%2&&lo%3&&lo%5);
+    var hiOK = hi%2&&hi%3&&hi%5;
+    if(loOK && hiOK) return {val:(Math.random()<0.5?lo:hi), dist:d, tie:true, lo:lo, hi:hi};
+    if(loOK) return {val:lo, dist:d, tie:false};
+    if(hiOK) return {val:hi, dist:d, tie:false};
+  }
+  return {val:n, dist:0, tie:false};
+}
+function injectError(){
+  stop();
+  // pick a random Tier 1 token whose immediate neighbor is a desert value, corrupt it by 1
+  var orig, corrupt, tries=0;
+  do{
+    orig=CHAR_VALS[Math.floor(Math.random()*CHAR_VALS.length)];
+    var dir=Math.random()<0.5?-1:1;
+    corrupt=orig+dir;
+    tries++;
+  }while(tries<40 && (corrupt<1 || (corrupt%2&&corrupt%3&&corrupt%5)));
+  if(corrupt<1 || (corrupt%2&&corrupt%3&&corrupt%5)){ corrupt=orig+1; while(corrupt%2&&corrupt%3&&corrupt%5) corrupt++; }
+  var P=layer1P(corrupt);
+  var nr=((corrupt%30)+30)%30;
+  // Layer 2 recovers the nearest coprime VALUE on the number line
+  var rec=nearestCoprimeValue(corrupt);
+  var recVal=rec.val;
+  var anti=((30-corrupt)%30+30)%30;
+  errState={corrupt:corrupt, origVal:orig, recVal:recVal, P:P, rec:rec, anti:anti, phase:1};
+  litRes=-1; litVal=null;
+  el.phaseTag.textContent='Error';
+  errOps+=3; // Layer 1: three-modulo identify, paid only because an error occurred
+  el.caption.innerHTML='<b style="color:#cc4778">Corruption injected.</b> A single-step slip pushed a valid value onto a desert position, a value the wheel forbids. <b>Layer 1</b> three-modulo screen flags it, <b>3 operations</b>, spent only because something was wrong.';
+  draw(); updatePanel();
+  setTimeout(function(){
+    if(!errState) return;
+    errState.phase=2; el.phaseTag.textContent='Locate';
+    var steps=rec.dist||1; errOps+=Math.min(steps,3); // Layer 2: nearest-valid search, bounded
+    var tieTxt = rec.tie ? ' Two valid values are equidistant; Layer 2 ranks by MPQ energy and returns the candidate set.' : '';
+    el.caption.innerHTML='<b>Layer 2, prime-residue adjacency.</b> The nearest valid position is located by the structural symmetry of the ring, a bounded search.'+tieTxt+' The antipodal complement gives the mirror.';
+    draw(); updatePanel();
+    setTimeout(function(){
+      if(!errState) return;
+      errState.phase=3; el.phaseTag.textContent='Corrected';
+      el.caption.innerHTML='<b style="color:#7a4ddd">Recovered.</b> The slip is reversed to the adjacent valid element. The whole correction cost a handful of operations, paid once, only for the corrupted value. Every clean value around it cost nothing to confirm.';
+      litVal=recVal; litRes=residue(recVal);
+      draw(); updatePanel();
+    }, 1500);
+  }, 1500);
+}
+
+document.getElementById('playBtn').addEventListener('click',play);
+document.getElementById('stepBtn').addEventListener('click',function(){ stop(); stepChar(); });
+document.getElementById('resetBtn').addEventListener('click',reset);
+document.getElementById('errBtn').addEventListener('click',injectError);
+function setMode(mode){
+  p30mode=mode;
+  document.querySelectorAll('.mode-tab').forEach(function(x){ x.classList.toggle('active', x.dataset.mode===mode); });
+  document.querySelectorAll('.work-tab').forEach(function(x){ x.classList.toggle('active', x.dataset.mode===mode); });
+  passCount=0; errOps=0; stop(); idx=0; finished=false; tokensSoFar=0; litRes=-1; litVal=null; errState=null; highlightChar(-1);
+  for(var i=0;i<tweetCharEls.length;i++){ tweetCharEls[i].classList.remove('tw-done','tw-active'); }
+  var note=document.getElementById('modeNote');
+  if(p30mode==='bios'){
+    document.getElementById('opTitle').textContent='Operations, BIOS-native';
+    document.getElementById('cEmitName').textContent='Ingress encode';
+    document.getElementById('cLocateName').textContent='Re-verify on read';
+    note.innerHTML='BIOS mode: encode happens once, as data enters the machine. After that the value stays a coprime position through every layer, so reads cost nothing and validity holds by construction.';
+    el.phaseTag.textContent='Idle';
+    el.caption.innerHTML='P30 BIOS. Press Play for the one-time encode as data enters, then press Play again to read it back and watch the count stay flat.';
+  } else {
+    document.getElementById('opTitle').textContent='Operations Performed';
+    document.getElementById('cEmitName').textContent='Emit';
+    document.getElementById('cLocateName').textContent='Locate + Verify';
+    note.innerHTML='Library mode: each character is located, emitted, and verified, three operations apiece, because a library on top of a conventional stack cannot assume the surrounding system preserved validity. This is the conservative, runs-today cost.';
+    el.phaseTag.textContent='Idle';
+    el.caption.innerHTML='Press <b>Play</b> to encode the sentence character by character, or <b>Step</b> through one at a time.';
+  }
+  draw(); updatePanel();
+}
+document.querySelectorAll('.mode-tab, .work-tab').forEach(function(b){
+  b.addEventListener('click',function(){ setMode(this.dataset.mode); });
+});
+document.getElementById('tempSel').addEventListener('change',function(){ opTemp=parseFloat(this.value); updatePanel(); });
+
+var tierNotes={
+  '150':'Demo &middot; ~150 ms per character, slow enough to follow each value landing on its spoke. Real hardware resolves a character in well under a microsecond; every visible speed is a slow-motion replay.',
+  '55':'Fast &middot; ~55 ms per character. The sentence encodes in about nine seconds, still readable value to value.',
+  '14':'Turbo &middot; ~14 ms per character, near the edge of what the eye can follow. The whole sentence runs through in a couple of seconds.',
+  '6':'Real&#8209;ish &middot; ~6 ms per character, past the floor of human perception. Real silicon is still far faster; this is a replay near the limit of what the eye resolves.'
+};
+document.querySelectorAll('.tier-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    stepDelay=parseInt(this.dataset.delay);
+    document.querySelectorAll('.tier-btn').forEach(function(b){ b.classList.remove('active'); });
+    this.classList.add('active');
+    var note=document.getElementById('speedNote'); if(note) note.innerHTML=tierNotes[this.dataset.delay]||'';
+    if(playing){ stop(); play(); }
+  });
+});
+
+(function(){
+  var panel=document.getElementById('panel'), hint=document.getElementById('scrollHint');
+  if(!panel||!hint) return;
+  function upd(){ var more=panel.scrollHeight-panel.clientHeight-panel.scrollTop>8; hint.classList.toggle('hidden',!more); }
+  panel.addEventListener('scroll',upd); window.addEventListener('resize',upd); setTimeout(upd,120);
+})();
+
+window.addEventListener('resize',resize);
+resize(); reset();
+</script>
+</body>
+</html></body>

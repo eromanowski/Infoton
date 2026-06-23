@@ -1,0 +1,6 @@
+# Smoke test for: p30emu run emulator/p30emu/scripts/smoke.txt
+LOAD spec/canonical_corpus.txt
+VALIDATE
+STATS
+SAVE out/smoke_packed.bin packed
+QUIT

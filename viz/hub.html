@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P30 Open Visualization Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#f6f6f6;font-family:Cinzel,serif;color:#350498}
+  header{padding:1.5rem 2rem;border-bottom:2px solid #350498;background:#fff}
+  h1{margin:0;font-size:1.5rem}
+  p{margin:.5rem 0 0;font-family:Georgia,serif;font-size:1rem;color:#444;max-width:60rem}
+  nav{display:flex;gap:1rem;flex-wrap:wrap;padding:1rem 2rem}
+  nav a{color:#350498;text-decoration:none;border:1px solid #6e54a3;padding:.6rem 1rem;border-radius:6px;background:#fff}
+  nav a:hover{background:#fada24}
+  iframe{display:block;width:100%;border:0;border-top:2px solid #350498}
+</style>
+</head>
+<body>
+<header>
+  <h1>P30 Open Visualization Hub</h1>
+  <p>Matches Infoton&apos;s embedded demos: Prime 30 clock encoder, Hamming 584-op animation, and datacenter impact panel.
+     Metrics verified via <code>tools/verify_demo.py</code>.</p>
+</header>
+<nav>
+  <a href="index.html" target="viz">P30 Encoder + Panel</a>
+  <a href="compare.html" target="_blank">P30 vs Traditional (side by side)</a>
+  <a href="hamming.html" target="viz">Hamming SECDED (584 ops)</a>
+  <a href="impact.html" target="viz">Datacenter Impact</a>
+  <a href="video.html" target="viz">Video</a>
+</nav>
+<iframe name="viz" src="index.html" height="920" title="P30 visualization"></iframe>
+</body>
+</html>

@@ -1,0 +1,14 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/p30_core",
+    "crates/p30_calculator",
+    "crates/p30_inspect",
+    "emulator/p30emu",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/example/p30"

@@ -1,0 +1,8 @@
+[package]
+name = "p30_core"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Open P30 coprime-position codec (Infoton-aligned operation model)"
+
+[dependencies]

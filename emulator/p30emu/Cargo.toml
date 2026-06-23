@@ -1,0 +1,13 @@
+[package]
+name = "p30emu"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "P30 Phase 2 monitor emulator (LOAD / SAVE / VALIDATE)"
+
+[[bin]]
+name = "p30emu"
+path = "src/main.rs"
+
+[dependencies]
+p30_core = { path = "../../crates/p30_core" }

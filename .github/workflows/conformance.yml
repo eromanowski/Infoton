@@ -1,0 +1,61 @@
+name: Conformance
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Infoton demo metrics
+        run: python tools/verify_demo.py
+
+      - name: Conformance vectors (≥100)
+        run: python tools/conformance.py
+
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: p30emu smoke (monitor commands)
+        run: python tools/p30emu_smoke.py
+
+      - name: Install Icarus Verilog
+        run: sudo apt-get update && sudo apt-get install -y iverilog
+
+      - name: P30 pack/unpack golden (Python + Verilog)
+        run: python tools/verify_p30_pack.py
+
+      - name: LiteX SoC scaffold check
+        run: python tools/verify_litex_soc.py
+
+      - name: Soak firmware + dual-FPGA bench check
+        run: python tools/verify_soak_bench.py
+
+      - name: Emulated dual-FPGA thermal soak
+        run: |
+          python tools/soak_emulate.py --mode max --burn-in 1 --duration 2 --interval 0.25
+          python tools/soak_emulate.py --mode rate --rate 2 --burn-in 0.5 --duration 2
+
+      - name: Test workspace
+        run: cargo test --all
+
+      - name: p30inspect conformance
+        run: cargo run -p p30_inspect -- conformance
+
+      - name: p30inspect validate canonical
+        run: cargo run -p p30_inspect -- validate spec/canonical_corpus.txt
+
+      - name: p30emu tests
+        run: cargo test -p p30emu

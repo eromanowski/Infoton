@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Byte Was a Market Choice, Not a Physical One | Januarian Physics</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff;--center:#fada24;--w1:#fba238;--w2:#e97158;--w3:#cc4778;
+  --w4:#a31e9a;--w5:#6f00a8;--space:#350498;--grid:#6e54a3;--okgreen:#1d9e75;
+  --text:#1a1a1a;--text-m:rgba(53,4,152,.72);--text-d:rgba(53,4,152,.45);
+  --border:rgba(53,4,152,.15);--border-s:rgba(53,4,152,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.55;overflow-x:hidden}
+
+header{padding:1.8rem 3rem 1.4rem;border-bottom:2px solid var(--space);display:flex;flex-direction:column;gap:.35rem}
+.h-author{font:500 11px/1 'Cinzel',serif;letter-spacing:.25em;text-transform:uppercase;color:var(--grid)}
+.sec-num{font:500 12px/1 'Cinzel',serif;letter-spacing:.2em;text-transform:uppercase;color:var(--w3);margin-top:.2rem}
+.h-title{font:700 clamp(1.5rem,3vw,2.3rem)/1.12 'Cinzel',serif;color:var(--space)}
+.h-thesis{font:400 clamp(1.06rem,1.6vw,1.24rem)/1.58 'Cormorant Garamond',serif;color:var(--text);margin-top:.2rem}
+.h-thesis b{color:var(--space);font-weight:600}
+
+.stage{display:grid;grid-template-columns:1fr 330px;align-items:start;
+  background:linear-gradient(to right,var(--space) 0,var(--space) calc(100% - 330px),var(--bg) calc(100% - 330px),var(--bg) 100%)}
+.work{padding:1.5rem 2rem 1.7rem;background:var(--space);display:flex;flex-direction:column;gap:1rem;min-width:0}
+
+.bt-rail{display:flex;flex-direction:column;gap:10px}
+.bt-card{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:stretch;
+  background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.12);border-radius:11px;padding:11px 14px}
+.bt-card.landauer{background:rgba(250,218,36,.1);border-color:rgba(250,218,36,.5)}
+.bt-card.spec{background:rgba(204,71,120,.12);border-color:rgba(204,71,120,.55)}
+.bt-card.precedent{background:rgba(29,158,117,.13);border-color:var(--okgreen);box-shadow:0 0 22px rgba(29,158,117,.35)}
+.bt-card.future{background:rgba(250,218,36,.14);border-color:var(--center);box-shadow:0 0 22px rgba(250,218,36,.3)}
+.bt-year{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-right:1.5px solid rgba(255,255,255,.14);padding-right:9px}
+.bt-yr-num{font:700 22px/1 'Cinzel',serif;color:var(--center)}
+.bt-card.spec .bt-yr-num{color:var(--w2)}
+.bt-card.precedent .bt-yr-num{color:#5dcaa5}
+.bt-card.future .bt-yr-num{color:var(--center)}
+.bt-yr-co{font:500 10px/1.15 'Cinzel',serif;letter-spacing:.04em;color:rgba(255,255,255,.5);text-transform:uppercase;text-align:center}
+.bt-body{display:flex;flex-direction:column;gap:5px;min-width:0}
+.bt-machine{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.bt-name{font:600 16px/1.12 'Cinzel',serif;color:#fff;letter-spacing:.02em}
+.bt-card.future .bt-name{color:var(--center)}
+.bt-bw{font:500 12px/1 'Cinzel',serif;letter-spacing:.04em;color:var(--space);background:var(--center);padding:4px 10px;border-radius:5px}
+.bt-bw.variable{background:var(--w1)}
+.bt-bw.none{background:var(--w3);color:#fff}
+.bt-bw.green{background:var(--okgreen);color:#fff}
+.bt-desc{font:400 15.5px/1.4 'Cormorant Garamond',serif;color:rgba(255,255,255,.76)}
+.bt-card.future .bt-desc{color:rgba(255,255,255,.92)}
+.bt-bits{display:flex;gap:5px;margin-top:3px;flex-wrap:wrap}
+.bt-bit{width:24px;height:24px;border-radius:5px;display:flex;align-items:center;justify-content:center;font:600 12px/1 'Cinzel',serif;border:1.4px solid rgba(255,255,255,.2)}
+.bt-bit.on{background:var(--center);border-color:#fff;color:var(--space)}
+.bt-bit.flex{background:rgba(251,162,56,.45);border-color:var(--w1);color:#fff;border-style:dashed}
+.bt-bit.wide{width:auto;padding:0 9px;background:rgba(29,158,117,.4);border-color:var(--okgreen);color:#fff}
+.bt-bit.p30{width:auto;padding:0 9px;background:rgba(250,218,36,.3);border-color:var(--center);color:#fff}
+.bt-eq{font:500 16px/1.4 'Cormorant Garamond',serif;color:var(--space);background:var(--center);border-radius:7px;padding:6px 12px;margin-top:3px;display:inline-block;align-self:flex-start}
+.bt-eq b{font-weight:600}
+.bt-missing{display:flex;align-items:center;gap:9px;margin-top:4px;flex-wrap:wrap;font:italic 400 15.5px/1.36 'Cormorant Garamond',serif;color:rgba(255,255,255,.84)}
+.bt-missing .x{font:600 14px/1 'Cinzel',serif;color:var(--w2);background:rgba(233,113,88,.2);border:1px solid var(--w2);border-radius:5px;padding:4px 9px;white-space:nowrap}
+.bt-proof{display:inline-flex;align-items:center;gap:7px;margin-top:4px;font:600 13px/1 'Cinzel',serif;letter-spacing:.04em;color:#5dcaa5;background:rgba(29,158,117,.16);border:1px solid var(--okgreen);border-radius:5px;padding:5px 11px;text-transform:uppercase}
+.bt-proof.now{color:var(--center);background:rgba(250,218,36,.16);border-color:var(--center)}
+
+.bt-floor{margin-top:.4rem;background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.16);border-radius:11px;padding:14px 16px;display:flex;flex-direction:column;gap:7px}
+.bt-floor-t{font:600 12px/1 'Cinzel',serif;letter-spacing:.15em;text-transform:uppercase;color:var(--center)}
+.bt-floor-eq{font:500 21px/1.3 'Cormorant Garamond',serif;color:#fff}
+.bt-floor-eq b{color:var(--center);font-weight:600}
+.bt-floor-cap{font:400 15.5px/1.48 'Cormorant Garamond',serif;color:rgba(255,255,255,.74)}
+.bt-floor-cap b{color:var(--center);font-weight:600}
+
+.panel{position:sticky;top:0;align-self:start;max-height:100vh;background:var(--bg);padding:1.5rem 1.5rem;display:flex;flex-direction:column;gap:1.2rem;border-left:2px solid var(--space);overflow-y:auto;scrollbar-width:thin}
+.panel::-webkit-scrollbar{width:9px}.panel::-webkit-scrollbar-track{background:rgba(53,4,152,.06)}.panel::-webkit-scrollbar-thumb{background:var(--grid);border-radius:5px}
+.p-title{font:500 11px/1 'Cinzel',serif;letter-spacing:.16em;text-transform:uppercase;color:var(--grid)}
+.proof-hero{background:rgba(29,158,117,.1);border:1.5px solid rgba(29,158,117,.4);border-radius:11px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.ph-tag{font:600 11px/1 'Cinzel',serif;letter-spacing:.1em;text-transform:uppercase;color:var(--okgreen)}
+.ph-head{font:600 19px/1.2 'Cinzel',serif;color:var(--space)}
+.ph-body{font:400 16px/1.5 'Cormorant Garamond',serif;color:var(--text)}
+.ph-body b{color:var(--okgreen);font-weight:600}
+.deploy-hero{background:rgba(250,218,36,.16);border:1.5px solid rgba(250,218,36,.55);border-radius:11px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.dh-tag{font:600 11px/1 'Cinzel',serif;letter-spacing:.1em;text-transform:uppercase;color:var(--w4)}
+.dh-head{font:600 18px/1.22 'Cinzel',serif;color:var(--space)}
+.dh-body{font:400 16px/1.5 'Cormorant Garamond',serif;color:var(--text)}
+.dh-body b{color:var(--w4);font-weight:600}
+.p-block{display:flex;flex-direction:column;gap:.5rem}
+.row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--border)}
+.row:last-child{border-bottom:none}
+.r-name{font:400 16px/1.25 'Cormorant Garamond',serif;color:var(--text-m)}
+.r-name small{display:block;font:italic 400 13.5px/1.25 'Cormorant Garamond',serif;color:var(--text-d)}
+.r-val{font:600 16px/1 'Cinzel',serif;color:var(--space);text-align:right;white-space:nowrap}
+.takeaway{font:400 16px/1.55 'Cormorant Garamond',serif;color:var(--text);background:rgba(250,218,36,.16);border:1px solid rgba(250,218,36,.5);border-radius:9px;padding:13px 15px}
+.takeaway b{color:var(--w4);font-weight:600}
+.refs{display:flex;flex-direction:column;gap:7px}
+.ref{font:400 13px/1.4 'Cormorant Garamond',serif;color:var(--text-m);padding-left:15px;text-indent:-15px;word-break:break-word}
+
+@media(max-width:1000px){.stage{grid-template-columns:1fr;background:var(--space)}
+  .panel{position:static;max-height:none;border-left:none;border-top:2px solid var(--space)}
+  header{padding-left:1.4rem;padding-right:1.4rem}.work{padding-left:1.4rem;padding-right:1.4rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="h-author">January Natatia Walker &middot; Januarian Physics 2026 &middot; Salt Lake City, Utah</div>
+  <div class="sec-num">II &middot; The Specification</div>
+  <div class="h-title">The Byte Was a Market Choice, Not a Physical One</div>
+  <div class="h-thesis">When the bit was given to IBM to structure, IBM designed the byte. The word was coined by Werner Buchholz in 1956 during the design of the Stretch machine, and its width was left open: his own memo defined a byte as any number of parallel bits from one to six. Across IBM and its competitors the byte was whatever each machine needed it to be. In 1961 Landauer established that information costs energy and produces heat. Three years later the byte was fixed at eight bits by System/360, with the governing equation absent from the sheet. <b>Encoding updates have been done before. Converting to a new encoding is not theoretical, it is standard product deployment.</b></div>
+</header>
+
+<div class="stage">
+  <div class="work">
+    <div class="bt-rail" id="btRail"></div>
+    <div class="bt-floor">
+      <div class="bt-floor-t">The Floor That Was Left Out</div>
+      <div class="bt-floor-eq">E &ge; <b>k<sub>B</sub> T ln(2)</b></div>
+      <div class="bt-floor-cap">Boltzmann constant times temperature times the natural logarithm of two: the minimum energy any irreversible operation must dissipate as heat. Landauer published this in 1961, in IBM's own journal. Three years later the byte was fixed at eight bits with this term absent, leaving computation with <b>unbound energy parameters</b>. The ability to redesign the byte against this floor has existed since the 1950s.</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="p-title">Encoding Updates Have Been Done Before</div>
+    <div class="proof-hero">
+      <div class="ph-tag">Precedent &middot; 1993</div>
+      <div class="ph-head">The encoding has already been replaced once.</div>
+      <div class="ph-body">In 1993, <b>Unicode replaced ASCII</b> as the character encoding in a shipping operating system, Windows NT 3.1, and ISO/IEC 10646 was published. The whole industry, <b>IBM, Microsoft, Apple, Sun, Novell, NeXT</b>, agreed to move off the fixed 8-bit scheme. Converting to a new encoding is <b>not theoretical, it is standard product deployment.</b></div>
+    </div>
+
+    <div class="deploy-hero">
+      <div class="dh-tag">Deployable Now &middot; 2026</div>
+      <div class="dh-head">P30 can start deploying immediately.</div>
+      <div class="dh-body">The same kind of encoding update, done as standard product deployment, can begin now to address the <b>water, energy, and heat crisis</b> the 8-bit byte's checking overhead drives in data centers.</div>
+    </div>
+
+    <div class="p-block">
+      <div class="p-title">Times the Byte Has Been Redefined</div>
+      <div class="row"><span class="r-name">Stretch memo<small>1956, 1 to 6 bits</small></span><span class="r-val">variable</span></div>
+      <div class="row"><span class="r-name">SAGE<small>1956, ~4 bits</small></span><span class="r-val">variable</span></div>
+      <div class="row"><span class="r-name">BCDIC cards<small>1959, 6 bits</small></span><span class="r-val">6-bit</span></div>
+      <div class="row"><span class="r-name">System/360<small>1964, fixed</small></span><span class="r-val">8-bit</span></div>
+      <div class="row"><span class="r-name">Unicode / ISO 10646<small>1993, multi-octet</small></span><span class="r-val" style="color:var(--okgreen)">16-bit+</span></div>
+      <div class="row"><span class="r-name">Infoton P30<small>2026, primorial-30</small></span><span class="r-val" style="color:var(--w4)">P30</span></div>
+    </div>
+
+    <div class="takeaway">Six redefinitions across seven decades. The 8-bit byte was the fourth, not the last. <b>P30 is the next.</b></div>
+
+    <div class="p-block">
+      <div class="p-title">References</div>
+      <div class="refs">
+        <p class="ref">Buchholz, W. (1962). <i>Planning a computer system: Project Stretch.</i> McGraw-Hill.</p>
+        <p class="ref">Landauer, R. (1961). Irreversibility and heat generation in the computing process. <i>IBM Journal of Research and Development, 5</i>(3), 183&ndash;191. https://doi.org/10.1147/rd.53.0183</p>
+        <p class="ref">The Unicode Consortium. (1993). <i>ISO/IEC 10646-1:1993, Universal Multiple-Octet Coded Character Set.</i></p>
+        <p class="ref">Walker, J. (2026). <i>The Infoton: A fundamental particle of information-energy.</i> Infoton. https://doi.org/10.5281/zenodo.18210355</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+var ROWS=[
+  {year:'1956',co:'IBM',name:'Stretch (7030), first memo',bw:'1 to 6 bits',tag:'variable',
+    desc:'The word byte is coined, defined as any number of parallel bits from one to six, a length appropriate for the occasion.',
+    bits:{n:6,pattern:'flex'}},
+  {year:'1956',co:'MIT / RAND / IBM',name:'SAGE air defense',bw:'~4 bits',tag:'variable',
+    desc:'Louis Dooley uses byte for an undefined grouping, typically four bits. The unit has no fixed width.',
+    bits:{n:4,pattern:'flex'}},
+  {year:'1956',co:'IBM',name:'Stretch, design revision',bw:'8 bits',tag:'',
+    desc:'Eight-bit bytes are considered in August and incorporated into Stretch. Eight is chosen, not derived.',
+    bits:{n:8,pattern:'on'}},
+  {year:'1959',co:'IBM',name:'BCDIC card encoding',bw:'6 bits',tag:'',
+    desc:'Six-bit binary coded decimal carries character data across the product line. A different machine, a different width.',
+    bits:{n:6,pattern:'on'}},
+  {year:'1961',co:'Rolf Landauer',name:'Landauer\u2019s Principle',bw:'physics established',tag:'none',cls:'landauer',
+    desc:'Information costs energy and produces heat. The governing law of information-energy physics now exists, in IBM\u2019s own journal.',
+    eq:'E \u2265 k<sub>B</sub> T ln(2)'},
+  {year:'1964',co:'IBM',name:'System/360 Specification',bw:'8 bits, fixed',tag:'',cls:'spec',
+    desc:'The 8-bit byte is promulgated as the standard via System/360 and EBCDIC.',
+    bits:{n:8,pattern:'on'},
+    missing:'No k\u1d66 T ln(2) term. The energy floor, three years old, is absent from the sheet.'},
+  {year:'1993',co:'Unicode / ISO',name:'Unicode replaces ASCII',bw:'16-bit and beyond',tag:'green',cls:'precedent',
+    desc:'Unicode replaces ASCII in a shipping OS (Windows NT 3.1) and ISO/IEC 10646 is published. IBM, Microsoft, Apple, Sun and others move the industry off the fixed 8-bit scheme.',
+    wide:'multi-octet encoding',
+    proof:'Encoding updates have been done before'},
+  {year:'2026',co:'Infoton',name:'Infoton P30',bw:'primorial-30 encoding',tag:'green',cls:'future',
+    desc:'The Infoton P30 encoding is deployable now, as standard product deployment, to cut the checking overhead that drives the water, energy, and heat crisis in data centers.',
+    p30:'P30 \u00b7 validity-intrinsic',
+    proof:'Deployable immediately',proofNow:true}
+];
+var rail=document.getElementById('btRail');
+ROWS.forEach(function(r){
+  var card=document.createElement('div');
+  card.className='bt-card'+(r.cls?(' '+r.cls):'');
+  var bitsHtml='';
+  if(r.bits){
+    bitsHtml='<div class="bt-bits">';
+    for(var b=0;b<r.bits.n;b++){
+      var c=r.bits.pattern==='flex'?'flex':'on';
+      var label=r.bits.pattern==='flex'?'?':(b%2===0?'1':'0');
+      bitsHtml+='<div class="bt-bit '+c+'">'+label+'</div>';
+    }
+    bitsHtml+='</div>';
+  }else if(r.wide){
+    bitsHtml='<div class="bt-bits"><div class="bt-bit wide">'+r.wide+'</div></div>';
+  }else if(r.p30){
+    bitsHtml='<div class="bt-bits"><div class="bt-bit p30">'+r.p30+'</div></div>';
+  }
+  var eqHtml=r.eq?'<div class="bt-eq"><b>'+r.eq+'</b></div>':'';
+  var missingHtml=r.missing?'<div class="bt-missing"><span class="x">MISSING</span>'+r.missing+'</div>':'';
+  var proofHtml=r.proof?'<div class="bt-proof'+(r.proofNow?' now':'')+'">\u2713 '+r.proof+'</div>':'';
+  card.innerHTML=
+    '<div class="bt-year"><div class="bt-yr-num">'+r.year+'</div><div class="bt-yr-co">'+r.co+'</div></div>'+
+    '<div class="bt-body">'+
+      '<div class="bt-machine"><span class="bt-name">'+r.name+'</span><span class="bt-bw '+r.tag+'">'+r.bw+'</span></div>'+
+      '<div class="bt-desc">'+r.desc+'</div>'+
+      bitsHtml+eqHtml+missingHtml+proofHtml+
+    '</div>';
+  rail.appendChild(card);
+});
+</script>
+</body>
+</html></body>

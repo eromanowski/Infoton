@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P30 Fleet Deployment: Reactors Avoided at Population Scale</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:##f6f6f6;--center:#fada24;--w1:#fba238;--w2:#e97158;--w3:#cc4778;
+  --w4:#a31e9a;--w5:#6f00a8;--space:#350498;--grid:#6e54a3;--okgreen:#1d9e75;
+  --text:#1a1a1a;--text-m:rgba(53,4,152,.72);--text-d:rgba(53,4,152,.45);
+  --border:rgba(53,4,152,.15);--border-s:rgba(53,4,152,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.5;overflow-x:hidden}
+header{padding:1.8rem 3rem 1.5rem;border-bottom:2px solid var(--space);display:flex;flex-direction:column;gap:.4rem}
+.h-author{font:500 11px/1 'Cinzel',serif;letter-spacing:.25em;text-transform:uppercase;color:var(--grid)}
+.h-title{font:700 clamp(1.45rem,2.9vw,2.2rem)/1.12 'Cinzel',serif;color:var(--space)}
+.h-thesis{font:400 clamp(1.08rem,1.7vw,1.26rem)/1.6 'Cormorant Garamond',serif;color:var(--text);margin-top:.2rem}
+.h-thesis b{color:var(--space);font-weight:600}
+.h-model{display:flex;gap:1.6rem;flex-wrap:wrap;margin-top:.5rem;font:400 15px/1 'Cinzel',serif;color:var(--text-d);letter-spacing:.03em}
+.h-model b{color:var(--space);font-weight:600}
+
+.stage{display:grid;grid-template-columns:1fr 350px;align-items:stretch;height:700px;max-height:84vh;
+  background:linear-gradient(to right,var(--space) 0,var(--space) calc(100% - 350px),var(--bg) calc(100% - 350px),var(--bg) 100%)}
+.work{padding:1.6rem 2.2rem 1.8rem;background:var(--space);display:flex;flex-direction:column;gap:1.1rem;min-width:0;overflow-y:auto}
+.work-head{display:flex;justify-content:space-between;align-items:baseline}
+.work-title{font:600 15px/1 'Cinzel',serif;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.9)}
+.work-tag{font:500 14px/1 'Cinzel',serif;letter-spacing:.1em;color:var(--center);padding:5px 14px;border:1px solid rgba(250,218,36,.4);border-radius:4px;text-transform:uppercase}
+
+.region-tabs{display:flex;gap:8px}
+.rtab{font:500 13px/1 'Cinzel',serif;letter-spacing:.05em;padding:9px 15px;border-radius:6px;cursor:pointer;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);transition:all .14s;text-transform:uppercase}
+.rtab:hover:not(.active){background:rgba(255,255,255,.14);color:#fff}
+.rtab.active{background:var(--center);border-color:var(--center);color:var(--space);font-weight:600}
+
+/* the deployment slider */
+.deploy{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.16);border-radius:11px;padding:1.1rem 1.3rem 1.2rem}
+.deploy-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.6rem}
+.deploy-lab{font:500 15px/1.2 'Cormorant Garamond',serif;color:rgba(255,255,255,.82)}
+.deploy-val{font:700 22px/1 'Cinzel',serif;color:var(--center)}
+.deploy-val small{font:400 14px/1 'Cormorant Garamond',serif;color:rgba(255,255,255,.6);margin-left:6px}
+input[type=range]{width:100%;height:6px;border-radius:3px;background:rgba(255,255,255,.18);appearance:none;-webkit-appearance:none;cursor:pointer;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--center);border:3px solid var(--space);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--center);border:3px solid var(--space);cursor:pointer}
+.deploy-scale{display:flex;justify-content:space-between;margin-top:5px;font:400 13px/1 'Cormorant Garamond',serif;color:rgba(255,255,255,.45)}
+
+/* fleet power bar */
+.fleetbar-wrap{display:flex;flex-direction:column;gap:7px}
+.fleetbar-lab{display:flex;justify-content:space-between;align-items:baseline}
+.fbl-l{font:500 12px/1 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+.fbl-r{font:600 16px/1 'Cinzel',serif;color:var(--center)}
+.fleet-track{position:relative;height:46px;background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden;display:flex}
+.fseg-byte{height:100%;background:linear-gradient(90deg,var(--w4),var(--w3) 60%,var(--w2));transition:width .4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center}
+.fseg-p30{height:100%;background:linear-gradient(90deg,var(--w1),var(--center));transition:width .4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center}
+.fseg-saved{height:100%;background:rgba(29,158,117,.25);border-left:2px dashed var(--okgreen);transition:width .4s cubic-bezier(.4,0,.2,1);display:flex;align-items:center;justify-content:center}
+.fseg-lab{font:600 12px/1 'Cinzel',serif;letter-spacing:.03em;white-space:nowrap;padding:0 6px}
+.fseg-byte .fseg-lab{color:#fff}.fseg-p30 .fseg-lab{color:var(--space)}.fseg-saved .fseg-lab{color:#5dcaa5}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font:400 14px/1 'Cormorant Garamond',serif;color:rgba(255,255,255,.7)}
+.legend span{display:flex;align-items:center;gap:6px}
+.dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+.dot.byte{background:var(--w3)}.dot.p30{background:var(--center)}.dot.saved{background:rgba(29,158,117,.6)}
+
+/* reactor grid: each icon = 1 SMR avoided */
+.react-block{display:flex;flex-direction:column;gap:8px}
+.react-head{display:flex;justify-content:space-between;align-items:baseline}
+.react-t{font:500 12px/1 'Cinzel',serif;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.react-n{font:700 20px/1 'Cinzel',serif;color:#5dcaa5}
+.react-grid{display:flex;flex-wrap:wrap;gap:5px;min-height:30px}
+.react{width:15px;height:19px;border-radius:3px 3px 2px 2px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);transition:all .25s}
+.react.avoided{background:var(--okgreen);border-color:#5dcaa5}
+.heatbar-track{position:relative;height:26px;background:rgba(255,255,255,.06);border-radius:7px;overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+.heatbar-fill{position:absolute;left:0;top:0;bottom:0;width:0%;border-radius:6px 0 0 6px;transition:width .4s cubic-bezier(.4,0,.2,1);
+  background:linear-gradient(90deg,#fada24,#fba238 50%,#e97158);display:flex;align-items:center;justify-content:flex-end;padding-right:8px}
+.heatbar-val{font:600 12px/1 'Cinzel',serif;color:#350498;white-space:nowrap}
+.react-cap{font:italic 400 14px/1.35 'Cormorant Garamond',serif;color:rgba(255,255,255,.6)}
+
+.caption{font:400 16px/1.45 'Cormorant Garamond',serif;color:rgba(255,255,255,.82);
+  background:rgba(0,0,0,.22);border-left:3px solid var(--center);border-radius:6px;padding:11px 15px;margin-top:auto}
+.caption b{color:var(--center);font-weight:600}
+
+.panel{background:var(--bg);padding:1.5rem 1.6rem;display:flex;flex-direction:column;gap:1.2rem;border-left:2px solid var(--space);overflow-y:auto;scrollbar-width:thin}
+.panel::-webkit-scrollbar{width:9px}.panel::-webkit-scrollbar-track{background:rgba(53,4,152,.06)}.panel::-webkit-scrollbar-thumb{background:var(--grid);border-radius:5px}
+.p-block{display:flex;flex-direction:column;gap:.5rem}
+.p-title{font:500 11px/1 'Cinzel',serif;letter-spacing:.16em;text-transform:uppercase;color:var(--grid)}
+.row{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--border)}
+.row:last-child{border-bottom:none}
+.r-name{font:400 16px/1.2 'Cormorant Garamond',serif;color:var(--text-m)}
+.r-val{font:600 17px/1 'Cinzel',serif;font-variant-numeric:tabular-nums}
+.r-val.byte{color:var(--w3)}.r-val.p30{color:var(--okgreen)}.r-val.neu{color:var(--space)}
+.big{display:flex;flex-direction:column;gap:2px;padding:11px 13px;border-radius:9px;background:rgba(29,158,117,.1);border:1px solid rgba(29,158,117,.35)}
+.big-lab{font:500 11px/1 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase;color:var(--okgreen)}
+.big-val{font:700 30px/1 'Cinzel',serif;color:var(--okgreen)}
+.big-sub{font:italic 400 14px/1.3 'Cormorant Garamond',serif;color:var(--text-m)}
+.deriv{display:flex;flex-direction:column;gap:0}
+.dstep{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:9px 0;border-top:1px solid var(--border)}
+.dstep:first-of-type{border-top:none}
+.dnum{font:600 13px/1 'Cinzel',serif;color:var(--text-d);padding-top:3px}
+.dbody{display:flex;flex-direction:column;gap:3px}
+.dmath{font:500 16px/1.45 'Cormorant Garamond',serif;color:var(--text)}
+.dmath .hl{color:var(--w4);font-weight:600}.dmath .by{color:var(--w3);font-weight:600}.dmath .pp{color:var(--okgreen);font-weight:600}
+.dnote{font:italic 400 14px/1.32 'Cormorant Garamond',serif;color:var(--text-m)}
+.refs{display:flex;flex-direction:column;gap:8px}
+.ref{font:400 13.5px/1.4 'Cormorant Garamond',serif;color:var(--text-m);padding-left:16px;text-indent:-16px;word-break:break-word}
+footer{padding:1.2rem 3rem 1.6rem;border-top:2px solid var(--space);font:400 14px/1.65 'Cormorant Garamond',serif;color:var(--text-m)}
+.eq{font:500 16px/1.55 'Cormorant Garamond',serif;color:var(--text);background:rgba(250,218,36,.16);border:1px solid rgba(250,218,36,.5);border-radius:8px;padding:11px 14px;margin-bottom:.7rem}
+.eq b{color:var(--w4);font-weight:600}
+@media(max-width:1000px){.stage{grid-template-columns:1fr;height:auto;max-height:none;background:var(--space)}
+  .work{overflow:visible}.panel{border-left:none;border-top:2px solid var(--space);overflow:visible}
+  header,footer{padding-left:1.4rem;padding-right:1.4rem}.work{padding-left:1.4rem;padding-right:1.4rem}}
+</style>
+</head>
+<body>
+<header>
+  <div class="h-author">January Natatia Walker &middot; Januarian Physics 2026 &middot; Salt Lake City, Utah</div>
+  <div class="h-title">P30 at Population Scale: Reactors Never Built</div>
+  <div class="h-thesis">Each data center converted from the byte to the Infoton drops its compute energy by the benchmarked 25.08&times;. The small remainder is served by solar and wind, so the nuclear reactors proposed to meet this demand are not reduced, they are <b>all avoided</b>. At full conversion the reactors needed fall to <b>zero</b>. <b>Drag the deployment slider to convert the fleet and watch every proposed reactor turn green.</b></div>
+  <div class="h-model">
+    <span><b>5,500</b> US data centers</span>
+    <span><b>11,800</b> global</span>
+    <span><b>25.08&times;</b> less energy each</span>
+    <span><b>43 GW</b> avoided at full global conversion</span>
+    <span><b>43 GW</b> of waste heat ejection stopped</span>
+    <span><b>0</b> reactors needed at full conversion</span>
+    <span><b>Utah:</b> all 13 reactors avoided</span>
+  </div>
+</header>
+
+<div class="stage">
+  <div class="work">
+    <div class="work-head">
+      <div class="region-tabs">
+        <button class="rtab active" id="tabUS">United States &middot; 5,500</button>
+        <button class="rtab" id="tabGlobal">Global &middot; 11,800</button>
+        <button class="rtab" id="tabUtah">Utah &middot; 13 reactors</button>
+      </div>
+      <div class="work-tag" id="workTag">0 GW saved</div>
+    </div>
+
+    <div class="deploy">
+      <div class="deploy-top">
+        <span class="deploy-lab">Data centers converted to Infoton P30</span>
+        <span class="deploy-val"><span id="dCount">0</span><small id="dPct">0% of fleet</small></span>
+      </div>
+      <input type="range" id="slider" min="0" max="100" step="1" value="0">
+      <div class="deploy-scale"><span>0 converted</span><span id="scaleMax">5,500 converted</span></div>
+    </div>
+
+    <div class="fleetbar-wrap">
+      <div class="fleetbar-lab"><span class="fbl-l">Fleet power demand</span><span class="fbl-r" id="fleetReadout"></span></div>
+      <div class="fleet-track" id="fleetTrack">
+        <div class="fseg-byte" id="segByte"><span class="fseg-lab" id="lblByte"></span></div>
+        <div class="fseg-p30" id="segP30"><span class="fseg-lab" id="lblP30"></span></div>
+        <div class="fseg-saved" id="segSaved"><span class="fseg-lab" id="lblSaved"></span></div>
+      </div>
+      <div class="legend">
+        <span><span class="dot byte"></span>byte demand (unconverted)</span>
+        <span><span class="dot p30"></span>P30 demand (converted)</span>
+        <span><span class="dot saved"></span>demand eliminated</span>
+      </div>
+    </div>
+
+    <div class="react-block">
+      <div class="react-head"><span class="react-t">Reactors avoided (300 MW SMR each)</span><span class="react-n" id="reactN">0</span></div>
+      <div class="react-grid" id="reactGrid"></div>
+      <div class="react-cap" id="reactCap">Each block is one 300 MW small modular reactor that no longer needs to be built to serve this fleet.</div>
+    </div>
+
+    <div class="react-block">
+      <div class="react-head"><span class="react-t">Waste heat ejection stopped</span><span class="react-n" id="heatN" style="color:#fba238">0 GW</span></div>
+      <div class="heatbar-track" id="heatTrack">
+        <div class="heatbar-fill" id="heatFill"></div>
+      </div>
+      <div class="react-cap">Nearly all electricity into a data center leaves as waste heat. Power saved is heat no longer ejected into air and water.</div>
+    </div>
+
+    <div class="caption" id="caption">At 0% conversion the fleet runs entirely on the byte, summoning the full reactor pipeline. Drag the slider: every converted data center drops to <b>1/25th</b> of its draw, and the avoided demand mounts into reactors that never get built.</div>
+  </div>
+
+  <div class="panel">
+    <div class="p-block">
+      <div class="p-title">Reactors Needed for This Demand</div>
+      <div class="big"><span class="big-lab" id="bigLab">United States, at full conversion</span><span class="big-val" id="bigVal">0</span><span class="big-sub" id="bigSub">all proposed reactors avoided; remainder on solar and wind</span></div>
+    </div>
+
+    <div class="p-block">
+      <div class="p-title">At This Deployment Level</div>
+      <div class="row"><span class="r-name">Converted</span><span class="r-val neu" id="roConv">0</span></div>
+      <div class="row"><span class="r-name">Fleet demand now</span><span class="r-val byte" id="roDemand">20.9 GW</span></div>
+      <div class="row"><span class="r-name">Demand eliminated</span><span class="r-val p30" id="roSaved">0 GW</span></div>
+      <div class="row"><span class="r-name">Energy avoided / yr</span><span class="r-val p30" id="roTWh">0 TWh</span></div>
+      <div class="row"><span class="r-name">Waste heat stopped</span><span class="r-val" id="roHeat" style="color:#fba238">0 GW</span></div>
+      <div class="row"><span class="r-name">SMRs avoided</span><span class="r-val p30" id="roSMR">0</span></div>
+      <div class="row"><span class="r-name">1 GW reactors avoided</span><span class="r-val p30" id="roGW">0</span></div>
+    </div>
+
+    <div class="p-block">
+      <div class="p-title">Waste Heat Stopped</div>
+      <div class="big" id="heatBig" style="background:rgba(251,162,56,.12);border-color:rgba(251,162,56,.4)">
+        <span class="big-lab" style="color:#fba238">Heat ejection eliminated</span>
+        <span class="big-val" id="heatBigVal" style="color:#fba238">0 GW</span>
+        <span class="big-sub" id="heatBigSub">thermal, no longer dumped to air and water</span>
+      </div>
+      <div class="row"><span class="r-name">Annual waste heat avoided</span><span class="r-val" id="roHeatTWh" style="color:#fba238">0 TWh</span></div>
+      <div class="row"><span class="r-name">Equivalent homes\u2019 heating</span><span class="r-val neu" id="roHomes">0</span></div>
+      <div class="row"><span class="r-name">Water warmable by 1\u00b0C</span><span class="r-val neu" id="roKm3">0 km\u00b3</span></div>
+      <div class="row" id="afRow" style="display:none"><span class="r-name">Lake water spared (if evaporative)</span><span class="r-val" id="roAF" style="color:#5dcaa5">0 AF/yr</span></div>
+    </div>
+
+    <div class="p-block">
+      <div class="p-title">The Math, Step by Step</div>
+      <div class="deriv">
+        <div class="dstep"><span class="dnum">1</span><div class="dbody">
+          <span class="dmath">US fleet: <span class="by">183 TWh</span>/yr &divide; 5,500 DCs = <span class="by">3.80 MW</span> avg</span>
+          <span class="dnote">Average per-data-center draw, derived from real US consumption.</span></div></div>
+        <div class="dstep"><span class="dnum">2</span><div class="dbody">
+          <span class="dmath">Energy ratio (benchmark) = 41.078 / 1.638 = <span class="hl">25.08&times;</span></span>
+          <span class="dnote">Byte vs Infoton per message, at the Landauer floor.</span></div></div>
+        <div class="dstep"><span class="dnum">3</span><div class="dbody">
+          <span class="dmath">Converted DC = 3.80 / <span class="hl">25.08</span> = <span class="pp">0.15 MW</span></span>
+          <span class="dnote">Each conversion removes 3.65 MW, 96% of that center's draw.</span></div></div>
+        <div class="dstep"><span class="dnum">4</span><div class="dbody">
+          <span class="dmath">Fleet(d) = n &times; [(1&minus;d)&middot;3.80 + d&middot;0.15]</span>
+          <span class="dnote">d = fraction converted. The slider sets d.</span></div></div>
+        <div class="dstep"><span class="dnum">5</span><div class="dbody">
+          <span class="dmath">Saved(d) = n &times; d &times; <span class="pp">3.65 MW</span></span>
+          <span class="dnote">Scales linearly with deployment.</span></div></div>
+        <div class="dstep"><span class="dnum">6</span><div class="dbody">
+          <span class="dmath">SMRs avoided = Saved &divide; <span class="hl">300 MW</span></span>
+          <span class="dnote">Full global conversion: 43 GW = 143 SMRs never built.</span></div></div>
+      </div>
+    </div>
+
+    <div class="p-block">
+      <div class="p-title">Serving the Remainder Without Extraction</div>
+      <div class="row"><span class="r-name">Solar PV (CF 0.24)</span><span class="r-val p30" id="roSolar">&mdash;</span></div>
+      <div class="row"><span class="r-name">Onshore wind (CF 0.35)</span><span class="r-val p30" id="roWind">&mdash;</span></div>
+      <div class="row"><span class="r-name">New fuel extracted</span><span class="r-val p30">none</span></div>
+    </div>
+
+    <div class="p-block">
+      <div class="p-title">References</div>
+      <div class="refs">
+        <p class="ref">Brightlio. (2026). <i>255 data center statistics.</i> https://brightlio.com/data-center-stats</p>
+        <p class="ref">International Energy Agency. (2026). <i>Key questions on energy and AI.</i> IEA. https://www.iea.org/reports/key-questions-on-energy-and-ai</p>
+        <p class="ref">Landauer, R. (1961). Irreversibility and heat generation in the computing process. <i>IBM Journal of Research and Development, 5</i>(3), 183&ndash;191. https://doi.org/10.1147/rd.53.0183</p>
+        <p class="ref">Statista. (2026). <i>Data centers worldwide by territory.</i> https://www.statista.com/statistics/1228433</p>
+        <p class="ref">Walker, J. (2026). <i>The Infoton: A fundamental particle of information-energy.</i> Infoton. https://doi.org/10.5281/zenodo.18210355</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="eq">Fleet demand: <b>P(d) = n &times; [(1&minus;d) &times; 3.80 + d &times; 0.15] MW</b>, where n is fleet size and d the converted fraction. Demand eliminated <b>= n &times; d &times; 3.65 MW</b>. SMRs avoided = that &divide; 300 MW. The 25.08&times; ratio is benchmark-exact; per-DC average, reactor size, and PUE are stated estimates.</div>
+  <div>US fleet ~5,500 data centers consuming ~183 TWh in 2024; global fleet ~11,800 (IEA, Statista, Brightlio, 2025&ndash;2026). Average draw is fleet energy divided by count and understates flagship AI campuses while overstating small edge sites; the ratio holds regardless. This visual argues efficiency removes the demand driving the reactor pipeline; it does not endorse nuclear or any extractive baseload. Non-extractive nameplate uses standard U.S. capacity factors, paired with storage and demand shaping.</div>
+</footer>
+
+<script>
+"use strict";
+(function(){
+  var E_RATIO=25.08, AVG_BYTE=3.80, AVG_P30=3.80/25.08, SAVED_PER=AVG_BYTE-AVG_P30;
+  var SMR=300, GWR=1000, hours=8760;
+  var FLEETS={
+    US:{n:5500,name:'United States'},
+    GLOBAL:{n:11800,name:'Global'},
+    UTAH:{name:'Utah',isUtah:true,dcLoadMW:3900,reactors:13,galPerMWyr:3.5e6}
+  };
+  var region='US';
+  var ID=function(x){return document.getElementById(x);};
+  var slider=ID('slider');
+
+  function fmtGW(mw){return mw>=1000?(mw/1000).toFixed(1)+' GW':mw.toFixed(0)+' MW';}
+
+  function update(){
+    var f=FLEETS[region], d=parseInt(slider.value)/100;
+
+    if(f.isUtah){
+      var loadMW=f.dcLoadMW;
+      var p30LoadMW=(loadMW/1.4)/E_RATIO*1.4;     // facility scaling via PUE
+      var savedFull=loadMW-p30LoadMW;
+      var saved=savedFull*d;                       // demand removed at this deployment
+      var P_byte=loadMW - (d*loadMW);              // load still on byte
+      var P_p30=d*p30LoadMW;                        // converted, running
+      var totalNow=P_byte+P_p30;
+      var total_byte_baseline=loadMW;
+      var smrs=saved/SMR, gwr=saved/GWR, savedTWh=saved*hours/1e6;
+      var reactorsAvoided=saved/SMR;
+      var reactorsFull=savedFull/SMR;
+
+      ID('dCount').textContent=(d*100).toFixed(0)+'%';
+      ID('dPct').textContent='of Utah DC load';
+      ID('scaleMax').textContent='100% converted';
+      ID('workTag').textContent=fmtGW(saved)+' saved';
+      ID('fleetReadout').textContent=fmtGW(totalNow)+' now \u00b7 '+fmtGW(saved)+' removed';
+      var WU=function(mw){return (mw/total_byte_baseline*100);};
+      ID('segByte').style.width=WU(P_byte)+'%';
+      ID('segP30').style.width=Math.max(WU(P_p30),P_p30>0?1.5:0)+'%';
+      ID('segSaved').style.width=WU(saved)+'%';
+      ID('lblByte').textContent=WU(P_byte)>14?fmtGW(P_byte):'';
+      ID('lblP30').textContent=WU(P_p30)>10?fmtGW(P_p30):'';
+      ID('lblSaved').textContent=WU(saved)>14?fmtGW(saved)+' gone':'';
+
+      var grid=ID('reactGrid');
+      if(grid.childElementCount!==f.reactors){
+        grid.innerHTML='';
+        for(var i=0;i<f.reactors;i++){var r=document.createElement('div');r.className='react';r.style.width='28px';r.style.height='34px';grid.appendChild(r);}
+      }
+      var avoidedR=Math.round(d*f.reactors);
+      Array.prototype.forEach.call(grid.children,function(c,i){c.classList.toggle('avoided',i<avoidedR);});
+      ID('reactN').textContent=avoidedR+' of '+f.reactors;
+      ID('reactCap').innerHTML='Utah has proposed <b>13 SMR-300 reactors</b> (3.9 GW) for its data center buildout. P30 removes the demand; the small remainder is served by solar and wind, so every reactor it clears is avoided outright \u2014 none replaced by other nuclear.';
+
+      ID('roConv').textContent=(d*100).toFixed(0)+'% of 3.9 GW';
+      ID('roDemand').textContent=fmtGW(totalNow);
+      ID('roSaved').textContent=fmtGW(saved);
+      ID('roTWh').textContent=savedTWh.toFixed(0)+' TWh';
+      ID('roSMR').textContent=avoidedR+' of 13';
+      ID('roGW').textContent=gwr.toFixed(1);
+      ID('roSolar').textContent=fmtGW(totalNow/0.24)+' nameplate';
+      ID('roWind').textContent=fmtGW(totalNow/0.35)+' nameplate';
+      var heatJ=saved*1e6*3600*hours, homes=heatJ/40e9, km3=heatJ/4.186e18;
+      ID('heatN').textContent=fmtGW(saved);
+      ID('heatFill').style.width=WU(saved)+'%';
+      var hfu=ID('heatFill').querySelector('.heatbar-val');
+      if(!hfu){hfu=document.createElement('span');hfu.className='heatbar-val';ID('heatFill').appendChild(hfu);}
+      hfu.textContent=WU(saved)>16?fmtGW(saved):'';
+      ID('roHeat').textContent=fmtGW(saved);
+      ID('heatBigVal').textContent=fmtGW(saved);
+      ID('roHeatTWh').textContent=savedTWh.toFixed(0)+' TWh';
+      ID('roHomes').textContent=homes>=1e6?(homes/1e6).toFixed(1)+' M':Math.round(homes).toLocaleString();
+      ID('roKm3').textContent=km3.toFixed(2)+' km\u00b3';
+
+      var AF=saved*f.galPerMWyr/325851;
+      ID('afRow').style.display='flex';
+      ID('roAF').textContent=Math.round(AF).toLocaleString()+' AF/yr';
+
+      ID('bigLab').textContent='Utah, at this deployment';
+      ID('bigVal').textContent=(f.reactors-avoidedR);
+      ID('bigSub').textContent=((f.reactors-avoidedR)===0?'all 13 proposed reactors avoided; remainder on solar and wind':avoidedR+' of 13 avoided so far');
+      ID('heatBigSub').textContent='thermal, off Utah air and the Great Salt Lake watershed';
+
+      if(d===0){
+        ID('caption').innerHTML='Utah has proposed <b>13 nuclear reactors</b> to power its data center buildout. At 0% conversion, all 13 are on the table. Drag the slider: each reactor turns green as P30 removes the demand it was meant to serve, with solar and wind covering the small remainder.';
+      }else if(d>=1){
+        ID('caption').innerHTML='Full conversion of Utah\u2019s data center load: all <b>13 of 13 reactors</b> made unnecessary. The load drops to <b>'+fmtGW(p30LoadMW)+'</b>, served by solar and wind, and roughly <b>'+Math.round(AF).toLocaleString()+' acre-feet</b> of water is spared from the Great Salt Lake watershed each year if those centers were evaporatively cooled.';
+      }else{
+        ID('caption').innerHTML='<b>'+(d*100).toFixed(0)+'%</b> of Utah\u2019s data center load converted: <b>'+avoidedR+' of 13 reactors</b> made unnecessary, <b>'+fmtGW(saved)+'</b> removed, the rest served by solar and wind.';
+      }
+      return;
+    }
+
+    var n=f.n;
+    var converted=Math.round(n*d);
+    var byteDC=n-converted;
+    var P_byte=byteDC*AVG_BYTE;          // MW still on byte
+    var P_p30=converted*AVG_P30;         // MW converted, running
+    var saved=converted*SAVED_PER;       // MW eliminated
+    var total_byte_baseline=n*AVG_BYTE;
+    var smrs=saved/SMR, gwr=saved/GWR;
+    var savedTWh=saved*hours/1e6;
+
+    ID('dCount').textContent=converted.toLocaleString();
+    ID('dPct').textContent=(d*100).toFixed(0)+'% of fleet';
+    ID('scaleMax').textContent=n.toLocaleString()+' converted';
+    ID('workTag').textContent=fmtGW(saved)+' saved';
+
+    var totalNow=P_byte+P_p30;
+    ID('fleetReadout').textContent=fmtGW(totalNow)+' now \u00b7 '+fmtGW(saved)+' removed';
+    var W=function(mw){return (mw/total_byte_baseline*100);};
+    ID('segByte').style.width=W(P_byte)+'%';
+    ID('segP30').style.width=Math.max(W(P_p30),P_p30>0?1.5:0)+'%';
+    ID('segSaved').style.width=W(saved)+'%';
+    ID('lblByte').textContent=W(P_byte)>14?fmtGW(P_byte):'';
+    ID('lblP30').textContent=W(P_p30)>10?fmtGW(P_p30):'';
+    ID('lblSaved').textContent=W(saved)>14?fmtGW(saved)+' gone':'';
+
+    var grid=ID('reactGrid');
+    var totalSMR=Math.round(total_byte_baseline/SMR);
+    var avoidedSMR=Math.round(d*totalSMR);
+    var stillNeeded=totalSMR-avoidedSMR;
+    if(grid.childElementCount!==totalSMR){
+      grid.innerHTML='';
+      for(var i=0;i<totalSMR;i++){var r=document.createElement('div');r.className='react';grid.appendChild(r);}
+    }
+    Array.prototype.forEach.call(grid.children,function(c,i){c.classList.toggle('avoided',i<avoidedSMR);});
+    ID('reactN').textContent=avoidedSMR.toLocaleString()+' avoided';
+    ID('reactCap').innerHTML='Each block is one 300 MW reactor proposed for this demand. As the fleet converts, each turns green \u2014 avoided outright, its load gone or carried by solar and wind. At full conversion all are green and <b>zero</b> remain to be built.';
+
+    ID('roConv').textContent=converted.toLocaleString()+' / '+n.toLocaleString();
+    ID('roDemand').textContent=fmtGW(totalNow);
+    ID('roSaved').textContent=fmtGW(saved);
+    ID('roTWh').textContent=savedTWh.toFixed(0)+' TWh';
+    ID('roSMR').textContent=Math.round(smrs).toLocaleString();
+    ID('roGW').textContent=gwr.toFixed(1);
+    ID('roSolar').textContent=fmtGW((totalNow)/0.24)+' nameplate';
+    ID('roWind').textContent=fmtGW((totalNow)/0.35)+' nameplate';
+
+    var heatStopped=saved;
+    var heatTWh=savedTWh;
+    var heatJ=heatStopped*1e6*3600*hours;
+    var homes=heatJ/40e9;
+    var km3=heatJ/4.186e18;
+    ID('heatN').textContent=fmtGW(heatStopped);
+    ID('heatFill').style.width=(heatStopped/total_byte_baseline*100)+'%';
+    var hf=ID('heatFill').querySelector('.heatbar-val');
+    if(!hf){hf=document.createElement('span');hf.className='heatbar-val';ID('heatFill').appendChild(hf);}
+    hf.textContent=(heatStopped/total_byte_baseline*100)>16?fmtGW(heatStopped):'';
+    ID('roHeat').textContent=fmtGW(heatStopped);
+    ID('heatBigVal').textContent=fmtGW(heatStopped);
+    ID('roHeatTWh').textContent=heatTWh.toFixed(0)+' TWh';
+    ID('roHomes').textContent=homes>=1e6?(homes/1e6).toFixed(1)+' M':Math.round(homes).toLocaleString();
+    ID('roKm3').textContent=km3.toFixed(2)+' km\u00b3';
+    ID('afRow').style.display='none';
+
+    var fullSaved=n*SAVED_PER, fullSMR=Math.round(fullSaved/SMR);
+    ID('bigLab').textContent=f.name+', at this deployment';
+    ID('bigVal').textContent=stillNeeded.toLocaleString();
+    ID('bigSub').textContent=(stillNeeded===0?'all '+totalSMR.toLocaleString()+' proposed reactors avoided; remainder on solar and wind':avoidedSMR.toLocaleString()+' of '+totalSMR.toLocaleString()+' avoided so far');
+
+    if(d===0){
+      ID('caption').innerHTML='At 0% conversion the fleet runs entirely on the byte, summoning the full reactor pipeline. Drag the slider: every converted data center drops to <b>1/25th</b> of its draw, and the avoided demand mounts into reactors that never get built.';
+    }else if(d>=1){
+      ID('caption').innerHTML='Full conversion: the entire '+f.name.toLowerCase()+' fleet runs on the Infoton. Demand falls by <b>'+fmtGW(saved)+'</b>, <b>'+avoidedSMR+' SMRs</b> are never built, and the remainder is served by wind and solar without extracting new fuel.';
+    }else{
+      ID('caption').innerHTML='<b>'+converted.toLocaleString()+'</b> of '+n.toLocaleString()+' data centers converted. Demand eliminated: <b>'+fmtGW(saved)+'</b>, equal to <b>'+avoidedSMR+'</b> reactors that need not be built; the small remainder runs on solar and wind.';
+    }
+  }
+
+  slider.addEventListener('input',update);
+  function setRegion(r){
+    region=r;
+    ['tabUS','tabGlobal','tabUtah'].forEach(function(id){ID(id).classList.remove('active');});
+    ID(r==='US'?'tabUS':r==='GLOBAL'?'tabGlobal':'tabUtah').classList.add('active');
+    update();
+  }
+  ID('tabUS').addEventListener('click',function(){setRegion('US');});
+  ID('tabGlobal').addEventListener('click',function(){setRegion('GLOBAL');});
+  ID('tabUtah').addEventListener('click',function(){setRegion('UTAH');});
+  update();
+})();
+</script>
+</body>
+</html></body>

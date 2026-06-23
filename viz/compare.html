@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P30 vs Traditional ECC | Side by Side</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f6f6; --center:#fada24; --w2:#e97158; --w3:#cc4778; --w4:#a31e9a;
+  --space:#350498; --grid:#6e54a3; --text:#1a1a1a; --text-m:rgba(53,4,152,.7);
+  --border:rgba(53,4,152,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.5;
+  height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+.top{padding:1rem 1.6rem 1rem;border-bottom:2px solid var(--space);background:#fff;flex-shrink:0}
+.top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.top h1{font:700 1.35rem/1.2 'Cinzel',serif;color:var(--space)}
+.top p{font:400 1rem/1.45 'Cormorant Garamond',serif;color:var(--text-m);max-width:52rem;margin-top:.35rem}
+.top p b{color:var(--space);font-weight:600}
+
+.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:.85rem}
+.btn{font:500 12px/1 'Cinzel',serif;letter-spacing:.06em;padding:9px 16px;border-radius:5px;cursor:pointer;
+  background:#f3eefb;border:1.5px solid var(--grid);color:var(--space);text-transform:uppercase;transition:all .14s}
+.btn:hover{background:#e9e0f6}
+.btn.primary{background:var(--center);border-color:var(--center);color:var(--space);font-weight:600}
+.btn.primary:hover{background:#ffe45a}
+.speed{display:flex;align-items:center;gap:6px;margin-left:auto}
+.speed-lab{font:400 14px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+.tier{font:500 11px/1 'Cinzel',serif;padding:7px 11px;border-radius:5px;cursor:pointer;
+  background:#fff;border:1.5px solid var(--border);color:var(--text-m);text-transform:uppercase}
+.tier.active{background:var(--space);border-color:var(--space);color:#fff;font-weight:600}
+
+.race{margin-top:1rem;display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
+.race-mid{text-align:center;padding:0 8px}
+.ratio-num{font:700 2rem/1 'Cinzel',serif;color:var(--w3)}
+.ratio-lab{font:400 13px/1.3 'Cormorant Garamond',serif;color:var(--text-m);margin-top:4px}
+.track{display:flex;flex-direction:column;gap:6px}
+.track-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.track-name{font:600 12px/1 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase}
+.track-name.p30{color:var(--center);background:var(--space);padding:4px 10px;border-radius:4px}
+.track-name.trad{color:var(--w2)}
+.track-ops{font:700 1.35rem/1 'Cinzel',serif;font-variant-numeric:tabular-nums;color:var(--space)}
+.track-ops span{font:400 14px/1 'Cormorant Garamond',serif;color:var(--text-m);font-weight:400}
+.bar{height:14px;border-radius:4px;background:rgba(53,4,152,.08);overflow:hidden;border:1px solid var(--border)}
+.bar-fill{height:100%;border-radius:3px;transition:width .12s ease;width:0}
+.bar-fill.p30{background:linear-gradient(90deg,var(--center),#ffe45a)}
+.bar-fill.trad{background:linear-gradient(90deg,var(--w2),var(--w3),var(--w4))}
+.track-meta{font:400 13px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+.track-meta b{color:var(--space)}
+
+.panes{flex:1;display:grid;grid-template-columns:1fr 3px 1fr;min-height:0;background:var(--space)}
+.divider{background:var(--center);opacity:.55}
+.pane{display:flex;flex-direction:column;min-height:0;min-width:0;background:var(--space)}
+.pane-head{padding:8px 14px 6px;display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid rgba(250,218,36,.25);flex-shrink:0}
+.pane-title{font:600 11px/1 'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.pane-sub{font:400 12px/1 'Cormorant Garamond',serif;color:rgba(255,255,255,.55);font-style:italic}
+.pane iframe{flex:1;border:0;width:100%;min-height:0;background:var(--space)}
+
+.status{padding:6px 1.6rem;font:400 14px/1.4 'Cormorant Garamond',serif;color:var(--text-m);
+  border-top:1px solid var(--border);background:#fff;flex-shrink:0}
+.status b{color:var(--space)}
+
+@media(max-width:960px){
+  body{height:auto;overflow:auto}
+  .panes{grid-template-columns:1fr;grid-template-rows:1fr 3px 1fr}
+  .pane iframe{min-height:420px}
+  .race{grid-template-columns:1fr}
+  .race-mid{order:-1;padding-bottom:4px}
+}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="top-row">
+    <div>
+      <h1>Same Sentence, Two Stacks</h1>
+      <p>Both sides process the same <b>163-character</b> Great Salt Lake sentence. Left: P30 coprime encoding (489 operations, library mode). Right: byte + Hamming SECDED (21 words &times; 584 = <b>12,264</b> operations). Press Play once — watch P30 finish while traditional ECC is still counting.</p>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="btn primary" id="playBtn">Play</button>
+    <button class="btn" id="resetBtn">Reset</button>
+    <div class="speed">
+      <span class="speed-lab">Speed</span>
+      <button class="tier active" data-p30="150" data-ham="8">Demo</button>
+      <button class="tier" data-p30="55" data-ham="3">Fast</button>
+      <button class="tier" data-p30="14" data-ham="1">Turbo</button>
+    </div>
+  </div>
+  <div class="race">
+    <div class="track">
+      <div class="track-head">
+        <span class="track-name p30">P30 Encoding</span>
+        <span class="track-ops" id="p30Ops">0 <span>/ 489</span></span>
+      </div>
+      <div class="bar"><div class="bar-fill p30" id="p30Bar"></div></div>
+      <div class="track-meta" id="p30Meta">0 / 163 characters</div>
+    </div>
+    <div class="race-mid">
+      <div class="ratio-num" id="ratioLive">&mdash;</div>
+      <div class="ratio-lab">ops gap (traditional &divide; P30)</div>
+    </div>
+    <div class="track">
+      <div class="track-head">
+        <span class="track-name trad">Byte + Hamming SECDED</span>
+        <span class="track-ops" id="hamOps">0 <span>/ 12,264</span></span>
+      </div>
+      <div class="bar"><div class="bar-fill trad" id="hamBar"></div></div>
+      <div class="track-meta" id="hamMeta">Word 0 / 21</div>
+    </div>
+  </div>
+</div>
+
+<div class="panes">
+  <div class="pane">
+    <div class="pane-head">
+      <span class="pane-title">P30 Prime 30 Clock</span>
+      <span class="pane-sub" id="p30Phase">Idle</span>
+    </div>
+    <iframe id="p30Frame" src="index.html?embed=compare" title="P30 encoder"></iframe>
+  </div>
+  <div class="divider" aria-hidden="true"></div>
+  <div class="pane">
+    <div class="pane-head">
+      <span class="pane-title">Traditional 64-Bit Word + ECC</span>
+      <span class="pane-sub" id="hamPhase">Idle</span>
+    </div>
+    <iframe id="hamFrame" src="hamming.html?embed=compare" title="Hamming SECDED"></iframe>
+  </div>
+</div>
+
+<div class="status" id="status">Press <b>Play</b> to run both encoders on the same sentence. P30 resolves each character to a coprime spoke; Hamming runs a full 584-operation round trip per 64-bit word.</div>
+
+<script>
+"use strict";
+var P30_MAX=489, HAM_MAX=12264, CHARS=163, WORDS=21;
+var playing=false;
+var p30Delay=150, hamDelay=8;
+var state={p30:{ops:0,progress:0,finished:false,playing:false},ham:{ops:0,progress:0,finished:false,playing:false,word:0}};
+
+var p30Frame=document.getElementById('p30Frame');
+var hamFrame=document.getElementById('hamFrame');
+
+function fmt(n){ return n.toLocaleString(); }
+
+function updateRace(){
+  var p=state.p30, h=state.ham;
+  document.getElementById('p30Ops').innerHTML=fmt(p.ops)+' <span>/ '+fmt(P30_MAX)+'</span>';
+  document.getElementById('hamOps').innerHTML=fmt(h.ops)+' <span>/ '+fmt(HAM_MAX)+'</span>';
+  document.getElementById('p30Bar').style.width=Math.min(100,p.ops/P30_MAX*100).toFixed(2)+'%';
+  document.getElementById('hamBar').style.width=Math.min(100,h.ops/HAM_MAX*100).toFixed(2)+'%';
+  document.getElementById('p30Meta').innerHTML='<b>'+p.progress+'</b> / '+CHARS+' characters'+(p.finished?' &middot; <b>done</b>':'');
+  document.getElementById('hamMeta').innerHTML='Word <b>'+Math.min(h.word,WORDS)+'</b> / '+WORDS+(h.finished?' &middot; <b>done</b>':'');
+  var ratioEl=document.getElementById('ratioLive');
+  if(p.ops>0) ratioEl.textContent=(h.ops/Math.max(p.ops,1)).toFixed(1)+'\u00d7';
+  else ratioEl.textContent='\u2014';
+  document.getElementById('p30Phase').textContent=p.finished?'Complete':(p.playing?'Encoding':'Idle');
+  document.getElementById('hamPhase').textContent=h.finished?'Complete':(h.playing?'Checking':'Idle');
+  var st=document.getElementById('status');
+  if(p.finished&&h.finished){
+    st.innerHTML='Both finished. P30 spent <b>'+fmt(p.ops)+'</b> operations; Hamming SECDED spent <b>'+fmt(h.ops)+'</b> on the same message — a <b>'+(HAM_MAX/P30_MAX).toFixed(1)+'\u00d7</b> gap at full scale.';
+  }else if(p.finished&&!h.finished){
+    st.innerHTML='P30 is <b>done</b> at '+fmt(p.ops)+' operations. Hamming is still at '+fmt(h.ops)+' ('+(h.ops/HAM_MAX*100).toFixed(0)+'% of its total). The gap is the argument.';
+  }else if(playing){
+    st.innerHTML='Running side by side. Same 163 characters — different operation budgets.';
+  }
+}
+
+function postBoth(cmd,extra){
+  var msg=Object.assign({cmd:cmd},extra||{});
+  p30Frame.contentWindow.postMessage(msg,'*');
+  hamFrame.contentWindow.postMessage(msg,'*');
+}
+
+function setSpeed(p30,ham){
+  p30Delay=p30; hamDelay=ham;
+  p30Frame.contentWindow.postMessage({cmd:'setSpeed',delay:p30},'*');
+  hamFrame.contentWindow.postMessage({cmd:'setSpeed',delay:ham},'*');
+}
+
+function play(){
+  if(playing){
+    playing=false;
+    document.getElementById('playBtn').textContent='Play';
+    postBoth('pause');
+    return;
+  }
+  playing=true;
+  document.getElementById('playBtn').textContent='Pause';
+  postBoth('play');
+}
+
+function reset(){
+  playing=false;
+  document.getElementById('playBtn').textContent='Play';
+  state.p30={ops:0,progress:0,finished:false,playing:false};
+  state.ham={ops:0,progress:0,finished:false,playing:false,word:0};
+  postBoth('reset');
+  updateRace();
+  document.getElementById('status').innerHTML='Press <b>Play</b> to run both encoders on the same sentence. P30 resolves each character to a coprime spoke; Hamming runs a full 584-operation round trip per 64-bit word.';
+}
+
+window.addEventListener('message',function(e){
+  var d=e.data;
+  if(!d||d.type!=='state') return;
+  if(d.source==='p30'){
+    state.p30.ops=d.ops; state.p30.progress=d.progress;
+    state.p30.finished=d.finished; state.p30.playing=d.playing;
+  }else if(d.source==='hamming'){
+    state.ham.ops=d.ops; state.ham.progress=d.progress;
+    state.ham.finished=d.finished; state.ham.playing=d.playing;
+    state.ham.word=d.word||0;
+  }
+  if(state.p30.finished&&state.ham.finished&&playing){
+    playing=false;
+    document.getElementById('playBtn').textContent='Play';
+  }
+  updateRace();
+});
+
+document.getElementById('playBtn').addEventListener('click',play);
+document.getElementById('resetBtn').addEventListener('click',reset);
+document.querySelectorAll('.tier').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.tier').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    setSpeed(parseInt(btn.dataset.p30,10),parseInt(btn.dataset.ham,10));
+    if(playing){ postBoth('pause'); playing=true; document.getElementById('playBtn').textContent='Pause'; postBoth('play'); }
+  });
+});
+
+function onFrameLoad(frame,delay){
+  frame.addEventListener('load',function(){
+    try{ frame.contentWindow.postMessage({cmd:'setSpeed',delay:delay},'*'); }catch(e){}
+  });
+}
+onFrameLoad(p30Frame,p30Delay);
+onFrameLoad(hamFrame,hamDelay);
+
+updateRace();
+</script>
+</body>
+</html>
