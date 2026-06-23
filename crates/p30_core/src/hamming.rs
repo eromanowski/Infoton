@@ -25,14 +25,18 @@ impl SecdedBreakdown {
         self.parity_generation + self.syndrome_check + self.correction
     }
 
-    /// Split 584 ops/word into generation (256), check (256), correction (72) — sums to 584.
+    /// Split 584 ops/word to match the step model in `viz/hamming.html`:
+    /// parity generation on the write path (128 = 2 ops x 64 data bits),
+    /// syndrome check on the read path (455), and a single correcting XOR (1).
+    /// Write 128 + read 456 = 584. The read path (syndrome + correction = 456)
+    /// is the cost a P30 read skips entirely (reverify_on_read = 0).
     pub fn for_bytes(byte_len: usize) -> Self {
         let words = words_for_bytes(byte_len);
         Self {
             words,
-            parity_generation: words * 256,
-            syndrome_check: words * 256,
-            correction: words * 72,
+            parity_generation: words * 128,
+            syndrome_check: words * 455,
+            correction: words * 1,
         }
     }
 }
