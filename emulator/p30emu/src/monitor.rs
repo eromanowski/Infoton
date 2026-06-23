@@ -215,6 +215,14 @@ impl Monitor {
     }
 
     /// Encode loaded text residues into 15-byte lanes in memory (BIOS Emit path).
+    /// Base address for materialized lanes: above the raw-residue scratch area
+    /// (`mem_base + 4096`) and rounded up to a 15-byte boundary so `write_lane`
+    /// / `read_lane` alignment checks pass.
+    fn lane_base(&self) -> usize {
+        let raw = self.mem_base + 4096;
+        raw.div_ceil(15) * 15
+    }
+
     pub fn materialize_residue_lanes(&mut self) -> Result<usize, &'static str> {
         let text = self.text.as_ref().ok_or("nothing loaded")?;
         let residues: Vec<u8> = text
@@ -223,7 +231,8 @@ impl Monitor {
             .map(|(i, ch)| storage_residue(ch, i))
             .collect();
         // Store raw residue bytes at mem_base for inspection; lanes use full positions
-        let mut offset = self.mem_base + 4096;
+        let lane_base = self.lane_base();
+        let mut offset = lane_base;
         let mut lane = [0u32; 4];
         let mut li = 0usize;
         for (i, ch) in text.chars().enumerate() {
@@ -245,13 +254,12 @@ impl Monitor {
             offset += 15;
         }
         let _ = residues;
-        Ok(offset - (self.mem_base + 4096))
+        Ok(offset - lane_base)
     }
 
     /// PVALL-style: count invalid units in materialized lanes.
     pub fn validate_materialized_lanes(&self, unit_count: usize) -> Result<usize, &'static str> {
-        self.mem
-            .validate_lanes(self.mem_base + 4096, unit_count)
+        self.mem.validate_lanes(self.lane_base(), unit_count)
     }
 }
 
