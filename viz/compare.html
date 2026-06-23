@@ -30,11 +30,6 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
 .btn:hover{background:#e9e0f6}
 .btn.primary{background:var(--center);border-color:var(--center);color:var(--space);font-weight:600}
 .btn.primary:hover{background:#ffe45a}
-.speed{display:flex;align-items:center;gap:6px;margin-left:auto}
-.speed-lab{font:400 14px/1 'Cormorant Garamond',serif;color:var(--text-m)}
-.tier{font:500 11px/1 'Cinzel',serif;padding:7px 11px;border-radius:5px;cursor:pointer;
-  background:#fff;border:1.5px solid var(--border);color:var(--text-m);text-transform:uppercase}
-.tier.active{background:var(--space);border-color:var(--space);color:#fff;font-weight:600}
 
 .race{margin-top:1rem;display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
 .race-mid{text-align:center;padding:0 8px}
@@ -88,12 +83,6 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
   <div class="controls">
     <button class="btn primary" id="playBtn">Play</button>
     <button class="btn" id="resetBtn">Reset</button>
-    <div class="speed">
-      <span class="speed-lab">Speed</span>
-      <button class="tier" data-op="8">Demo</button>
-      <button class="tier active" data-op="3">Fast</button>
-      <button class="tier" data-op="1">Turbo</button>
-    </div>
   </div>
   <div class="race">
     <div class="track">
@@ -125,7 +114,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
       <span class="pane-title">P30 Prime 30 Clock</span>
       <span class="pane-sub" id="p30Phase">Idle</span>
     </div>
-    <iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=3" title="P30 encoder"></iframe>
+    <iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=1" title="P30 encoder"></iframe>
   </div>
   <div class="divider" aria-hidden="true"></div>
   <div class="pane">
@@ -133,7 +122,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
       <span class="pane-title">Traditional 64-Bit Word + ECC</span>
       <span class="pane-sub" id="hamPhase">Idle</span>
     </div>
-    <iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=3" title="Hamming SECDED"></iframe>
+    <iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=1" title="Hamming SECDED"></iframe>
   </div>
 </div>
 
@@ -143,7 +132,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
 "use strict";
 var P30_MAX=489, HAM_MAX=12264, CHARS=163, WORDS=21;
 var playing=false;
-var opDelay=3;
+var opDelay=1;
 var tickTimer=null;
 var state={p30:{ops:0,progress:0,finished:false,playing:false},ham:{ops:0,progress:0,finished:false,playing:false,word:0}};
 
@@ -185,14 +174,7 @@ function postBoth(cmd,extra){
   postFrame(hamFrame,cmd,extra);
 }
 
-function syncDelaysFromActiveTier(){
-  var btn=document.querySelector('.tier.active');
-  if(!btn) return;
-  opDelay=parseInt(btn.dataset.op,10)||3;
-}
-
 function applySpeed(){
-  syncDelaysFromActiveTier();
   postFrame(p30Frame,'setSpeed',{delay:opDelay});
   postFrame(hamFrame,'setSpeed',{delay:opDelay});
 }
@@ -268,17 +250,7 @@ window.addEventListener('message',function(e){
 
 document.getElementById('playBtn').addEventListener('click',play);
 document.getElementById('resetBtn').addEventListener('click',reset);
-document.querySelectorAll('.tier').forEach(function(btn){
-  btn.addEventListener('click',function(){
-    document.querySelectorAll('.tier').forEach(function(b){b.classList.remove('active');});
-    btn.classList.add('active');
-    resetState();
-    applySpeed();
-    idleStatus();
-  });
-});
 
-syncDelaysFromActiveTier();
 updateRace();
 </script>
 </body>
