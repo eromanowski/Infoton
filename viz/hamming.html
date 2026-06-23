@@ -823,6 +823,12 @@ if(EMBED_COMPARE){
     if(d.cmd==='play') play();
     else if(d.cmd==='pause') stop();
     else if(d.cmd==='reset') reset();
+    else if(d.cmd==='step'){
+      if(el.phaseTag.textContent==='Complete') return;
+      if(!playing) playing=true;
+      step();
+      broadcastEmbed();
+    }
     else if(d.cmd==='setSpeed'&&d.delay) stepDelay=parseInt(d.delay,10);
   });
   setMode('tweet');

@@ -595,7 +595,7 @@ function highlightChar(idx){
   }
 }
 
-var idx=0, playing=false, stepTimer=null, stepDelay=150, finished=false, tokensSoFar=0;
+var idx=0, opIdx=0, playing=false, stepTimer=null, stepDelay=150, finished=false, tokensSoFar=0;
 (function(){
   var dm=/[?&]delay=(\d+)/.exec(location.search);
   if(dm) stepDelay=parseInt(dm[1],10);
@@ -707,6 +707,33 @@ function updatePanel(){
   broadcastEmbed();
 }
 
+function stepOp(){
+  if(finished) return;
+  if(opIdx>=489){ finish(); return; }
+  if(!runClock.running) runClockStart();
+  playing=true;
+  var ci=Math.floor(opIdx/3);
+  var ph=opIdx%3;
+  idx=ci;
+  el.phaseTag.textContent='Encode';
+  highlightChar(ci);
+  var ch=SENTENCE[ci];
+  var val=CHAR_TO_VAL[ch];
+  if(ph===0 && val!==undefined) beadForValue(val);
+  var labels=['Locate','Emit','Verify'];
+  el.caption.innerHTML='Operation <b>'+(opIdx+1)+'</b> / 489: <b>'+labels[ph]+'</b> — character '+(ci+1)+' of '+CHARS+'.';
+  opIdx++;
+  if(val!==undefined && ph===2) tokensSoFar=ci+1;
+  el.cTotal.textContent=opIdx;
+  el.cEmit.textContent=Math.min(Math.ceil(opIdx/3), CHARS);
+  el.cLocate.textContent=Math.floor(opIdx/3)*2+Math.min(opIdx%3,2);
+  el.eOps.textContent=opIdx;
+  draw();
+  updateRunTimer();
+  if(opIdx>=489) finish();
+  else broadcastEmbed();
+}
+
 function stepChar(){
   if(idx>=CHARS){ finish(); return; }
   var ch=SENTENCE[idx];
@@ -782,7 +809,7 @@ function stop(){
   document.getElementById('playBtn').textContent='Play';
 }
 function reset(){
-  stop(); idx=0; finished=false; tokensSoFar=0; passCount=0; errOps=0; litRes=-1; litVal=null; errState=null;
+  stop(); idx=0; opIdx=0; finished=false; tokensSoFar=0; passCount=0; errOps=0; litRes=-1; litVal=null; errState=null;
   runClockReset();
   highlightChar(-1); el.phaseTag.textContent='Idle';
   el.caption.innerHTML='Press <b>Play</b> to encode the sentence character by character, or <b>Step</b> through one at a time. Each character lights the spoke it lands on; a value on a spoke is valid by construction.';
@@ -906,9 +933,9 @@ function broadcastEmbed(){
   var p30Full=(p30mode==='bios')?CHARS:CHARS*3;
   window.parent.postMessage({
     source:'p30',type:'state',
-    ops:parseInt(el.cTotal.textContent,10)||0,
+    ops:EMBED_COMPARE?opIdx:(parseInt(el.cTotal.textContent,10)||0),
     opsMax:p30Full,
-    progress:idx,progressMax:CHARS,
+    progress:EMBED_COMPARE?Math.min(Math.floor(opIdx/3),CHARS):idx,progressMax:CHARS,
     playing:playing,finished:finished,
     ms:runClockMs()
   },'*');
@@ -919,6 +946,7 @@ if(EMBED_COMPARE){
     if(d.cmd==='play') play();
     else if(d.cmd==='pause') stop();
     else if(d.cmd==='reset') reset();
+    else if(d.cmd==='step') stepOp();
     else if(d.cmd==='setSpeed'&&d.delay) stepDelay=parseInt(d.delay,10);
   });
   broadcastEmbed();

@@ -81,7 +81,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
   <div class="top-row">
     <div>
       <h1>Same Sentence, Two Stacks</h1>
-      <p>Both sides process the same <b>163-character</b> Great Salt Lake sentence. Left: P30 coprime encoding (489 operations, library mode). Right: byte + Hamming SECDED (21 words &times; 584 = <b>12,264</b> operations). Press Play once — watch P30 finish while traditional ECC is still counting.</p>
+      <p>Both sides process the same <b>163-character</b> sentence one <b>operation at a time</b> in lockstep — P30 library (489 ops) vs Hamming SECDED (12,264 ops). Same tick, same delay; watch P30 reach the finish while traditional ECC is still counting.</p>
     </div>
     <a class="home-link" href="landing.html">Home</a>
   </div>
@@ -90,9 +90,9 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
     <button class="btn" id="resetBtn">Reset</button>
     <div class="speed">
       <span class="speed-lab">Speed</span>
-      <button class="tier" data-p30="150" data-ham="8">Demo</button>
-      <button class="tier active" data-p30="55" data-ham="3">Fast</button>
-      <button class="tier" data-p30="14" data-ham="1">Turbo</button>
+      <button class="tier" data-op="8">Demo</button>
+      <button class="tier active" data-op="3">Fast</button>
+      <button class="tier" data-op="1">Turbo</button>
     </div>
   </div>
   <div class="race">
@@ -125,7 +125,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
       <span class="pane-title">P30 Prime 30 Clock</span>
       <span class="pane-sub" id="p30Phase">Idle</span>
     </div>
-    <iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=55" title="P30 encoder"></iframe>
+    <iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=3" title="P30 encoder"></iframe>
   </div>
   <div class="divider" aria-hidden="true"></div>
   <div class="pane">
@@ -137,13 +137,14 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
   </div>
 </div>
 
-<div class="status" id="status">Press <b>Play</b> to run both encoders on the same sentence. P30 resolves each character to a coprime spoke; Hamming runs a full 584-operation round trip per 64-bit word.</div>
+<div class="status" id="status">Press <b>Play</b> — both sides advance <b>one operation per tick</b> at the same rate. P30: Locate / Emit / Verify per character; Hamming: one step of the 584-op round trip.</div>
 
 <script>
 "use strict";
 var P30_MAX=489, HAM_MAX=12264, CHARS=163, WORDS=21;
 var playing=false;
-var p30Delay=55, hamDelay=3;
+var opDelay=3;
+var tickTimer=null;
 var state={p30:{ops:0,progress:0,finished:false,playing:false},ham:{ops:0,progress:0,finished:false,playing:false,word:0}};
 
 var p30Frame=document.getElementById('p30Frame');
@@ -170,41 +171,57 @@ function updateRace(){
   }else if(p.finished&&!h.finished){
     st.innerHTML='P30 is <b>done</b> at '+fmt(p.ops)+' operations. Hamming is still at '+fmt(h.ops)+' ('+(h.ops/HAM_MAX*100).toFixed(0)+'% of its total). The gap is the argument.';
   }else if(playing){
-    st.innerHTML='Running side by side. Same 163 characters — different operation budgets.';
+    st.innerHTML='Lockstep: both sides advance one operation per tick ('+opDelay+' ms/op).';
   }
 }
 
-function postBoth(cmd,extra){
+function postFrame(frame,cmd,extra){
   var msg=Object.assign({cmd:cmd},extra||{});
-  p30Frame.contentWindow.postMessage(msg,'*');
-  hamFrame.contentWindow.postMessage(msg,'*');
+  try{frame.contentWindow.postMessage(msg,'*');}catch(e){}
+}
+
+function postBoth(cmd,extra){
+  postFrame(p30Frame,cmd,extra);
+  postFrame(hamFrame,cmd,extra);
 }
 
 function syncDelaysFromActiveTier(){
   var btn=document.querySelector('.tier.active');
   if(!btn) return;
-  p30Delay=parseInt(btn.dataset.p30,10);
-  hamDelay=parseInt(btn.dataset.ham,10);
+  opDelay=parseInt(btn.dataset.op,10)||3;
 }
 
 function applySpeed(){
   syncDelaysFromActiveTier();
-  try{p30Frame.contentWindow.postMessage({cmd:'setSpeed',delay:p30Delay},'*');}catch(e){}
-  try{hamFrame.contentWindow.postMessage({cmd:'setSpeed',delay:hamDelay},'*');}catch(e){}
+  postFrame(p30Frame,'setSpeed',{delay:opDelay});
+  postFrame(hamFrame,'setSpeed',{delay:opDelay});
 }
 
-function setSpeed(p30,ham){
-  p30Delay=p30; hamDelay=ham;
-  applySpeed();
+function stopLockstep(){
+  playing=false;
+  if(tickTimer){ clearTimeout(tickTimer); tickTimer=null; }
+  document.getElementById('playBtn').textContent='Play';
+  postBoth('pause');
+}
+
+function lockstepTick(){
+  if(!playing) return;
+  if(state.p30.finished && state.ham.finished){
+    stopLockstep();
+    updateRace();
+    return;
+  }
+  if(!state.p30.finished) postFrame(p30Frame,'step');
+  if(!state.ham.finished) postFrame(hamFrame,'step');
+  tickTimer=setTimeout(lockstepTick, opDelay);
 }
 
 function idleStatus(){
-  document.getElementById('status').innerHTML='Press <b>Play</b> to run both encoders on the same sentence. P30 resolves each character to a coprime spoke; Hamming runs a full 584-operation round trip per 64-bit word.';
+  document.getElementById('status').innerHTML='Press <b>Play</b> — both sides advance <b>one operation per tick</b> at the same rate. P30: Locate / Emit / Verify per character; Hamming: one step of the 584-op round trip.';
 }
 
 function resetState(){
-  playing=false;
-  document.getElementById('playBtn').textContent='Play';
+  stopLockstep();
   state.p30={ops:0,progress:0,finished:false,playing:false};
   state.ham={ops:0,progress:0,finished:false,playing:false,word:0};
   postBoth('reset');
@@ -213,15 +230,13 @@ function resetState(){
 
 function play(){
   if(playing){
-    playing=false;
-    document.getElementById('playBtn').textContent='Play';
-    postBoth('pause');
+    stopLockstep();
     return;
   }
   resetState();
   playing=true;
   document.getElementById('playBtn').textContent='Pause';
-  postBoth('play');
+  lockstepTick();
 }
 
 function reset(){
@@ -246,8 +261,7 @@ window.addEventListener('message',function(e){
     state.ham.word=d.word||0;
   }
   if(state.p30.finished&&state.ham.finished&&playing){
-    playing=false;
-    document.getElementById('playBtn').textContent='Play';
+    stopLockstep();
   }
   updateRace();
 });
@@ -259,7 +273,7 @@ document.querySelectorAll('.tier').forEach(function(btn){
     document.querySelectorAll('.tier').forEach(function(b){b.classList.remove('active');});
     btn.classList.add('active');
     resetState();
-    setSpeed(parseInt(btn.dataset.p30,10),parseInt(btn.dataset.ham,10));
+    applySpeed();
     idleStatus();
   });
 });
