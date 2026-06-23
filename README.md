@@ -1,4 +1,8 @@
-# P30 — Prime 30 (open exploration)
+# Infoton
+
+Infoton is to exalt the dignity and promote the happiness of humankind, intelligence, and all life.
+
+## P30 — Prime 30 (open exploration)
 
 Open implementation of the [Infoton P30](https://infoton.ai/infoton-p30) demo: **P30 = Prime 30** — coprime positions on the prime-30 wheel, Library vs BIOS profiles, and Hamming SECDED baseline comparison. We reproduce the demo metrics, publish a spec, and explore the path to a full native stack.
 
