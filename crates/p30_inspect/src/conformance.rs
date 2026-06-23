@@ -159,7 +159,7 @@ fn check_infoton_demo(v: &Vector) -> Result<(), String> {
     Ok(())
 }
 
-/// Verify embedded Tier-1 table matches spec/tier1_alphabet.json length.
+/// Verify the embedded Tier-1 table is internally consistent (68 entries, lookup round-trips).
 pub fn verify_tier1_table_integrity() -> Result<(), String> {
     if TIER1_CHARS.len() != 68 || TIER1_VALUES.len() != 68 {
         return Err("tier1 table length != 68".into());

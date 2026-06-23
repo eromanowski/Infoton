@@ -203,9 +203,9 @@ def run_rate_mode(args: argparse.Namespace) -> Path:
         if elapsed < period:
             time.sleep(period - elapsed)
 
-    _write_rate_csv(out_path, rows)
     if not rows:
         raise SystemExit("no rate samples")
+    _write_rate_csv(out_path, rows)
 
     mean_e_p = sum(r["p30_energy_j"] for r in rows) / len(rows)
     mean_e_h = sum(r["hamming_energy_j"] for r in rows) / len(rows)
@@ -241,6 +241,7 @@ def _write_max_csv(path: Path, samples: list) -> None:
                 "elapsed_s",
                 "p30_power_w",
                 "hamming_power_w",
+                "delta_w",
                 "p30_passes",
                 "hamming_passes",
                 "notes",

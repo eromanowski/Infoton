@@ -12,6 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main() -> None:
+    # Committed corpus_data.c must already match the corpus, then (re)generate for the build.
+    subprocess.run(
+        [sys.executable, str(ROOT / "tools" / "gen_corpus_firmware.py"), "--check"],
+        check=True,
+    )
     subprocess.run([sys.executable, str(ROOT / "tools" / "gen_corpus_firmware.py")], check=True)
 
     required = [

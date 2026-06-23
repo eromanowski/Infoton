@@ -31,7 +31,8 @@ def position_value(ch: str, index: int) -> int:
     if ch in CHAR_TO_VAL:
         return CHAR_TO_VAL[ch]
     tot = [1, 7, 11, 13, 17, 19, 23, 29]
-    return index * 30 + tot[ord(ch) % 8]
+    # Escape: first UTF-8 byte (matches Rust locate_totative_byte).
+    return index * 30 + tot[ch.encode("utf-8")[0] % 8]
 
 
 def verify_char_payload(text: str) -> bool:

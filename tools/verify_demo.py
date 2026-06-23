@@ -25,8 +25,8 @@ def locate_totative(byte: int, index: int) -> int:
 def position_value(ch: str, index: int) -> int:
     if ch in CHAR_TO_VAL:
         return CHAR_TO_VAL[ch]
-    b = ord(ch)
-    return locate_totative(b, index)
+    # Escape: first UTF-8 byte (matches Rust locate_totative_byte).
+    return locate_totative(ch.encode("utf-8")[0], index)
 
 
 def storage_residue(ch: str, index: int) -> int:
@@ -80,10 +80,12 @@ def landauer_zj(t_k: float = 350.0) -> float:
 def main() -> None:
     text = CORPUS
     n = len(text.encode("utf-8"))
-    assert len(text) == E["char_count"], (len(text), E["char_count"])
+    chars = len(text)
+    assert chars == E["char_count"], (chars, E["char_count"])
 
-    lib_ops = n * 3
-    bios_ops = n * 1
+    # Ops are per character (matches Rust count_p30_ops); Hamming is per UTF-8 byte.
+    lib_ops = chars * 3
+    bios_ops = chars * 1
     ham_ops = hamming_ops(n)
 
     checks = {

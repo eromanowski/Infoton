@@ -32,7 +32,8 @@ def load_corpus() -> tuple[str, list[int]]:
     def pos(ch: str, idx: int) -> int:
         if ch in char_to_val:
             return char_to_val[ch]
-        return idx * 30 + tot[ord(ch) % 8]
+        # Escape: first UTF-8 byte (matches Rust locate_totative_byte).
+        return idx * 30 + tot[ch.encode("utf-8")[0] % 8]
 
     positions = [pos(ch, i) for i, ch in enumerate(text)]
     return text, positions

@@ -35,7 +35,7 @@ pub enum LocateResult {
 /// Residue mod 30, matching Infoton `residue(v)` in the viz.
 #[inline]
 pub fn residue_mod30(value: u32) -> u8 {
-    ((value % 30) + 30) % 30) as u8
+    (((value % 30) + 30) % 30) as u8
 }
 
 /// True if `ch` is in the Infoton Tier-1 alphabet.

@@ -30,7 +30,8 @@ def is_tier1(ch: str) -> bool:
 def position_value(ch: str, index: int) -> int:
     if ch in CHAR_TO_VAL:
         return CHAR_TO_VAL[ch]
-    return index * 30 + TOTATIVES[ord(ch) % 8]
+    # Escape: match Rust locate_totative_byte (first UTF-8 byte, not code point).
+    return index * 30 + TOTATIVES[ch.encode("utf-8")[0] % 8]
 
 
 def char_bytes(text: str) -> int:
@@ -106,11 +107,13 @@ def decode_packed(data: bytes) -> str:
 
 def snapshot(text: str) -> dict:
     n = len(text.encode("utf-8"))
+    chars = len(text)
     return {
-        "char_count": len(text),
+        "char_count": chars,
         "utf8_bytes": n,
-        "library_ops": n * 3,
-        "bios_ops": n * 1,
+        # Ops are per character (matches Rust count_p30_ops via chars().count()).
+        "library_ops": chars * 3,
+        "bios_ops": chars * 1,
         "hamming_ops": hamming_ops(n),
         "char_bytes": char_bytes(text),
         "packed_bytes": packed_bytes(text),
