@@ -193,6 +193,11 @@ function play(){
     postBoth('pause');
     return;
   }
+  // Fresh synchronized start — both sides reset together (P30 alone auto-restarts when done)
+  state.p30={ops:0,progress:0,finished:false,playing:false};
+  state.ham={ops:0,progress:0,finished:false,playing:false,word:0};
+  postBoth('reset');
+  updateRace();
   playing=true;
   document.getElementById('playBtn').textContent='Pause';
   postBoth('play');
