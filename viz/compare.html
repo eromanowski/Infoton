@@ -109,7 +109,7 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
         <span class="track-ops" id="hamOps">0 <span>/ 12,264</span></span>
       </div>
       <div class="bar"><div class="bar-fill trad" id="hamBar"></div></div>
-      <div class="track-meta" id="hamMeta">Word 0 / 21</div>
+      <div class="track-meta" id="hamMeta">Word <b>1</b> / 21</div>
     </div>
   </div>
   <div class="replay-note">Timers show <b>slow-motion replay pace</b>, not hardware speed &mdash; real silicon runs this roughly 10<sup>8</sup>&times; faster. This race compares <i>operation counts</i>, not wall-clock time.</div>
@@ -141,7 +141,7 @@ var P30_MAX=489, HAM_MAX=12264, CHARS=163, WORDS=21;
 var playing=false;
 var opDelay=1;
 var tickTimer=null;
-var state={p30:{ops:0,progress:0,finished:false,playing:false},ham:{ops:0,progress:0,finished:false,playing:false,word:0}};
+var state={p30:{ops:0,progress:0,finished:false,playing:false},ham:{ops:0,progress:0,finished:false,playing:false,word:1}};
 
 var p30Frame=document.getElementById('p30Frame');
 var hamFrame=document.getElementById('hamFrame');
@@ -155,7 +155,7 @@ function updateRace(){
   document.getElementById('p30Bar').style.width=Math.min(100,p.ops/P30_MAX*100).toFixed(2)+'%';
   document.getElementById('hamBar').style.width=Math.min(100,h.ops/HAM_MAX*100).toFixed(2)+'%';
   document.getElementById('p30Meta').innerHTML='<b>'+p.progress+'</b> / '+CHARS+' characters'+(p.finished?' &middot; <b>done</b>':'');
-  document.getElementById('hamMeta').innerHTML='Word <b>'+Math.min(h.word,WORDS)+'</b> / '+WORDS+(h.finished?' &middot; <b>done</b>':'');
+  document.getElementById('hamMeta').innerHTML='Word <b>'+Math.max(h.word,1)+'</b> / '+WORDS+(h.finished?' &middot; <b>done</b>':'');
   var ratioEl=document.getElementById('ratioLive');
   if(p.ops>0) ratioEl.textContent=(h.ops/Math.max(p.ops,1)).toFixed(1)+'\u00d7';
   else ratioEl.textContent='\u2014';
@@ -212,7 +212,7 @@ function idleStatus(){
 function resetState(){
   stopLockstep();
   state.p30={ops:0,progress:0,finished:false,playing:false};
-  state.ham={ops:0,progress:0,finished:false,playing:false,word:0};
+  state.ham={ops:0,progress:0,finished:false,playing:false,word:1};
   postBoth('reset');
   updateRace();
 }
@@ -247,7 +247,7 @@ window.addEventListener('message',function(e){
   }else if(d.source==='hamming'){
     state.ham.ops=d.ops; state.ham.progress=d.progress;
     state.ham.finished=d.finished; state.ham.playing=d.playing;
-    state.ham.word=d.word||0;
+    state.ham.word=d.word||1;
   }
   if(state.p30.finished&&state.ham.finished&&playing){
     stopLockstep();

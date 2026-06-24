@@ -208,7 +208,7 @@ body.embed-compare{overflow:hidden;height:100vh;margin:0}
 body.embed-compare #open-repro-banner,body.embed-compare>header,body.embed-compare .panel-wrap{display:none!important}
 body.embed-compare .stage{grid-template-columns:1fr;height:100%;max-height:none;background:var(--space)}
 body.embed-compare .work{height:100%;padding:1rem 1.2rem;overflow:hidden}
-body.embed-compare .demo-tabs,body.embed-compare .controls,body.embed-compare .speed-note,body.embed-compare #flipBtn{display:none!important}
+body.embed-compare .demo-tabs,body.embed-compare .controls,body.embed-compare .speed-note,body.embed-compare #flipBtn,body.embed-compare #wordTag{display:none!important}
 body.embed-compare .run-timer{padding:5px 10px}
 body.embed-compare .grid-wrap{flex:1;min-height:0;overflow:auto}
 body.embed-compare .caption{height:auto;min-height:52px;font-size:15px}
@@ -580,7 +580,8 @@ function updateRunTimer(){
   const opMax=(mode==='tweet')?TWEET_TOTAL:TOTAL;
   te.textContent=formatElapsed(ms);
   if(EMBED_COMPARE){
-    tm.innerHTML='<b>'+total.toLocaleString()+'</b> / '+opMax.toLocaleString()+' ops';
+    const wLab=(mode==='tweet')?('Word <b>'+(Math.min(curWord+1,totalWords))+'</b> / '+totalWords+' &middot; '):'';
+    tm.innerHTML=wLab+'<b>'+total.toLocaleString()+'</b> / '+opMax.toLocaleString()+' ops';
   }else{
     const perOp=(total>0&&ms>0)?(ms/total).toFixed(2):'—';
     tm.innerHTML=total.toLocaleString()+' / '+opMax.toLocaleString()+' ops &middot; <b>'+perOp+'</b> ms/op';
