@@ -1,0 +1,19 @@
+{
+  "description": "Period-30 d=8 qudit basis: totative level ↔ residue ↔ ket",
+  "reference": "García-Martín et al. 2020, Quantum 4, 371 — prime state / qudit framing",
+  "dim": 8,
+  "totatives": [1, 7, 11, 13, 17, 19, 23, 29],
+  "vectors": [
+    {"index": 0, "residue": 1, "ket": "|1⟩", "position_period0": 1},
+    {"index": 1, "residue": 7, "ket": "|7⟩", "position_period0": 7},
+    {"index": 2, "residue": 11, "ket": "|11⟩", "position_period0": 11},
+    {"index": 3, "residue": 13, "ket": "|13⟩", "position_period0": 13},
+    {"index": 4, "residue": 17, "ket": "|17⟩", "position_period0": 17},
+    {"index": 5, "residue": 19, "ket": "|19⟩", "position_period0": 19},
+    {"index": 6, "residue": 23, "ket": "|23⟩", "position_period0": 23},
+    {"index": 7, "residue": 29, "ket": "|29⟩", "position_period0": 29},
+    {"index": null, "residue": 6, "ket": null, "desert": true},
+    {"index": null, "residue": 10, "ket": null, "desert": true},
+    {"index": null, "residue": 15, "ket": null, "desert": true}
+  ]
+}

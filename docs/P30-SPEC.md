@@ -22,6 +22,15 @@ A **P30 position** is a non-negative integer `p` with `gcd(p, 30) = 1`.
 residue(p) = p mod 30   // always ∈ T
 ```
 
+### 1.1 Qudit basis (d = 8)
+
+The eight totatives are the **levels of a period-30 qudit** (classical one-hot projection). Each valid P30 position occupies exactly one level; composite residues are **desert** (outside the alphabet). See [`docs/qudit-basis.md`](qudit-basis.md) and `p30_core::qudit`.
+
+```
+index ∈ {0..7}  ↔  T[index]  ↔  ket |T[index]⟩
+position p      →  period ⌊p/30⌋ + level index(residue(p))
+```
+
 ## 2. Core operations
 
 ### Locate(character, char_index) → position

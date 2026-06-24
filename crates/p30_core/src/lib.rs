@@ -7,6 +7,12 @@ pub mod storage;
 pub mod hamming;
 pub mod ber;
 pub mod canonical;
+pub mod qudit;
+
+pub use qudit::{
+    index_to_totative, ket_label_for_index, ket_label_for_position, period_of,
+    position_from_qudit, prime_supported_levels, totative_index, Qudit8, DIM as QUDIT_DIM,
+};
 
 pub use tier1::{
     is_tier1, locate_character, position_value, residue_mod30, storage_residue, tier1_value,

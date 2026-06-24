@@ -206,6 +206,7 @@ body.embed-compare .caption{min-height:52px;font-size:15px;padding:8px 12px}
     <span><b>11</b> basis primes</span>
     <span><b>3</b> control: 2, 3, 5</span>
     <span><b>8</b> data spokes</span>
+    <span><b>d = 8</b> qudit basis</span>
     <span>&phi;(30) = 8</span>
     <span><b>1</b> lookup per character</span>
     <span><b>0</b> checks on clean data</span>
@@ -450,6 +451,12 @@ function draw(){
     ctx.moveTo(cx0+Math.cos(ang)*R*0.17, cy0+Math.sin(ang)*R*0.17);
     ctx.lineTo(cx0+Math.cos(ang)*R*0.97, cy0+Math.sin(ang)*R*0.97);
     ctx.strokeStyle=hexA(col, litRes===r?0.95:0.4); ctx.lineWidth=litRes===r?2.4:1.4; ctx.stroke();
+    // d=8 qudit basis label at hub (totative ket |r⟩)
+    var hr=R*0.11, hx=cx0+Math.cos(ang)*hr, hy=cy0+Math.sin(ang)*hr;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle=hexA(col, litRes===r?1:0.88);
+    ctx.font='600 11px Cinzel, serif';
+    ctx.fillText('|'+r+'\u27e9', hx, hy);
     // beads: every Tier 1 coprime value on this spoke, radius by index
     var vals=SPOKE_VALS[r], n=vals.length;
     vals.forEach(function(vv,i){

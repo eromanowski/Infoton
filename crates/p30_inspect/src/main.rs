@@ -6,6 +6,7 @@ use p30_core::ops::CalculatorSnapshot;
 use p30_core::storage::{decode_char, decode_packed, encode_char, encode_packed, verify_char_payload};
 use p30_core::tier1::{locate_character, residue_mod30, LocateResult};
 use p30_core::position_value;
+use p30_core::qudit::{ket_label_for_position, period_of, Qudit8};
 use std::io::{self, Read};
 use std::path::PathBuf;
 use std::process::ExitCode;
@@ -25,6 +26,7 @@ fn main() -> ExitCode {
         "transcode" => cmd_transcode(&args[2..]),
         "positions" => cmd_positions(&args[2..]),
         "conformance" => cmd_conformance(&args[2..]),
+        "qudit" => cmd_qudit(&args[2..]),
         "help" | "-h" | "--help" => {
             print_usage();
             ExitCode::SUCCESS
@@ -49,6 +51,7 @@ Usage:
   p30inspect transcode encode packed [file]
   p30inspect transcode decode packed [file]
   p30inspect positions [file]        Print Tier-1 position map for text
+  p30inspect qudit [file]            Print d=8 qudit ket per character (period |T[i]⟩)
   p30inspect conformance [path]    Run spec/conformance_vectors.json (default)
 
   file: path to UTF-8 text, or omit for canonical demo sentence"
@@ -233,6 +236,29 @@ fn cmd_positions(args: &[String]) -> ExitCode {
                 );
             }
         }
+    }
+    ExitCode::SUCCESS
+}
+
+fn cmd_qudit(args: &[String]) -> ExitCode {
+    let text = match read_text(args) {
+        Ok(t) => t,
+        Err(e) => {
+            eprintln!("read error: {e}");
+            return ExitCode::from(1);
+        }
+    };
+    println!("qudit dim=8 (period-30 totative basis)");
+    for (i, ch) in text.chars().enumerate() {
+        let pos = position_value(ch, i);
+        let period = period_of(pos);
+        let ket = ket_label_for_position(pos).unwrap_or_else(|| "|desert⟩".into());
+        let state = Qudit8::from_position(pos);
+        let valid = if state.is_valid_one_hot() { "valid" } else { "desert" };
+        println!(
+            "{i:4} {:?} pos={pos} period={period} {ket} ({valid})",
+            ch
+        );
     }
     ExitCode::SUCCESS
 }

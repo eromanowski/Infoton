@@ -20,6 +20,10 @@ With Tier-1 Locate, each character maps to a **fixed coprime value** (viz: bead 
 
 **Working model:** Coprimality provides **invalid codeword rejection** — a value on a spoke is valid by construction. Hamming SECDED provides **bit-level correction** on fixed-width words. PACKED checksum covers storage integrity in the open spec.
 
+## Period-30 qudit basis (d = 8)
+
+The eight totatives are modeled explicitly as **qudit levels** in `p30_core::qudit` — classical one-hot states aligned to García-Martín et al. (2020) prime-state / qudit framing. See [`qudit-basis.md`](qudit-basis.md).
+
 ## Deferred: Option B (30-bit ISA)
 
 Full silicon stack may adopt 30-bit totative words in Phase 2 if BIOS-native zero-read-verify requires fixed machine types.

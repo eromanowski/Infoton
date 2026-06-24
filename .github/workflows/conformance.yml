@@ -21,6 +21,9 @@ jobs:
       - name: Conformance vectors (≥100)
         run: python tools/conformance.py
 
+      - name: Qudit basis (d=8)
+        run: python tools/qudit_verify.py
+
   rust:
     runs-on: ubuntu-latest
     steps:
@@ -56,6 +59,9 @@ jobs:
 
       - name: p30inspect validate canonical
         run: cargo run -p p30_inspect -- validate spec/canonical_corpus.txt
+
+      - name: p30inspect qudit basis
+        run: cargo run -p p30_inspect -- qudit spec/canonical_corpus.txt | head -n 5
 
       - name: p30emu tests
         run: cargo test -p p30emu

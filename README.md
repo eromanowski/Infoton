@@ -73,6 +73,7 @@ Canonical corpus: [`spec/canonical_corpus.txt`](spec/canonical_corpus.txt)
 - `fpga/monitor_rom/` — bare-metal UART monitor stub
 - `spec/pack_vectors.json` — pack/unpack golden vectors
 - `docs/P30-SPEC.md` — normative spec (v0.2)
+- `docs/qudit-basis.md` — period-30 d=8 qudit basis (classical projection)
 - `docs/adr/` — ADR-001 (code unit), ADR-002 (ISA strategy)
 - `spec/test-vectors.json` — golden targets
 
