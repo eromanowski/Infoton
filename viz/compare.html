@@ -199,21 +199,16 @@ body.view-mechanics .mechanics-bridge{display:none}
 body.view-mechanics .panes{flex:1 1 0;min-height:min(420px,55vh);align-items:stretch}
 body.view-mechanics .pane{min-height:0;overflow:hidden;display:flex;flex-direction:column}
 body.view-mechanics .pane-head,body.view-mechanics .pane-now,body.view-mechanics .process-flow{flex-shrink:0}
-body.view-mechanics .pane-body{flex:1 1 0;min-height:180px;display:flex;flex-direction:column;overflow:hidden;background:inherit;contain:layout}
-body.view-mechanics .pane iframe{flex:1 1 0;width:100%;max-width:100%;min-height:180px;height:100%;border:0;display:block;vertical-align:top;transform:translateZ(0)}
+body.view-mechanics .pane-body{flex:1 1 0;min-height:240px;display:flex;flex-direction:column;overflow:hidden;background:inherit;contain:layout}
+body.view-mechanics .pane iframe{flex:1 1 0;width:100%;max-width:100%;min-height:240px;height:100%;border:0;display:block;vertical-align:top;transform:translateZ(0)}
 body.view-mechanics .footer-status{display:none}
-body.view-mechanics .pane-head{padding:8px 12px 6px}
+body.view-mechanics .pane-head{padding:6px 10px 4px;flex-shrink:0}
 body.view-mechanics .pane-pills{display:none}
+body.view-mechanics .pane-sub{display:none}
+body.view-mechanics .pane-now{display:none}
+body.view-mechanics .process-flow{display:none}
+body.view-mechanics .pane-progress{display:none}
 
-/* 125% Windows scaling on 1080p ≈ 864px viewport — hide redundant pane chrome */
-@media (max-height:920px){
-  body.view-mechanics .pane-now,body.view-mechanics .process-flow{display:none}
-  body.view-mechanics .pane-head .pane-sub{display:none}
-  body.view-mechanics .pane-head{padding:6px 10px 4px}
-  body.view-mechanics .sentence-top .sentence-meta{font-size:13px}
-}
-body.run-complete.view-mechanics .pane-now,body.run-complete.view-mechanics .process-flow{display:none}
-body.run-complete.view-mechanics .pane-head .pane-sub{display:none}
 body.run-complete.view-mechanics .sentence-block{display:none}
 
 .mechanics-result{display:none;padding:0;margin:0}
@@ -474,7 +469,7 @@ body.view-summary .progress-strip{display:none}
       <span class="flow-chain">Character → glyph → prime-clock position → verify</span>
       <span class="flow-detail" id="p30FlowDetail">Each character maps to a glyph position, then P30 verifies that position on the prime clock.</span>
     </div>
-    <div class="pane-body"><iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=8&amp;v=4" title="P30 encoder"></iframe></div>
+    <div class="pane-body"><iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=8&amp;v=5" title="P30 encoder"></iframe></div>
   </div>
   <div class="divider" aria-hidden="true"></div>
   <div class="pane trad-pane">
@@ -508,7 +503,7 @@ body.view-summary .progress-strip{display:none}
       <span class="flow-chain">Character → byte → 8 bits → ECC check bits</span>
       <span class="flow-detail" id="tradFlowDetail">Each character becomes one byte, then every bit is visited by the ECC verification pass.</span>
     </div>
-    <div class="pane-body"><iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=8&amp;v=4" title="Hamming SECDED"></iframe></div>
+    <div class="pane-body"><iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=8&amp;v=5" title="Hamming SECDED"></iframe></div>
   </div>
 </div>
 
