@@ -454,8 +454,14 @@ function resize(){
   var stage=cv.closest('.clock-stage')||wrap;
   var st=stage.getBoundingClientRect();
   if(EMBED_COMPARE){
-    var availW=Math.max(280,st.width-12);
-    var size=Math.max(360,Math.min(availW,520));
+    var availW=Math.max(160, (function(){
+      var mount=cv.closest('.pane-mount');
+      var boxW=(mount&&mount.getBoundingClientRect().width>0)
+        ?mount.getBoundingClientRect().width
+        :st.width;
+      return (boxW>0?boxW:320)-16;
+    })());
+    var size=Math.min(availW,520);
     cw=size;
     chh=size;
     if(wrap&&wrap!==stage) wrap.style.width=size+'px';

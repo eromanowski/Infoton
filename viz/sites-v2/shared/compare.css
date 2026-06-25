@@ -403,3 +403,28 @@
 .wgt-compare.wgt-compare-compact .result-panel { display: none !important; }
 .wgt-compare.wgt-compare-compact.is-run-complete .result-panel { display: none !important; }
 .wgt-compare.wgt-compare-embed .header-top { display: none; }
+
+@media (max-width: 900px) {
+  .wgt-compare .pane-mount {
+    height: auto !important;
+    min-height: min(360px, 88vw);
+    overflow: visible;
+  }
+
+  .wgt-compare.wgt-compare-compact .pane-mount {
+    height: auto !important;
+    min-height: min(320px, 84vw);
+  }
+
+  .wgt-compare .pane-mount .wgt-encoder-inner.embed-compare {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .wgt-compare .pane-mount .wgt-encoder,
+  .wgt-compare .pane-mount .wgt-encoder-inner {
+    height: auto;
+    min-height: 0;
+  }
+}

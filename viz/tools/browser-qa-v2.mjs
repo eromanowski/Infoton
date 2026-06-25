@@ -195,6 +195,17 @@ async function qaMobileStack(page) {
   const rail = page.locator('.story-rail');
   if (await rail.count()) pass(where, 'Story rail visible on mobile');
   else fail(where, 'Story rail missing');
+
+  const clock = page.locator('.wgt-compare #clock').first();
+  if (await clock.count()) {
+    const fit = await clock.evaluate((el) => {
+      const mount = el.closest('.pane-mount');
+      if (!mount) return true;
+      return el.getBoundingClientRect().width <= mount.getBoundingClientRect().width + 2;
+    });
+    if (fit) pass(where, 'P30 clock fits pane width on mobile');
+    else fail(where, 'P30 clock overflows pane on mobile');
+  }
 }
 
 async function qaNoIframes(page) {

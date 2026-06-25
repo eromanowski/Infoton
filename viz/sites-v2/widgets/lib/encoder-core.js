@@ -100,17 +100,26 @@
       if(nr===0) return 30; if(nr===1) return 31; return nr;
     }
 
+    var resizeObserver = null;
+
     function resize(){
       var wrap=cv.closest('.clock-canvas-wrap')||cv.parentElement;
       var stage=cv.closest('.clock-stage')||wrap;
       var st=stage.getBoundingClientRect();
       if(EMBED_COMPARE){
-        var availW=Math.max(280,st.width-12);
-        var size=Math.max(360,Math.min(availW,520));
+        var mount=cv.closest('.pane-mount');
+        var boxW=(mount&&mount.getBoundingClientRect().width>0)
+          ?mount.getBoundingClientRect().width
+          :(st.width>0?st.width:wrap.getBoundingClientRect().width);
+        var availW=Math.max(160, boxW-16);
+        var size=Math.min(availW, 520);
         cw=size;
         chh=size;
-        if(wrap&&wrap!==stage) wrap.style.width=size+'px';
-        wrap.style.height=size+'px';
+        if(wrap&&wrap!==stage){
+          wrap.style.width=size+'px';
+          wrap.style.height=size+'px';
+          wrap.style.maxWidth='100%';
+        }
       }else{
         var box=wrap.getBoundingClientRect();
         var bw=box.width>0?box.width:st.width;
@@ -652,6 +661,11 @@
     })();
 
     window.addEventListener('resize',resize);
+    if(EMBED_COMPARE&&typeof ResizeObserver!=='undefined'){
+      resizeObserver=new ResizeObserver(function(){ resize(); });
+      var observeTarget=cv.closest('.pane-mount')||stage||wrap;
+      if(observeTarget) resizeObserver.observe(observeTarget);
+    }
     resize(); reset();
 
     function embedNowLine(){
@@ -693,6 +707,7 @@
       destroy: function () {
         stop();
         window.removeEventListener("resize", resize);
+        if (resizeObserver) resizeObserver.disconnect();
         root.innerHTML = "";
       },
     };
