@@ -204,14 +204,95 @@ footer{padding:.85rem 3rem;border-top:2px solid var(--space);
   font:400 14px/1.7 'Cormorant Garamond',serif;color:var(--text-m)}
 footer a{color:var(--space)}
 @media(max-width:1080px){.stage{grid-template-columns:1fr}.panel{border-left:none;border-top:2px solid var(--space)}}
-body.embed-compare{overflow:hidden;height:100vh;margin:0}
+body.embed-compare{overflow:hidden!important;height:auto!important;min-height:0!important;margin:0;background:#2a1068!important;color:rgba(255,255,255,.92)}
 body.embed-compare #open-repro-banner,body.embed-compare>header,body.embed-compare .panel-wrap{display:none!important}
-body.embed-compare .stage{grid-template-columns:1fr;height:100%;max-height:none;background:var(--space)}
-body.embed-compare .work{height:100%;padding:1rem 1.2rem;overflow:hidden}
-body.embed-compare .demo-tabs,body.embed-compare .controls,body.embed-compare .speed-note,body.embed-compare #flipBtn,body.embed-compare #wordTag{display:none!important}
-body.embed-compare .run-timer{padding:5px 10px}
-body.embed-compare .grid-wrap{flex:1;min-height:0;overflow:auto}
-body.embed-compare .caption{height:auto;min-height:52px;font-size:15px}
+body.embed-compare .demo-tabs,body.embed-compare .controls,body.embed-compare .speed-note,body.embed-compare #flipBtn,body.embed-compare #wordTag,body.embed-compare .work-head{display:none!important}
+body.embed-compare .tweet-banner,body.embed-compare .run-timer{display:none!important}
+body.embed-compare .caption{display:none!important}
+body.embed-compare .stage{grid-template-columns:1fr;height:auto;min-height:100%;max-height:none;background:#2a1068!important}
+body.embed-compare .work{height:auto;min-height:100%;padding:.15rem .5rem 0;overflow:visible;background:#2a1068!important;
+  display:flex;flex-direction:column;justify-content:flex-start;gap:0}
+body.embed-compare .grid-wrap{flex:0 1 auto;min-height:0;overflow:visible;order:1;display:block;background:#2a1068!important;padding:0}
+body.embed-compare .word-grid{width:100%;margin:0;align-items:flex-start;gap:12px;justify-content:flex-start}
+body.embed-compare .bytes-col{flex:1 1 auto;min-width:0;gap:6px;max-width:100%}
+body.embed-compare .byte-row{display:grid;grid-template-columns:96px repeat(8,minmax(0,1fr));gap:6px;align-items:center;
+  padding:2px 5px;box-sizing:border-box}
+body.embed-compare .byte-tag{font-size:14px;color:rgba(255,255,255,.78)!important;
+  width:96px;min-width:96px;max-width:96px;flex:none;display:flex;align-items:center;gap:2px;box-sizing:border-box}
+body.embed-compare .byte-lab{flex:0 0 auto;white-space:nowrap}
+body.embed-compare .byte-arr{flex:0 0 1em;text-align:center;color:rgba(255,255,255,.42);font-weight:400}
+body.embed-compare .byte-char{flex:0 0 1.15em;text-align:center;min-width:1.15em;margin-left:0}
+body.embed-compare .bit{height:42px;font-size:15px;border:1.5px solid rgba(255,255,255,.32)!important;
+  background:rgba(255,255,255,.14)!important;color:rgba(255,255,255,.88)!important;flex:none;min-width:0}
+body.embed-compare .bit .bn{opacity:.95;font-size:15px;font-variant-numeric:tabular-nums}
+body.embed-compare .bit.active{transform:none!important;background:var(--center)!important;border-color:#fff!important;
+  color:var(--space)!important;box-shadow:0 0 18px rgba(250,218,36,.9)!important}
+body.embed-compare .bit.watched{background:rgba(255,105,70,.88)!important;border-color:#fff!important;
+  border-width:2.5px!important;color:#fff!important;
+  box-shadow:0 0 22px rgba(255,105,70,.95),inset 0 0 10px rgba(255,200,160,.35)!important;
+  transform:scale(1.1)!important;z-index:3;position:relative;
+  animation:embed-verify-pulse .85s ease-in-out infinite}
+body.embed-compare .bit.coverage{background:rgba(255,105,70,.75)!important;border-color:#ffb89a!important;
+  border-width:2px!important;color:#fff!important;
+  box-shadow:0 0 18px rgba(255,105,70,.8)!important;transform:scale(1.06)!important}
+@keyframes embed-verify-pulse{
+  0%,100%{box-shadow:0 0 16px rgba(255,105,70,.75),inset 0 0 8px rgba(255,200,160,.25)}
+  50%{box-shadow:0 0 32px rgba(255,130,90,1),inset 0 0 14px rgba(255,220,180,.45)}}
+body.embed-compare .byte-row.future-byte{opacity:.52}
+body.embed-compare .byte-row.done-byte{opacity:.82}
+body.embed-compare .grid-wrap.phase-read .byte-row:not(.examining){opacity:.32!important}
+body.embed-compare .grid-wrap.phase-read .byte-row.examining{opacity:1!important;
+  background:rgba(255,105,70,.22)!important;
+  outline:2.5px solid rgba(255,140,90,.95)!important;outline-offset:-2px;border-radius:8px;
+  box-shadow:0 0 28px rgba(255,105,70,.45)!important}
+body.embed-compare .grid-wrap.phase-read .byte-row.examining .byte-tag{color:#ffb89a!important;font-weight:700}
+body.embed-compare .grid-wrap.phase-read .byte-row.examining .byte-char{color:var(--center)!important;font-weight:700}
+body.embed-compare .grid-wrap.phase-read .byte-row.examining .bit:not(.watched){
+  opacity:.38!important;background:rgba(255,255,255,.06)!important;
+  border-color:rgba(255,255,255,.12)!important}
+body.embed-compare .grid-wrap.phase-read .byte-row.examining .bit.watched{opacity:1!important}
+body.embed-compare .bit-hdr{color:rgba(255,255,255,.65)}
+body.embed-compare .ecc-bridge{display:flex;align-items:center;justify-content:center;
+  padding:0 2px;min-width:22px;flex:0 0 auto;align-self:stretch}
+body.embed-compare .ecc-bridge-line{display:none}
+body.embed-compare .ecc-bridge-arrow{font:700 1.4rem/1 'Cinzel',serif;color:rgba(110,212,240,.75);opacity:.9}
+body.embed-compare .ecc-bridge-lab,body.embed-compare .ecc-bridge-sub{display:none!important}
+body.embed-compare .check-col{width:112px;flex:0 0 112px;min-width:112px;border-color:rgba(110,212,240,.62)!important;background:rgba(110,212,240,.18)!important;padding:12px 16px 12px 12px;box-sizing:border-box}
+body.embed-compare .check-cell{background:rgba(110,212,240,.26)!important;border-color:rgba(110,212,240,.68)!important;color:#fff!important;
+  padding:6px 8px!important;font-size:13px!important;gap:5px!important}
+body.embed-compare .check-cell.computing{background:var(--w3)!important;border-color:#fff!important;
+  border-width:2.5px!important;color:#fff!important;transform:scale(1.14)!important;
+  box-shadow:0 0 26px rgba(255,80,140,.95),0 0 10px rgba(255,255,255,.45)!important;
+  z-index:4;position:relative;animation:embed-compute-pulse .8s ease-in-out infinite}
+@keyframes embed-compute-pulse{
+  0%,100%{transform:scale(1.1);box-shadow:0 0 20px rgba(204,71,120,.85)}
+  50%{transform:scale(1.16);box-shadow:0 0 36px rgba(255,100,160,1),0 0 12px rgba(255,255,255,.55)}}
+body.embed-compare .grid-wrap.phase-read .check-cell:not(.computing):not(.match):not(.mismatch){opacity:.45!important}
+body.embed-compare .check-cell.match{background:rgba(61,220,132,.72)!important;border-color:#3ddc84!important;
+  border-width:2px!important;color:#fff!important;box-shadow:0 0 18px rgba(61,220,132,.65)!important}
+body.embed-compare .check-cell.mismatch{background:#ff3b3b!important;border-color:#fff!important;color:#fff!important;
+  border-width:2.5px!important;box-shadow:0 0 22px rgba(255,59,59,.95)!important;animation:pulse-err .7s infinite}
+body.embed-compare .check-cell .ccov{display:none}
+body.embed-compare .check-cell .cval{background:rgba(255,255,255,.22)!important;font-size:13px!important;min-width:20px!important;padding:2px 4px!important}
+body.embed-compare .check-col .ctitle{font-size:11px;line-height:1.25;color:#8ee4ff!important}
+body.embed-compare .check-col .ctitle-sub{font-size:10px;color:rgba(142,228,255,.88)!important}
+body.embed-compare .byte-row.active-byte{opacity:1!important;background:rgba(110,212,240,.22)!important;
+  box-shadow:0 0 28px rgba(110,212,240,.4)!important;
+  outline:2px solid rgba(110,212,240,.75);outline-offset:-2px;
+  border-radius:8px;padding:2px 5px!important;margin:0!important;border-color:transparent!important}
+body.embed-compare .byte-row.active-byte .byte-tag{color:var(--cyan)!important;font-weight:700}
+body.embed-compare .byte-row.active-byte .byte-char{color:var(--center)!important;font-weight:700}
+body.embed-compare .check-col .ctitle{color:var(--cyan)}
+body.embed-compare .check-col .ctitle-sub{color:rgba(110,212,240,.75)}
+body.embed-compare .bit.coverage{border-color:#ffb89a!important;box-shadow:0 0 16px rgba(255,105,70,.65)!important;
+  background:rgba(255,105,70,.72)!important}
+body.embed-compare .check-cell.cov-active{border-color:#ffb89a!important;box-shadow:0 0 20px rgba(255,105,70,.75)!important;
+  background:rgba(255,105,70,.55)!important;color:#fff!important;transform:scale(1.08)!important}
+body.embed-compare .bit-header-row{display:grid;grid-template-columns:96px repeat(8,minmax(0,1fr));gap:6px;
+  align-items:center;padding:0 5px 4px;margin-bottom:2px}
+body.embed-compare .bit-header-row .byte-tag{width:96px;min-width:96px;max-width:96px}
+body.embed-compare .bit-hdr{min-width:0;text-align:center;font:500 10px/1 'Cormorant Garamond',serif;
+  color:rgba(255,255,255,.45);letter-spacing:.02em}
 .demo-tabs{display:flex;gap:6px}
 .demo-tab{font:500 13px/1 'Cinzel',serif;letter-spacing:.06em;padding:8px 16px;border-radius:5px;
   cursor:pointer;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);
@@ -378,8 +459,16 @@ const TOTAL=584, WRITE_MAX=128, READ_MAX=456, WORK=64;
 const kB=1.380649e-23, ln2=Math.log(2);
 let opTemp=350;
 function landauerPerOp(T){return kB*T*ln2;}
-const TWEET_WORDS=21;
-const TWEET_TOTAL=TWEET_WORDS*TOTAL;
+let TWEET_WORDS=21;
+let TWEET_TOTAL=TWEET_WORDS*TOTAL;
+function refreshTweetLimits(){
+  TWEET_WORDS=Math.max(1,Math.ceil(TWEET_STR.length/8));
+  TWEET_TOTAL=TWEET_WORDS*TOTAL;
+}
+function updateTweetMetaLine(){
+  const tm=document.getElementById('tweetMeta');
+  if(tm) tm.textContent=TWEET_STR.length+' characters \u00b7 '+(TWEET_STR.length*8)+' bits \u00b7 '+TWEET_WORDS+' words of 64 bits';
+}
 let mode='word';
 let stepDelay=156;
 const EMBED_COMPARE=/[?&]embed=compare\b/.test(location.search);
@@ -388,7 +477,8 @@ if(EMBED_COMPARE){document.body.classList.add('embed-compare');stepDelay=6;}
   const dm=/[?&]delay=(\d+)/.exec(location.search);
   if(dm) stepDelay=parseInt(dm[1],10);
 })();
-const TWEET_STR="The Great Salt Lake can be fully restored to full health within as little as 3 years by returning 1,150,000 AF/yr. Resulting Utah's lake effect and water security.";
+let TWEET_STR="The Great Salt Lake can be fully restored to full health within as little as 3 years by returning 1,150,000 AF/yr. Resulting Utah's lake effect and water security.";
+refreshTweetLimits();
 function wordChars(w){
   const slice=TWEET_STR.slice(w*8,w*8+8);
   const out=[];
@@ -456,10 +546,19 @@ function buildGrid(){
   gridWrap.innerHTML='';
   const wrap=document.createElement('div');wrap.className='word-grid';
   const dataCol=document.createElement('div');dataCol.className='bytes-col';
+  if(EMBED_COMPARE){
+    const bitHdr=document.createElement('div');bitHdr.className='bit-header-row';
+    const spacer=document.createElement('div');spacer.className='byte-tag';bitHdr.appendChild(spacer);
+    for(let i=7;i>=0;i--){
+      const lab=document.createElement('div');lab.className='bit-hdr';lab.textContent='bit '+i;
+      bitHdr.appendChild(lab);
+    }
+    dataCol.appendChild(bitHdr);
+  }
   for(let b=0;b<N_BYTES;b++){
     const row=document.createElement('div');row.className='byte-row';
     const tag=document.createElement('div');tag.className='byte-tag';
-    tag.innerHTML='Byte '+b+'<span class="byte-char" id="bc'+b+'"></span>';row.appendChild(tag);
+    tag.innerHTML='<span class="byte-lab">Byte '+b+'</span><span class="byte-arr" aria-hidden="true">→</span><span class="byte-char" id="bc'+b+'"></span>';row.appendChild(tag);
     const rowCells=[];
     for(let i=0;i<BITS_PER_BYTE;i++){
       const globalBit=b*BITS_PER_BYTE+i;
@@ -470,8 +569,19 @@ function buildGrid(){
     bitCells.push(rowCells);byteRows.push(row);dataCol.appendChild(row);
   }
   wrap.appendChild(dataCol);
+  if(EMBED_COMPARE){
+    const bridge=document.createElement('div');
+    bridge.className='ecc-bridge';
+    bridge.setAttribute('aria-label','Data bits feed ECC checks');
+    bridge.innerHTML='<div class="ecc-bridge-arrow" aria-hidden="true">→</div>';
+    wrap.appendChild(bridge);
+  }
   const checkCol=document.createElement('div');checkCol.className='check-col';
-  const ct=document.createElement('div');ct.className='ctitle';ct.innerHTML='8 Check Bits<span class="ctitle-sub">Hsiao (72,64)</span>';checkCol.appendChild(ct);
+  const ct=document.createElement('div');ct.className='ctitle';
+  ct.innerHTML=EMBED_COMPARE
+    ?'Verification pass<span class="ctitle-sub">ECC overhead · Hsiao (72,64)</span>'
+    :'8 Check Bits<span class="ctitle-sub">Hsiao (72,64)</span>';
+  checkCol.appendChild(ct);
   for(let i=0;i<N_CHECK;i++){
     const cc=document.createElement('div');cc.className='check-cell';
     cc.innerHTML='C'+i+'<span class="ccov">watches 26</span><span class="cval" id="cv'+i+'">&middot;</span>';
@@ -489,7 +599,7 @@ function loadWord(w){
   for(let b=0;b<N_BYTES;b++){
     const bcEl=document.getElementById('bc'+b);
     if(mode==='tweet'){
-      bcEl.textContent=' \u2192 '+dispChar(chars[b]);
+      bcEl.textContent=dispChar(chars[b]||' ');
       const bits=charBits(chars[b]);
       for(let i=0;i<BITS_PER_BYTE;i++){
         bitCells[b][i].innerHTML='<span class="bn">'+bits[i]+'</span>';
@@ -504,9 +614,10 @@ function loadWord(w){
   }
 }
 const tweetCharEls=[];
-(function buildTweetText(){
+function buildTweetText(){
   const host=document.getElementById('tweetText');
-  host.innerHTML='';
+  if(!host) return;
+  host.innerHTML=''; tweetCharEls.length=0;
   host.appendChild(document.createTextNode('\u201c'));
   for(let i=0;i<TWEET_STR.length;i++){
     const s=document.createElement('span');
@@ -516,7 +627,17 @@ const tweetCharEls=[];
     host.appendChild(s);
   }
   host.appendChild(document.createTextNode('\u201d \u2014 January Walker'));
-})();
+  updateTweetMetaLine();
+}
+buildTweetText();
+function applySentence(text){
+  if(!text||typeof text!=='string') return;
+  if(text===TWEET_STR) return;
+  TWEET_STR=text;
+  refreshTweetLimits();
+  buildTweetText();
+  setMode('tweet');
+}
 function clearTweetHighlight(){
   tweetCharEls.forEach(s=>s.classList.remove('tw-active','tw-done'));
 }
@@ -617,6 +738,11 @@ let writeOps=0, readOps=0;
 let corrupted=null;
 let curWord=0;
 let totalWords=1;
+let embedCurByte=-1;
+let embedBytesUsed=0;
+let embedCharIndex=-1;
+let embedBitIndex=-1;
+let embedStepPhase='Idle';
 let accWrite=0, accRead=0;
 const el={
   cWrite:document.getElementById('cWrite'),cRead:document.getElementById('cRead'),
@@ -633,12 +759,17 @@ function clearBitStates(){
     byteRows[b].classList.remove('examining','done-sweep','active-byte');
     for(let i=0;i<BITS_PER_BYTE;i++){
       const c=bitCells[b][i];
-      c.classList.remove('active','watched','fixed');
+      c.classList.remove('active','watched','fixed','coverage');
       if(corrupted&&corrupted.byte===b&&corrupted.bit===i)c.classList.add('corrupted');
       else c.classList.remove('corrupted');
     }
   }
-  checkCells.forEach(c=>c.classList.remove('computing','reading','match','mismatch'));
+  checkCells.forEach(c=>c.classList.remove('computing','reading','match','mismatch','cov-active'));
+}
+function syncEmbedPhaseClass(){
+  if(!EMBED_COMPARE||!gridWrap) return;
+  gridWrap.classList.toggle('phase-read', embedStepPhase==='READ');
+  gridWrap.classList.toggle('phase-write', embedStepPhase==='WRITE');
 }
 function setBytesTouched(n){
   el.bytesVal.textContent=n+' / 8';
@@ -663,17 +794,38 @@ function updatePanel(){
   updateRunTimer();
   broadcastEmbed();
 }
+function refreshByteRowStates(activeByte){
+  if(!EMBED_COMPARE) return;
+  for(let b=0;b<N_BYTES;b++){
+    if(!byteRows[b]) continue;
+    byteRows[b].classList.remove('future-byte','done-byte');
+    if(activeByte>=0){
+      if(b<activeByte) byteRows[b].classList.add('done-byte');
+      else if(b>activeByte) byteRows[b].classList.add('future-byte');
+    }else if(idx>=steps.length||curWord>0){
+      byteRows[b].classList.add('done-byte');
+    }else{
+      byteRows[b].classList.add('future-byte');
+    }
+  }
+}
 function applyStep(s){
   clearBitStates();
   el.phaseTag.textContent=s.phase;
   el.caption.innerHTML=s.cap;
   if(s.type==='databit'){
+    embedCurByte=s.byte;
+    embedCharIndex=curWord*8+s.byte;
+    embedBitIndex=s.bit;
+    embedStepPhase='WRITE';
+    embedBytesUsed=Math.min(TWEET_STR.length, curWord*8+s.byte+1);
+    refreshByteRowStates(s.byte);
     bitCells[s.byte][s.bit].classList.add('active');
     byteRows[s.byte].classList.add('examining','active-byte');
     writeOps=Math.min(WRITE_MAX,writeOps+s.write);
     if(mode==='tweet'){
-      const ch=dispChar(wordChars(curWord)[s.byte]);
-      el.caption.innerHTML='Encoding character "<b>'+ch+'</b>" (Byte '+s.byte+'), bit '+s.bit+': XOR into the running check total, AND with a mask to route it. Every bit of every character pays these two operations, the XOR and the mask, just to be checked.';
+      const ch=wordChars(curWord)[s.byte];
+      el.caption.innerHTML='Encoding character "<b>'+dispChar(ch)+'</b>"<br>Byte '+s.byte+', bit '+s.bit+' is folded into the ECC check total (XOR + AND mask).<br><i>Every bit must be visited to verify the word.</i>';
       highlightTweetChar(curWord*8+s.byte);
     }else{
       const gb=s.byte*8+s.bit;
@@ -683,6 +835,7 @@ function applyStep(s){
     checkCells[s.check].classList.add('done');
     showCheckValue(s.check);
   }else if(s.type==='checkstart'){
+    embedStepPhase='READ';
     checkCells.forEach(c=>c.classList.remove('done','computing'));
     checkCells[s.check].classList.remove('match','mismatch');
     checkCells[s.check].classList.add('computing');
@@ -696,8 +849,9 @@ function applyStep(s){
         touchedBytes.add(b);
       }
     }
-    el.caption.innerHTML='Recomputing <b>C'+s.check+'</b>: it watches 26 data bits, now highlighted across '+touchedBytes.size+' of the 8 bytes.';
+    el.caption.innerHTML='Recomputing <b>C'+s.check+'</b> — every data bit in the word must be visited again.';
   }else if(s.type==='checksweep'){
+    embedStepPhase='READ';
     checkCells[s.check].classList.add('computing');
     showCheckValue(s.check);
     let touchedBytes=new Set();
@@ -713,6 +867,7 @@ function applyStep(s){
     el.caption.innerHTML='<b>C'+s.check+'</b> recompute: XOR over its 26 watched data bits (highlighted). They span '+touchedBytes.size+' of the 8 bytes, so locating any error still pulls in most of the word.';
     readOps=Math.min(READ_MAX,readOps+s.read);
   }else if(s.type==='checkcompare'){
+    embedStepPhase='READ';
     showCheckValue(s.check);
     if(corrupted){
       const gbit=corrupted.byte*8+corrupted.bit;
@@ -743,6 +898,7 @@ function applyStep(s){
     }
   }
   updatePanel();
+  syncEmbedPhaseClass();
 }
 function step(){
   if(idx>=steps.length){ advanceWord(); return; }
@@ -763,6 +919,7 @@ function advanceWord(){
 }
 function finishAll(){
   stop();el.phaseTag.textContent='Complete';
+  embedStepPhase='Idle';
   const total=accWrite+accRead;
   if(mode==='tweet'){
     el.caption.innerHTML='Whole tweet verified: <b>'+totalWords+'</b> words, <b>'+total.toLocaleString()+'</b> bit-level operations, every one spent only to confirm the message did not change. P30 covers the same 163 characters in <b>489</b> symbol-level operations (3 per character).';
@@ -772,6 +929,7 @@ function finishAll(){
   setBytesTouched(8);
   if(mode==='tweet'){tweetCharEls.forEach(s=>{s.classList.remove('tw-active');s.classList.add('tw-done');});}
   updatePanel();
+  syncEmbedPhaseClass();
 }
 function stepDuration(){
   if(EMBED_COMPARE) return stepDelay;
@@ -805,11 +963,13 @@ function stop(){
 }
 function reset(){
   stop();idx=0;writeOps=0;readOps=0;accWrite=0;accRead=0;curWord=0;corrupted=null;setBytesTouched(0);
+  embedCurByte=-1; embedBytesUsed=0; embedCharIndex=-1; embedBitIndex=-1; embedStepPhase='Idle';
+  syncEmbedPhaseClass();
   runClockReset();
   totalWords=(mode==='tweet')?TWEET_WORDS:1;
   clearBitStates();checkCells.forEach(c=>c.classList.remove('done','computing','reading','match','mismatch'));
   for(let i=0;i<N_CHECK;i++){const e=document.getElementById('cv'+i);if(e)e.textContent='\u00b7';}
-  loadWord(0);clearTweetHighlight();
+  loadWord(0);clearTweetHighlight(); refreshByteRowStates(-1);
   el.phaseTag.textContent='Idle';
   if(mode==='tweet'){
     el.caption.innerHTML='Full tweet mode: the machine will run the complete 584-operation round trip <b>'+TWEET_WORDS+'</b> times, once per 64-bit word, for <b>'+TWEET_TOTAL.toLocaleString()+'</b> operations total. Press <b>Play</b>.';
@@ -881,6 +1041,10 @@ setMode('tweet');
   window.addEventListener('resize',upd);
   setTimeout(upd,100);
 })();
+function embedNowLine(){
+  const cap=document.getElementById('caption');
+  return cap?cap.textContent.replace(/\s+/g,' ').trim():'';
+}
 function broadcastEmbed(){
   if(!EMBED_COMPARE||window.parent===window) return;
   const total=accWrite+accRead+writeOps+readOps;
@@ -891,8 +1055,15 @@ function broadcastEmbed(){
     progress:curWord+(idx/Math.max(steps.length,1)),
     progressMax:TWEET_WORDS,
     playing:playing,finished:finished,
-    word:curWord+1,
-    ms:runClockMs()
+    word:finished?totalWords:Math.min(curWord+1,totalWords),
+    wordFinished:finished,
+    ms:runClockMs(),
+    byteIdx:embedCurByte>=0?embedCurByte:'',
+    charIndex:embedCharIndex,
+    bitIndex:embedBitIndex>=0?embedBitIndex:'',
+    stepPhase:embedStepPhase,
+    bytesUsed:finished?TWEET_STR.length:embedBytesUsed,
+    nowLine:embedNowLine()
   },'*');
 }
 if(EMBED_COMPARE){
@@ -908,6 +1079,7 @@ if(EMBED_COMPARE){
       step();
     }
     else if(d.cmd==='setSpeed'&&d.delay) stepDelay=parseInt(d.delay,10);
+    else if(d.cmd==='setSentence'&&d.text) applySentence(d.text);
   });
   setMode('tweet');
   broadcastEmbed();

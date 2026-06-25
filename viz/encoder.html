@@ -52,7 +52,10 @@ header{padding:1.1rem 3rem 0.9rem;border-bottom:2px solid var(--space);
   padding:5px 14px;border:1px solid rgba(250,218,36,.4);border-radius:4px;text-transform:uppercase}
 
 .clock-stage{height:600px;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.clock-visual{display:contents}
+.clock-canvas-wrap{position:relative;width:100%;height:100%}
 #clock{position:absolute;inset:0;width:100%;height:100%;display:block}
+.p30-bridge{display:none}
 
 .tweet-banner{background:rgba(0,0,0,.25);border:1px solid rgba(250,218,36,.3);border-radius:8px;
   padding:9px 14px;display:flex;flex-direction:column;gap:4px;max-width:100%;overflow:hidden}
@@ -177,14 +180,20 @@ footer{padding:.85rem 3rem;border-top:2px solid var(--space);
   font:400 14px/1.7 'Cormorant Garamond',serif;color:var(--text-m)}
 footer a{color:var(--space)}
 @media(max-width:1080px){.stage{grid-template-columns:1fr;max-height:none;height:auto}.panel{border-left:none;border-top:2px solid var(--space)}.clock-stage{height:420px;min-height:420px;max-height:420px}}
-body.embed-compare{overflow:hidden;height:100vh;margin:0}
+body.embed-compare{overflow:hidden!important;height:auto!important;min-height:0!important;margin:0;background:var(--space)!important}
 body.embed-compare #open-repro-banner,body.embed-compare>header,body.embed-compare footer,body.embed-compare .panel-wrap{display:none!important}
-body.embed-compare .stage{grid-template-columns:1fr;height:100%;max-height:none;background:var(--space)}
-body.embed-compare .work{height:100%;padding:1rem 1.2rem}
+body.embed-compare .stage{grid-template-columns:1fr;height:auto;min-height:100%;max-height:none;background:var(--space)!important}
+body.embed-compare .work{height:auto;min-height:100%;padding:.15rem .5rem 0;background:var(--space)!important;
+  display:flex;flex-direction:column;justify-content:flex-start}
 body.embed-compare .work-tabs,body.embed-compare .controls,body.embed-compare .speed-note{display:none!important}
-body.embed-compare .clock-stage{flex:1;height:auto;min-height:180px;max-height:none}
-body.embed-compare .tweet-banner{padding:7px 10px}
-body.embed-compare .caption{min-height:52px;font-size:15px;padding:8px 12px}
+body.embed-compare .tweet-banner,body.embed-compare .run-timer,body.embed-compare .work-head{display:none!important}
+body.embed-compare .caption{display:none!important}
+body.embed-compare .clock-stage{flex:0 1 auto;height:auto;min-height:0;max-height:none;order:1;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding:4px 6px 10px;overflow:visible}
+body.embed-compare .clock-visual{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:0;width:100%}
+body.embed-compare .clock-canvas-wrap{flex:0 0 auto;position:relative;width:auto;height:auto}
+body.embed-compare #clock{position:relative!important;inset:auto!important;width:auto!important;height:auto!important;display:block}
+body.embed-compare .p30-bridge{display:none!important}
 </style>
 </head>
 <body>
@@ -234,7 +243,19 @@ body.embed-compare .caption{min-height:52px;font-size:15px;padding:8px 12px}
       <div class="tweet-meta"><span id="tweetMeta">163 characters &middot; 489 operations &middot; 167 positions</span></div>
     </div>
     <div class="clock-stage">
-      <canvas id="clock"></canvas>
+      <div class="clock-visual">
+        <div class="clock-canvas-wrap">
+          <canvas id="clock"></canvas>
+        </div>
+        <aside class="p30-bridge" aria-label="P30 verification path">
+          <div class="p30-bridge-line"></div>
+          <div class="p30-bridge-arrow" aria-hidden="true">→</div>
+          <div class="p30-bridge-lab">Prime lanes converge</div>
+          <div class="p30-bridge-sub">into a glyph position</div>
+          <div class="p30-bridge-arrow-d" aria-hidden="true">↓</div>
+          <div class="p30-bridge-sub">then verify</div>
+        </aside>
+      </div>
     </div>
     <div class="caption" id="caption">Press <b>Play</b> to encode the sentence character by character, or <b>Step</b> through one at a time. Each character lights the spoke it lands on; a value on a spoke is valid by construction.</div>
     <div class="controls">
@@ -363,8 +384,15 @@ function isCoprime30(n){ return n%2!==0 && n%3!==0 && n%5!==0; }
 function isPrimeN(n){ if(n<2)return false; for(var i=2;i*i<=n;i++) if(n%i===0) return false; return true; }
 
 var SENTENCE="The Great Salt Lake can be fully restored to full health within as little as 3 years by returning 1,150,000 AF/yr. Resulting Utah's lake effect and water security.";
-var CHARS=SENTENCE.length;           // 163
-var HAMMING_OPS=21*584;
+var CHARS=SENTENCE.length;
+var HAMMING_OPS=Math.ceil(CHARS/8)*584;
+function p30OpsMax(){ return (p30mode==='bios') ? CHARS : CHARS*3; }
+function p30GlyphsEst(){ return CHARS+4; }
+function refreshHammingOps(){ HAMMING_OPS=Math.ceil(CHARS/8)*584; }
+function updateTweetMeta(){
+  var tm=document.getElementById('tweetMeta');
+  if(tm) tm.innerHTML=CHARS+' characters &middot; '+p30OpsMax()+' operations &middot; '+p30GlyphsEst()+' positions';
+}
 
 // ── Clock geometry ──────────────────────────────────────────────
 var BASIS=[2,3,5,7,11,13,17,19,23,29,31];
@@ -422,9 +450,23 @@ function dialPosForResidue(nr){
 }
 
 function resize(){
-  var st=cv.parentElement.getBoundingClientRect();
-  cw=Math.max(280,Math.min(st.width,1200));
-  chh=Math.max(260,Math.min(st.height,600));
+  var wrap=cv.closest('.clock-canvas-wrap')||cv.parentElement;
+  var stage=cv.closest('.clock-stage')||wrap;
+  var st=stage.getBoundingClientRect();
+  if(EMBED_COMPARE){
+    var availW=Math.max(280,st.width-12);
+    var size=Math.max(360,Math.min(availW,520));
+    cw=size;
+    chh=size;
+    if(wrap&&wrap!==stage) wrap.style.width=size+'px';
+    wrap.style.height=size+'px';
+  }else{
+    var box=wrap.getBoundingClientRect();
+    var bw=box.width>0?box.width:st.width;
+    var bh=box.height>0?box.height:st.height;
+    cw=Math.max(280,Math.min(bw,1200));
+    chh=Math.max(260,Math.min(bh,600));
+  }
   // size radius so the rim labels at R*1.14 plus glyph height fit inside the box
   var halfH=chh/2-16;            // box half-height minus label glyph room
   var rByH=halfH/1.16;           // labels sit at R*1.14, leave a hair extra
@@ -585,8 +627,9 @@ function beadForValue(val){
 
 // ── encode steps ───────────────────────────────────────────────
 var tweetCharEls=[];
-(function buildTweet(){
-  var host=document.getElementById('tweetText'); host.innerHTML='';
+function buildTweet(){
+  var host=document.getElementById('tweetText'); if(!host) return;
+  host.innerHTML=''; tweetCharEls=[];
   host.appendChild(document.createTextNode('\u201c'));
   for(var i=0;i<SENTENCE.length;i++){
     var s=document.createElement('span'); s.className='tw-ch';
@@ -594,7 +637,15 @@ var tweetCharEls=[];
     tweetCharEls.push(s); host.appendChild(s);
   }
   host.appendChild(document.createTextNode('\u201d  -  January Walker'));
-})();
+  updateTweetMeta();
+}
+buildTweet();
+function applySentence(text){
+  if(!text||typeof text!=='string') return;
+  if(text===SENTENCE) return;
+  SENTENCE=text; CHARS=SENTENCE.length;
+  refreshHammingOps(); buildTweet(); reset();
+}
 function highlightChar(idx){
   for(var i=0;i<tweetCharEls.length;i++){
     tweetCharEls[i].classList.toggle('tw-done', i<idx);
@@ -629,7 +680,7 @@ function updateRunTimer(){
   if(!te||!tm) return;
   te.textContent=formatElapsed(ms);
   if(EMBED_COMPARE){
-    tm.innerHTML='<b>'+opIdx+'</b> / 489 ops';
+    tm.innerHTML='<b>'+opIdx+'</b> / '+p30OpsMax()+' ops';
     return;
   }
   var n=Math.min(idx, CHARS);
@@ -720,7 +771,7 @@ function updatePanel(){
 
 function stepOp(){
   if(finished) return;
-  if(opIdx>=489){ finish(); return; }
+  if(opIdx>=p30OpsMax()){ finish(); return; }
   if(!runClock.running) runClockStart();
   playing=true;
   var ci=Math.floor(opIdx/3);
@@ -732,7 +783,11 @@ function stepOp(){
   var val=CHAR_TO_VAL[ch];
   if(ph===0 && val!==undefined) beadForValue(val);
   var labels=['Locate','Emit','Verify'];
-  el.caption.innerHTML='Operation <b>'+(opIdx+1)+'</b> / 489: <b>'+labels[ph]+'</b> — character '+(ci+1)+' of '+CHARS+'.';
+  el.caption.innerHTML='<b>'+labels[ph]+'</b> — character <b>'+(ci+1)+'</b> / '+CHARS+
+    (ch!==undefined?' ("'+beadLabel(ch)+'")':'')+
+    '<br><i>P30 maps each character to a symbolic prime-clock position.</i>'+
+    '<br><span style="font-size:.9em;opacity:.85">Operation '+(opIdx+1)+' / '+p30OpsMax()+
+    (val!==undefined?' · glyph '+val+' · residue '+residue(val):'')+'.</span>';
   opIdx++;
   if(val!==undefined && ph===2) tokensSoFar=ci+1;
   if(ph===2) highlightChar(Math.min(ci+1, CHARS));
@@ -742,7 +797,7 @@ function stepOp(){
   el.eOps.textContent=opIdx;
   draw();
   updateRunTimer();
-  if(opIdx>=489) finish();
+  if(opIdx>=p30OpsMax()) finish();
   else broadcastEmbed();
 }
 
@@ -941,16 +996,32 @@ document.querySelectorAll('.tier-btn').forEach(function(btn){
 window.addEventListener('resize',resize);
 resize(); reset();
 
+function embedNowLine(){
+  var cap=document.getElementById('caption');
+  return cap?cap.textContent.replace(/\s+/g,' ').trim():'';
+}
 function broadcastEmbed(){
   if(!EMBED_COMPARE||window.parent===window) return;
-  var p30Full=(p30mode==='bios')?CHARS:CHARS*3;
+  var p30Full=p30OpsMax();
+  var ci=finished?CHARS:Math.min(Math.floor(opIdx/3),Math.max(CHARS-1,0));
+  var ph=finished?-1:(opIdx>0?(opIdx-1)%3:0);
+  var ch=CHARS>0?SENTENCE[ci]:'';
+  var val=ch?CHAR_TO_VAL[ch]:undefined;
+  var posLabel=(litVal!=null)?String(litVal):(val!==undefined?String(val):'—');
+  var opPhases=['Locate','Emit','Verify'];
   window.parent.postMessage({
     source:'p30',type:'state',
     ops:EMBED_COMPARE?opIdx:(parseInt(el.cTotal.textContent,10)||0),
     opsMax:p30Full,
     progress:EMBED_COMPARE?Math.min(Math.floor(opIdx/3),CHARS):idx,progressMax:CHARS,
     playing:playing,finished:finished,
-    ms:runClockMs()
+    ms:runClockMs(),
+    char:ch===' '?'\u2423':(ch||''),
+    position:posLabel,
+    glyphs:tokensSoFar||Math.min(Math.floor(opIdx/3),CHARS),
+    charIndex:finished?CHARS:ci,
+    opPhase:finished?'':opPhases[ph]||'Locate',
+    nowLine:embedNowLine()
   },'*');
 }
 if(EMBED_COMPARE){
@@ -961,6 +1032,7 @@ if(EMBED_COMPARE){
     else if(d.cmd==='reset') reset();
     else if(d.cmd==='step') stepOp();
     else if(d.cmd==='setSpeed'&&d.delay) stepDelay=parseInt(d.delay,10);
+    else if(d.cmd==='setSentence'&&d.text) applySentence(d.text);
   });
   broadcastEmbed();
   window.parent.postMessage({type:'embed-ready',source:'p30'},'*');

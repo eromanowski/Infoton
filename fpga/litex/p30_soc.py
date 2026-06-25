@@ -3,8 +3,9 @@
 P30 LiteX SoC — RV32 (VexRiscv) + UART + P30 byte memory.
 
 Platforms:
-  sim   — Verilator/Icarus simulation (default --build)
-  arty  — Digilent Arty A7-35T (requires litex-boards + Vivado)
+  sim      — Verilator/Icarus simulation (default --build)
+  arty     — Digilent Arty A7-35T (requires litex-boards + Vivado)
+  cmod_a7  — Digilent Cmod A7-35T on P30 bench carrier (litex-boards + Vivado)
 
   python fpga/litex/p30_soc.py --dry-run
   python fpga/litex/p30_soc.py --platform sim --build
@@ -30,6 +31,7 @@ P30_MEM_SIZE = 4096
 
 def dry_run(platform: str) -> None:
     from p30_arty import ARTY_A7_35T
+    from p30_cmod_a7 import CMOD_A7_35T
 
     print("P30SoC (dry run)")
     print(f"  platform: {platform}")
@@ -41,6 +43,11 @@ def dry_run(platform: str) -> None:
         print(f"  board:    {ARTY_A7_35T['product_url']}")
         print(f"  fpga:     {ARTY_A7_35T['device']}{ARTY_A7_35T['speedgrade']}")
         print(f"  clock:    {ARTY_A7_35T['sys_clk_freq'] // 1_000_000} MHz")
+    elif platform == "cmod_a7":
+        print(f"  board:    {CMOD_A7_35T['product_url']}")
+        print(f"  carrier:  {CMOD_A7_35T['carrier']}")
+        print(f"  fpga:     {CMOD_A7_35T['device']}{CMOD_A7_35T['speedgrade']}")
+        print(f"  clock:    {CMOD_A7_35T['sys_clk_freq'] // 1_000_000} MHz")
     print("  firmware: fpga/monitor_rom/{monitor_rom,p30_soak,hamming_soak}.bin")
 
 
@@ -109,6 +116,16 @@ def platform_arty():
     return digilent_arty.Platform(variant="a7-35")
 
 
+def platform_cmod_a7():
+    try:
+        from litex_boards.platforms import digilent_cmod_a7
+    except ImportError as e:
+        raise ImportError(
+            "litex-boards required for Cmod A7. pip install litex-boards"
+        ) from e
+    return digilent_cmod_a7.Platform(variant="a7-35")
+
+
 def build(platform_name: str, run_sim: bool, gateware_only: bool) -> None:
     if platform_name == "sim":
         platform = platform_sim()
@@ -116,6 +133,9 @@ def build(platform_name: str, run_sim: bool, gateware_only: bool) -> None:
     elif platform_name == "arty":
         platform = platform_arty()
         build_dir = LITEX_DIR / "build" / "arty_a7_35t"
+    elif platform_name == "cmod_a7":
+        platform = platform_cmod_a7()
+        build_dir = LITEX_DIR / "build" / "cmod_a7_35t"
     else:
         raise SystemExit(f"unknown platform: {platform_name}")
 
@@ -132,7 +152,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="P30 LiteX SoC")
     parser.add_argument(
         "--platform",
-        choices=("sim", "arty"),
+        choices=("sim", "arty", "cmod_a7"),
         default="sim",
         help="Target platform (default: sim)",
     )
@@ -142,16 +162,22 @@ def main() -> None:
     parser.add_argument(
         "--build-gateware",
         action="store_true",
-        help="Synthesize for Arty A7-35T (requires Vivado + litex-boards)",
+        help="Synthesize for Arty A7-35T or Cmod A7-35T (requires Vivado + litex-boards)",
     )
     args = parser.parse_args()
 
     if args.dry_run or not (args.build or args.sim or args.build_gateware):
-        dry_run(args.platform if not args.build_gateware else "arty")
+        plat = args.platform
+        if args.build_gateware and plat == "sim":
+            plat = "arty"
+        dry_run(plat)
         if not args.build and not args.sim and not args.build_gateware:
             return
 
-    plat = "arty" if args.build_gateware else args.platform
+    if args.build_gateware:
+        plat = args.platform if args.platform != "sim" else "arty"
+    else:
+        plat = args.platform
     build(plat, run_sim=args.sim and plat == "sim", gateware_only=args.build_gateware)
 
 

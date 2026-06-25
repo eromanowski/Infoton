@@ -7,197 +7,955 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f6f6f6; --center:#fada24; --w2:#e97158; --w3:#cc4778; --w4:#a31e9a;
-  --space:#350498; --grid:#6e54a3; --text:#1a1a1a; --text-m:rgba(53,4,152,.7);
-  --border:rgba(53,4,152,.15);
+  --bg:#12082a; --surface:#1a0e38; --surface-2:#231248; --card:#2a1558;
+  --center:#fada24; --btn-gold:#e4c040; --cyan:#6ed4f0; --orange:#f5a020; --red:#ff6b6b;
+  --space:#350498; --panel-bg:#350498; --panel-trad:#2a1068;
+  --grid:#b0a0d0; --text:#f8f4ff; --text-m:#ddd0f4;
+  --border:rgba(184,168,216,.14);
 }
+html{background:var(--bg)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.5;
-  height:100vh;display:flex;flex-direction:column;overflow:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.5;
+  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
 
-.top{padding:1rem 1.6rem 1rem;border-bottom:2px solid var(--space);background:#fff;flex-shrink:0}
-.top-row{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.top h1{font:700 1.35rem/1.2 'Cinzel',serif;color:var(--space)}
-.top p{font:400 1rem/1.45 'Cormorant Garamond',serif;color:var(--text-m);max-width:52rem;margin-top:.35rem}
-.top p b{color:var(--space);font-weight:600}
-.caveat{font:400 .82rem/1.45 'Cormorant Garamond',serif;color:var(--text-m);max-width:52rem;
-  margin-top:.55rem;padding:.5rem .7rem;border-left:3px solid var(--center);background:#fbf8ee;border-radius:0 4px 4px 0}
-.caveat b{color:var(--space);font-weight:600}.caveat i{font-style:italic}
-.replay-note{font:italic 400 12px/1.4 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.7rem;opacity:.9}
-.replay-note b{color:var(--space);font-weight:600;font-style:normal}.replay-note sup{font-size:.7em}
-.home-link{font:500 11px/1 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase;
-  color:var(--space);text-decoration:none;border:1px solid var(--border);padding:8px 12px;border-radius:5px;background:#fff;white-space:nowrap}
-.home-link:hover{background:var(--center);border-color:var(--center)}
+.header{padding:1.2rem 1.5rem 1.1rem;background:var(--surface);flex-shrink:0}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.header h1{font:700 clamp(1.25rem,2.5vw,1.5rem)/1.2 'Cinzel',serif;color:var(--text)}
+.header-intro{font:400 1.08rem/1.55 'Cormorant Garamond',serif;color:var(--text-m);max-width:46rem;margin-top:.45rem}
+.header-intro b{color:var(--center);font-weight:600}
+.home-link{font:500 12px/1 'Cinzel',serif;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--text);text-decoration:none;padding:8px 14px;border-radius:5px;
+  background:var(--surface-2);white-space:nowrap;flex-shrink:0}
+.home-link:hover{background:var(--card)}
 
-.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:.85rem}
-.btn{font:500 12px/1 'Cinzel',serif;letter-spacing:.06em;padding:9px 16px;border-radius:5px;cursor:pointer;
-  background:#f3eefb;border:1.5px solid var(--grid);color:var(--space);text-transform:uppercase;transition:all .14s}
-.btn:hover{background:#e9e0f6}
-.btn.primary{background:var(--center);border-color:var(--center);color:var(--space);font-weight:600}
-.btn.primary:hover{background:#ffe45a}
+.theory{margin-top:.8rem;border-radius:6px;background:var(--surface-2);overflow:hidden}
+.theory summary{font:600 13px/1 'Cinzel',serif;color:var(--grid);padding:.6rem .85rem;cursor:pointer;
+  list-style:none;display:flex;align-items:center;gap:.45rem}
+.theory summary::-webkit-details-marker{display:none}
+.theory summary::before{content:'+';color:var(--center);width:1em}
+.theory[open] summary::before{content:'−'}
+.theory-body{font:400 1rem/1.55 'Cormorant Garamond',serif;color:var(--text-m);padding:0 .85rem .8rem}
+.theory-body b{color:var(--text);font-weight:600}
+.theory-body i{font-style:italic}
 
-.race{margin-top:1rem;display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center}
-.race-mid{text-align:center;padding:0 8px}
-.ratio-num{font:700 2rem/1 'Cinzel',serif;color:var(--w3)}
-.ratio-lab{font:400 13px/1.3 'Cormorant Garamond',serif;color:var(--text-m);margin-top:4px}
-.track{display:flex;flex-direction:column;gap:6px}
-.track-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.track-name{font:600 12px/1 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase}
-.track-name.p30{color:var(--center);background:var(--space);padding:4px 10px;border-radius:4px}
-.track-name.trad{color:var(--w2)}
-.track-ops{font:700 1.35rem/1 'Cinzel',serif;font-variant-numeric:tabular-nums;color:var(--space)}
-.track-ops span{font:400 14px/1 'Cormorant Garamond',serif;color:var(--text-m);font-weight:400}
-.bar{height:14px;border-radius:4px;background:rgba(53,4,152,.08);overflow:hidden;border:1px solid var(--border)}
-.bar-fill{height:100%;border-radius:3px;transition:none;width:0}
-.bar-fill.p30{background:linear-gradient(90deg,var(--center),#ffe45a)}
-.bar-fill.trad{background:linear-gradient(90deg,var(--w2),var(--w3),var(--w4))}
-.track-meta{font:400 13px/1 'Cormorant Garamond',serif;color:var(--text-m)}
-.track-meta b{color:var(--space)}
+.sentence-block{margin-top:.85rem}
+.sentence-top{display:flex;align-items:baseline;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:.35rem}
+.sentence-label{font:600 12px/1 'Cinzel',serif;color:var(--grid)}
+.sentence-meta{font:400 15px/1.35 'Cormorant Garamond',serif;color:var(--text-m);text-align:right}
+.sentence-meta b{color:var(--center);font-weight:600}
+.sentence-input{width:100%;min-height:44px;max-height:52px;resize:none;overflow:auto;
+  font:400 1.05rem/1.4 'Cormorant Garamond',serif;color:var(--text);background:var(--bg);
+  border-radius:6px;padding:.5rem .75rem;border:1px solid var(--border)}
+.sentence-input:focus{outline:none;border-color:rgba(250,218,36,.45);box-shadow:0 0 0 2px rgba(250,218,36,.12)}
 
-.panes{flex:1;display:grid;grid-template-columns:1fr 3px 1fr;min-height:0;background:var(--space)}
-.divider{background:var(--center);opacity:.55}
-.pane{display:flex;flex-direction:column;min-height:0;min-width:0;background:var(--space)}
-.pane-head{padding:8px 14px 6px;display:flex;justify-content:space-between;align-items:center;
-  border-bottom:1px solid rgba(250,218,36,.25);flex-shrink:0}
-.pane-title{font:600 11px/1 'Cinzel',serif;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85)}
-.pane-sub{font:400 12px/1 'Cormorant Garamond',serif;color:rgba(255,255,255,.55);font-style:italic}
-.pane iframe{flex:1;border:0;width:100%;min-height:0;background:var(--space);display:block}
+.controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:.85rem}
+.command-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:.65rem;row-gap:8px}
+.command-bar .controls{margin-top:0;flex:1 1 auto}
+.command-bar .speed-group,.command-bar .view-toggle{margin-top:0}
+.command-bar .view-toggle{margin-left:auto}
+.legend-drop{position:relative}
+.legend-drop summary{list-style:none;cursor:pointer;font:500 12px/1 'Cinzel',serif;padding:7px 12px;border-radius:5px;
+  background:var(--bg);color:var(--text-m);transition:all .12s}
+.legend-drop summary::-webkit-details-marker{display:none}
+.legend-drop summary:hover{color:var(--text)}
+.legend-drop[open] summary{background:var(--surface-2);color:var(--text)}
+.legend-drop-body{position:absolute;top:calc(100% + 6px);right:0;z-index:30;display:flex;flex-direction:column;gap:6px;
+  padding:10px 12px;background:var(--card);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.45);min-width:11rem}
+.btn{font:600 13px/1 'Cinzel',serif;letter-spacing:.03em;padding:11px 20px;border-radius:6px;cursor:pointer;
+  border:none;color:var(--text);background:var(--surface-2);transition:all .14s}
+.btn:hover{background:var(--card)}
+.btn.primary{background:var(--btn-gold);color:var(--space);font-weight:700;padding:11px 24px}
+.btn.primary:hover{background:#f0d060}
+.btn.ghost{background:transparent;color:var(--text-m)}
+.btn.ghost:hover{color:var(--text);background:rgba(255,255,255,.05)}
 
-.status{padding:6px 1.6rem;font:400 14px/1.4 'Cormorant Garamond',serif;color:var(--text-m);
-  border-top:1px solid var(--border);background:#fff;flex-shrink:0}
-.status b{color:var(--space)}
+.toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:.65rem}
+body.view-summary .command-bar .legend-drop{display:none}
+body.view-mechanics .command-bar .legend-drop{display:inline-block}
+body.view-mechanics .toolbar{display:none}
+body.view-mechanics .theory{display:none}
+body.view-mechanics .header-top h1{font-size:1.15rem}
+body.view-mechanics .sentence-block{margin-top:.5rem}
+body.view-mechanics .sentence-top{margin-bottom:.25rem}
+body.view-mechanics .mechanics-bridge{display:none}
+body.view-mechanics .command-bar{margin-top:.45rem}
+.speed-group,.legend-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.toolbar-lab{font:600 12px/1 'Cinzel',serif;color:var(--grid);margin-right:2px}
+.speed-btn{font:500 12px/1 'Cinzel',serif;padding:7px 12px;border-radius:5px;cursor:pointer;
+  background:var(--bg);border:none;color:var(--text-m);transition:all .12s}
+.speed-btn:hover{color:var(--text)}
+.speed-btn.active{background:var(--center);color:var(--space);font-weight:600}
+.legend-item{display:flex;align-items:center;gap:5px;font:400 14px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+.legend-swatch{width:11px;height:11px;border-radius:2px;flex-shrink:0}
+.legend-swatch.gold{background:var(--center)}
+.legend-swatch.purple{background:#6a4db8}
+.legend-swatch.blue{background:var(--cyan)}
+.legend-swatch.orange{background:var(--orange)}
+.legend-swatch.red{background:var(--red)}
 
-@media(max-width:960px){
-  body{height:auto;overflow:auto}
-  .panes{grid-template-columns:1fr;grid-template-rows:1fr 3px 1fr}
-  .pane iframe{min-height:420px}
-  .race{grid-template-columns:1fr}
-  .race-mid{order:-1;padding-bottom:4px}
+.summary{margin-top:1.15rem;padding:1.15rem 0 0}
+.summary-title{font:600 12px/1 'Cinzel',serif;color:var(--grid);margin-bottom:.85rem;display:block}
+.summary-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:stretch}
+.stat-card{background:var(--surface-2);border-radius:10px;padding:1rem 1.05rem;display:grid;
+  grid-template-rows:auto auto auto auto auto 1fr auto;gap:.4rem;min-height:11.5rem}
+.stat-card h3{font:600 13px/1.25 'Cinzel',serif;color:var(--text-m);font-weight:600;min-height:2.5em}
+.stat-card.p30 h3{color:var(--center)}
+.stat-card.trad h3{color:var(--cyan)}
+.stat-card.efficiency h3{color:var(--orange)}
+.stat-big{font:700 1.65rem/1.15 'Cinzel',serif;color:var(--text);font-variant-numeric:tabular-nums}
+.stat-card.efficiency .stat-big{color:var(--orange);font-size:1.45rem;line-height:1.25}
+.stat-line{font:400 16px/1.4 'Cormorant Garamond',serif;color:var(--text-m)}
+.stat-line.stat-unit{font-size:14px;color:var(--grid);font-style:italic;margin-top:-2px}
+.stat-line b{color:var(--text);font-weight:600;font-family:'Cinzel',serif;font-size:15px}
+.stat-status{font:500 13px/1 'Cinzel',serif;color:var(--text-m);margin-top:.15rem}
+.stat-card.p30 .stat-status{color:var(--center)}
+.stat-card.trad .stat-status{color:var(--cyan)}
+.stat-foot{font:400 13px/1.4 'Cormorant Garamond',serif;color:var(--text-m);font-style:italic;margin-top:.2rem}
+.card-progress{align-self:end;margin-top:.35rem;height:6px;border-radius:3px;background:rgba(0,0,0,.35);overflow:hidden}
+.card-progress-fill{height:100%;width:0;border-radius:3px;transition:width .08s linear}
+.card-progress-fill.p30{background:linear-gradient(90deg,var(--center),#ffe45a)}
+.card-progress-fill.trad{background:linear-gradient(90deg,var(--cyan),#3aa8d8)}
+
+.storage-note{font:400 14px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.75rem;padding:.65rem .8rem;
+  background:rgba(110,212,240,.06);border-radius:6px;border-left:3px solid var(--cyan)}
+.storage-note b{color:var(--text);font-weight:600}
+
+.result{margin-top:1rem;padding:1rem 1.15rem;background:rgba(250,218,36,.11);border-radius:10px;display:none;
+  border:1.5px solid rgba(250,218,36,.42);box-shadow:0 0 28px rgba(250,218,36,.1)}
+.result.visible{display:block}
+.result h3{font:600 13px/1 'Cinzel',serif;color:var(--center);margin-bottom:.55rem}
+.result-block{font:400 1.02rem/1.55 'Cormorant Garamond',serif;color:var(--text);margin-bottom:.5rem}
+.result-block b{color:var(--center);font-weight:600}
+.result-block.trad-block b{color:var(--cyan)}
+.result-takeaway{font:500 1rem/1.5 'Cormorant Garamond',serif;color:var(--text);margin-top:.65rem;padding-top:.65rem;
+  border-top:1px solid rgba(250,218,36,.25)}
+.result-takeaway b{color:var(--center);font-weight:600}
+.result-note{font:400 14px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.45rem;font-style:italic}
+.replay-note{font:400 13px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.75rem}
+
+.view-toggle{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.view-toggle-lab{font:600 12px/1 'Cinzel',serif;color:var(--grid)}
+.view-btn{font:500 12px/1 'Cinzel',serif;padding:7px 14px;border-radius:5px;cursor:pointer;
+  background:var(--bg);border:none;color:var(--text-m);transition:all .12s}
+.view-btn:hover{color:var(--text)}
+.sentence-input.hidden{display:none}
+.sentence-live{font:400 1.05rem/1.55 'Cormorant Garamond',serif;color:var(--text-m);background:var(--bg);
+  border-radius:6px;padding:.55rem .75rem;border:1px solid var(--border);word-break:break-word}
+.sentence-live .ch{border-radius:2px;padding:0 1px;transition:background .08s,color .08s}
+.sentence-live .ch.done{color:var(--center);font-style:normal}
+.sentence-live .ch.active{background:var(--center);color:var(--space);font-weight:600;font-style:normal;
+  box-shadow:0 0 10px rgba(250,218,36,.45)}
+
+.pause-banner{font:400 15px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.65rem;padding:.55rem .75rem;
+  background:rgba(250,218,36,.08);border-radius:6px;border-left:3px solid var(--btn-gold);display:none}
+.pause-banner.visible{display:block}
+.pause-banner b{color:var(--center);font-weight:600}
+
+.progress-strip{display:none;align-items:center;gap:.85rem 1.25rem;flex-wrap:wrap;margin-top:.5rem;padding:.5rem .85rem;
+  background:var(--surface-2);border-radius:8px;font:400 15px/1.4 'Cormorant Garamond',serif;color:var(--text-m)}
+.progress-strip .strip-lead{color:var(--text-m);flex:1 1 12rem;min-width:10rem}
+.progress-strip .strip-lead b{color:var(--center);font-weight:600}
+.progress-strip .strip-complete-lead{display:none;align-items:center;gap:.35rem;flex-wrap:wrap}
+.progress-strip.is-complete .strip-lead:not(.strip-complete-lead){display:none}
+.progress-strip.is-complete .strip-complete-lead{display:flex}
+.strip-cta{font:600 11px/1 'Cinzel',serif;letter-spacing:.04em;padding:5px 10px;border-radius:5px;cursor:pointer;
+  border:1px solid rgba(250,218,36,.55);background:rgba(250,218,36,.18);color:var(--center);transition:all .12s}
+.strip-cta:hover{background:rgba(250,218,36,.32);color:#fff}
+.strip-cta-ghost{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:var(--text)}
+.strip-cta-ghost:hover{background:rgba(255,255,255,.14);color:var(--text)}
+.controls .btn-complete-cta{display:none}
+body.run-complete .controls .btn-complete-cta{display:inline-block}
+body.run-complete .controls #stepBtn{display:none}
+body.run-complete #viewSummaryBtn{background:var(--btn-gold);color:var(--space);font-weight:700}
+body.run-complete #viewSummaryBtn:hover{background:#f0d060}
+body.run-complete #runBtn{background:var(--surface-2);color:var(--text);font-weight:600}
+body.run-complete #runBtn:hover{background:var(--card)}
+.progress-strip .strip-stats{display:flex;align-items:center;gap:.85rem 1.25rem;flex-wrap:wrap}
+.progress-strip b{color:var(--text);font-weight:600;font-family:'Cinzel',serif;font-size:15px}
+.progress-strip .gap-val{color:var(--orange);font-family:'Cinzel',serif;font-weight:700}
+
+.view-btn.active{background:var(--center);color:var(--space);font-weight:600}
+
+body.view-mechanics{min-height:100vh}
+body.view-mechanics .header{flex-shrink:0}
+body.view-mechanics .summary-only{display:none}
+body.view-mechanics .header{padding:.85rem 1.5rem .65rem}
+body.view-mechanics .header-top .header-intro{display:none}
+body.view-mechanics .replay-note{display:none}
+body.view-mechanics .progress-strip{display:flex}
+body.view-mechanics .mechanics-section{display:flex;flex-direction:column;margin-top:0;border-top:1px solid var(--border)}
+body.view-mechanics .mechanics-bridge{padding:.55rem 1.5rem .4rem;font-size:.95rem}
+body.view-mechanics .panes{align-items:stretch}
+body.view-mechanics .pane{overflow:visible}
+body.view-mechanics .pane-body{flex:none;overflow:visible;display:block;background:inherit}
+body.view-mechanics .pane iframe{height:580px;flex:none;display:block;border:0;width:100%}
+body.view-mechanics .footer-status{display:none}
+body.view-mechanics .pane-head{padding:8px 12px 6px}
+body.view-mechanics .pane-pills{display:none}
+
+.mechanics-result{display:none;padding:0;margin:0}
+body.run-complete.view-mechanics .mechanics-result{display:block}
+body.run-complete.view-mechanics .mechanics-section{padding-bottom:1.75rem}
+.mechanics-result-inner{max-width:none;width:100%;margin:0;padding:16px 1.5rem 22px;background:rgba(250,218,36,.1);
+  border:1.5px solid rgba(250,218,36,.38);border-left:none;border-right:none;border-bottom:none;
+  font:400 1.02rem/1.55 'Cormorant Garamond',serif;color:var(--text)}
+.mechanics-result-inner .mr-head{font:600 12px/1 'Cinzel',serif;color:var(--center);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.mechanics-result-inner b{color:var(--center);font-weight:600;font-family:'Cinzel',serif}
+.mechanics-result-inner .mr-ops{color:var(--text-m);margin-top:6px;font-size:.98rem}
+.mechanics-result-inner .mr-note{color:var(--text-m);font-size:.92rem;font-style:italic;margin-top:8px}
+
+.pane-now .now-main{font:500 16px/1.4 'Cormorant Garamond',serif;color:var(--text)}
+.pane-now .now-sub{font:400 14px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:4px}
+.pane-now .now-meta{font:500 11px/1.35 'Cinzel',serif;color:var(--grid);margin-top:5px;letter-spacing:.02em}
+.pane.trad-pane .pane-now .now-main b,.pane.trad-pane .pane-now .now-sub b{color:var(--cyan)}
+
+.tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
+  background:rgba(184,168,216,.2);color:var(--grid);font:600 10px/1 'Cinzel',serif;cursor:help;
+  position:relative;vertical-align:middle;margin-left:2px}
+.tip::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);
+  width:max-content;max-width:240px;padding:8px 10px;background:var(--card);border-radius:6px;
+  font:400 13px/1.4 'Cormorant Garamond',serif;color:var(--text);opacity:0;pointer-events:none;
+  transition:opacity .15s;z-index:20;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.tip:hover::after,.tip:focus::after{opacity:1}
+
+.panes{display:grid;grid-template-columns:1fr 2px 1fr;min-height:0;background:var(--bg);align-items:stretch}
+.divider{background:var(--cyan);opacity:.4;align-self:stretch}
+.pane{display:flex;flex-direction:column;min-width:0;background:var(--panel-bg)}
+.pane.trad-pane{background:var(--panel-trad)}
+.pane-head{padding:10px 14px 8px;flex-shrink:0;background:rgba(0,0,0,.12)}
+.pane-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.pane-title{font:600 15px/1.25 'Cinzel',serif;color:var(--text)}
+.pane.trad-pane .pane-title{color:var(--cyan)}
+.pane-sub{font:italic 400 14px/1.35 'Cormorant Garamond',serif;color:var(--text-m);margin-top:2px}
+.pane-phase{font:500 12px/1.1 'Cinzel',serif;letter-spacing:.03em;padding:5px 11px;border-radius:5px;white-space:nowrap}
+.pane-phase.idle{color:var(--text-m);background:rgba(255,255,255,.06)}
+.pane-phase.active-p30{color:var(--center);background:rgba(250,218,36,.12)}
+.pane-phase.active-trad{color:var(--cyan);background:rgba(110,212,240,.12)}
+.pane-phase.done-p30{color:var(--center);background:rgba(250,218,36,.18)}
+.pane-phase.done-trad{color:var(--cyan);background:rgba(110,212,240,.18)}
+.pane-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.pane-progress{display:flex;align-items:center;gap:8px;margin-top:8px}
+.pane-progress-lab{font:500 10px/1.2 'Cinzel',serif;color:var(--grid);white-space:nowrap;flex-shrink:0;min-width:6.5rem}
+.pane-progress-track{flex:1;height:5px;border-radius:3px;background:rgba(0,0,0,.38);overflow:hidden}
+.pane-progress-fill{height:100%;width:0;border-radius:3px;transition:width .1s linear}
+.pane-progress-fill.p30{background:linear-gradient(90deg,var(--center),#ffe45a)}
+.pane-progress-fill.trad{background:linear-gradient(90deg,var(--cyan),#3aa8d8)}
+.pane-progress.is-done .pane-progress-lab{color:var(--center)}
+.pane.trad-pane .pane-progress.is-done .pane-progress-lab{color:var(--cyan)}
+.pill{font:400 14px/1 'Cormorant Garamond',serif;color:var(--text-m);background:rgba(0,0,0,.22);
+  padding:5px 10px;border-radius:20px;white-space:nowrap}
+.pill b{color:var(--text);font-weight:600;font-family:'Cinzel',serif;font-size:13px}
+.pane-now{margin:6px 14px 0;padding:10px 12px;background:rgba(0,0,0,.28);border-radius:6px;
+  border-left:3px solid var(--center);flex-shrink:0}
+.pane-now b{color:var(--center);font-weight:600}
+.pane.trad-pane .pane-now{border-left-color:var(--cyan)}
+.process-flow{margin:6px 14px 8px;padding:8px 10px;border-radius:6px;flex-shrink:0;
+  font:400 13px/1.45 'Cormorant Garamond',serif;color:var(--text-m)}
+.process-flow .flow-chain{display:block;font:600 11px/1.3 'Cinzel',serif;letter-spacing:.03em;margin-bottom:4px}
+.process-flow .flow-detail{display:block;font-size:14px;line-height:1.45}
+.process-flow .flow-detail b{color:var(--text);font-weight:600}
+.p30-flow{background:rgba(250,218,36,.08);border:1px solid rgba(250,218,36,.22)}
+.p30-flow .flow-chain{color:var(--center)}
+.trad-flow{background:rgba(110,212,240,.08);border:1px solid rgba(110,212,240,.22)}
+.trad-flow .flow-chain{color:var(--cyan)}
+.pane-body{flex:none;display:block;background:inherit;overflow:visible}
+.pane-body iframe{border:0;width:100%;min-height:240px;display:block}
+.pane.trad-pane .pane-body iframe{background:var(--panel-trad)}
+.pane:not(.trad-pane) .pane-body iframe{background:var(--panel-bg)}
+
+.mechanics-section{border-top:1px solid var(--border);margin-top:1rem;background:var(--bg)}
+.mechanics-bridge{padding:.85rem 1.5rem .65rem;font:400 1rem/1.5 'Cormorant Garamond',serif;color:var(--text-m);max-width:52rem}
+.mechanics-bridge b{color:var(--text);font-weight:600}
+body.view-summary .mechanics-section{display:none}
+body.view-summary .progress-strip{display:none}
+body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
+
+.footer-status{padding:10px 1.5rem;font:400 15px/1.45 'Cormorant Garamond',serif;color:var(--text-m);
+  background:var(--surface);flex-shrink:0}
+.footer-status b{color:var(--center);font-weight:600}
+
+@media(max-width:900px){
+  .summary-cards{grid-template-columns:1fr}
+  .stat-card.efficiency{order:-1}
+  .panes{grid-template-columns:1fr;grid-template-rows:auto 2px auto}
+  .pane iframe{min-height:360px}
+  .sentence-meta{text-align:left;width:100%}
+}
+@media(max-width:560px){
+  .header{padding:1rem}
+  .btn.primary{width:100%;text-align:center}
+  .toolbar{flex-direction:column;align-items:flex-start}
 }
 </style>
 </head>
-<body>
-<div class="top">
-  <div class="top-row">
+<body class="view-summary">
+
+<header class="header">
+  <div class="header-top">
     <div>
-      <h1>Same Sentence, Two Stacks</h1>
-      <p>Both sides process the same <b>163-character</b> sentence one <b>operation at a time</b> in lockstep — P30 library (489 ops) vs Hamming SECDED (12,264 ops). Same tick, same delay; watch P30 reach the finish while traditional ECC is still counting.</p>
-      <p class="caveat"><b>Reading this honestly.</b> The two sides count <i>different kinds</i> of operation: P30 ops are <i>symbol-level</i> (one Locate / Emit / Verify per character); Hamming ops are <i>bit-level</i> (individual XORs across each 64-bit word), so part of the gap is granularity. They also cover <i>different scopes</i>: P30's <b>489</b> is the write path only — <i>encode + validate</i>, with reads counted as free; Hamming's <b>12,264</b> is a full round trip, and most of it (<b>456 of the 584</b> ops per word) is the <i>syndrome check rerun on every read</i> — the exact work a P30 read skips (<code>reverify_on_read = 0</code>). They also guarantee different things — P30 Verify confirms <i>coprimality</i> (the value is structurally valid), while Hamming SECDED detects and <i>corrects</i> physical bit-flips. The <b>489</b> here is P30's conservative <i>library</i> profile; the native-silicon <i>BIOS</i> profile is 163 ops (the <b>75×</b> figure on the impact panel). <i>Library shim</i> storage that round-trips on a conventional stack (CHAR keeps UTF-8 plus a 4-byte header, 167&nbsp;B here) is roughly break-even with bare UTF-8 — compact native encodings (5-bit residues; 116&nbsp;B DIRECT write-only) are smaller but sit on the native path, with transcoding at the boundary until the ecosystem catches up. The win shown here is <b>operations, not shim file size</b>.</p>
+      <h1>Same Sentence, Two Encoding Systems</h1>
+      <p class="header-intro">Watch the same sentence get encoded two ways: with <b>P30 Prime Encoding</b> and with a traditional <b>64-bit byte system + ECC</b>. Compare symbolic storage, modeled operations, and error checking in real time.</p>
     </div>
     <a class="home-link" href="landing.html">Home</a>
   </div>
-  <div class="controls">
-    <button class="btn primary" id="playBtn">Play</button>
-    <button class="btn" id="resetBtn">Reset</button>
+
+  <details class="theory">
+    <summary>Show theory</summary>
+    <div class="theory-body">
+      <p>The two sides count <i>different kinds</i> of operation: P30 ops are <i>symbol-level</i> (Locate / Emit / Verify per character); Hamming ops are <i>bit-level</i> (XORs across each 64-bit word). P30's count is the write path; Hamming's is a full round trip with syndrome checks on every read.</p>
+      <p style="margin-top:.45rem">They guarantee different things — P30 confirms <i>coprimality</i> (structurally valid); Hamming <span class="tip" tabindex="0" data-tip="An error-correcting code that can detect two-bit errors and correct one-bit errors.">SECDED</span> detects and <i>corrects</i> bit-flips. Timers are slow-motion replay — this compares <i>operation counts</i>, not hardware speed.</p>
+    </div>
+  </details>
+
+  <div class="sentence-block">
+    <div class="sentence-top">
+      <span class="sentence-label">Sentence being encoded</span>
+      <span class="sentence-meta" id="sentenceMeta">—</span>
+    </div>
+    <textarea class="sentence-input" id="sentenceInput" rows="2" spellcheck="false">The Great Salt Lake can be fully restored to full health within as little as 3 years by returning 1,150,000 AF/yr. Resulting Utah's lake effect and water security.</textarea>
+    <div class="sentence-live" id="sentenceLive" hidden aria-live="polite"></div>
   </div>
-  <div class="race">
-    <div class="track">
-      <div class="track-head">
-        <span class="track-name p30">P30 Encoding</span>
-        <span class="track-ops" id="p30Ops">0 <span>/ 489</span></span>
-      </div>
-      <div class="bar"><div class="bar-fill p30" id="p30Bar"></div></div>
-      <div class="track-meta" id="p30Meta">0 / 163 characters</div>
+
+  <div class="pause-banner" id="pauseBanner">Paused at operation <b id="pauseOps">—</b> — P30 <b id="pauseP30">—</b>, Traditional <b id="pauseTrad">—</b></div>
+
+  <div class="command-bar">
+    <div class="controls">
+      <button class="btn btn-complete-cta" id="viewSummaryBtn" type="button">View summary</button>
+      <button class="btn primary" id="runBtn" type="button">Run comparison</button>
+      <button class="btn" id="stepBtn" type="button">Next step</button>
+      <button class="btn ghost" id="resetBtn" type="button">Reset</button>
     </div>
-    <div class="race-mid">
-      <div class="ratio-num" id="ratioLive">&mdash;</div>
-      <div class="ratio-lab">ops gap (traditional &divide; P30)</div>
+    <div class="speed-group">
+      <span class="toolbar-lab">Speed</span>
+      <button class="speed-btn" type="button" data-delay="22">Slow</button>
+      <button class="speed-btn active" type="button" data-delay="8">Normal</button>
+      <button class="speed-btn" type="button" data-delay="2">Fast</button>
     </div>
-    <div class="track">
-      <div class="track-head">
-        <span class="track-name trad">Byte + Hamming SECDED</span>
-        <span class="track-ops" id="hamOps">0 <span>/ 12,264</span></span>
+    <div class="view-toggle">
+      <span class="view-toggle-lab">View</span>
+      <button class="view-btn active" type="button" data-view="summary">Summary</button>
+      <button class="view-btn" type="button" data-view="mechanics">How it works</button>
+    </div>
+    <details class="legend-drop">
+      <summary>Legend</summary>
+      <div class="legend-drop-body">
+        <span class="legend-item"><span class="legend-swatch gold"></span> Active P30</span>
+        <span class="legend-item"><span class="legend-swatch purple"></span> Inactive</span>
+        <span class="legend-item"><span class="legend-swatch blue"></span> Byte data</span>
+        <span class="legend-item"><span class="legend-swatch orange"></span> Check bit</span>
+        <span class="legend-item"><span class="legend-swatch red"></span> Error</span>
       </div>
-      <div class="bar"><div class="bar-fill trad" id="hamBar"></div></div>
-      <div class="track-meta" id="hamMeta">Word <b>1</b> / 21</div>
+    </details>
+  </div>
+
+  <div class="toolbar" aria-label="Color legend (summary view)">
+    <div class="legend-group">
+      <span class="toolbar-lab">Legend</span>
+      <span class="legend-item"><span class="legend-swatch gold"></span> Active P30</span>
+      <span class="legend-item"><span class="legend-swatch purple"></span> Inactive</span>
+      <span class="legend-item"><span class="legend-swatch blue"></span> Byte data</span>
+      <span class="legend-item"><span class="legend-swatch orange"></span> Check bit</span>
+      <span class="legend-item"><span class="legend-swatch red"></span> Error</span>
     </div>
   </div>
-  <div class="replay-note">Timers show <b>slow-motion replay pace</b>, not hardware speed &mdash; real silicon runs this roughly 10<sup>8</sup>&times; faster. This race compares <i>operation counts</i>, not wall-clock time.</div>
-</div>
+
+  <div class="progress-strip" id="progressStrip">
+    <span class="strip-lead" id="stripLead">Press <b>Run comparison</b> to begin</span>
+    <span class="strip-lead strip-complete-lead" id="stripCompleteLead">
+      Complete — view the summary for the takeaway, or reset to replay.
+    </span>
+    <span class="strip-stats">
+      <span>P30 <b id="stripP30">0 / 489</b></span>
+      <span>Traditional <b id="stripTrad">0 / 12,264</b></span>
+      <span>Ops gap <b class="gap-val" id="stripGap">—</b></span>
+    </span>
+  </div>
+
+  <div class="summary-only">
+  <section class="summary" aria-label="Comparison summary">
+    <span class="summary-title">Comparison at a glance</span>
+    <div class="summary-cards">
+      <div class="stat-card p30">
+        <h3>P30 Prime <span class="tip" tabindex="0" data-tip="Characters mapped to positions on a 30-point prime clock.">Encoding</span></h3>
+        <div class="stat-big" id="cardP30Time">0 ms</div>
+        <div class="stat-line" id="cardP30Store">0 symbolic positions</div>
+        <div class="stat-line stat-unit">Symbolic units in this model</div>
+        <div class="stat-line" id="cardP30Ops">0 / 489 modeled ops</div>
+        <div class="stat-status" id="cardP30Err">—</div>
+        <div class="card-progress"><div class="card-progress-fill p30" id="p30Bar"></div></div>
+      </div>
+      <div class="stat-card trad">
+        <h3>Traditional 64-bit + <span class="tip" tabindex="0" data-tip="Error-correcting check bits alongside each 64-bit word.">ECC</span></h3>
+        <div class="stat-big" id="cardTradTime">0 ms</div>
+        <div class="stat-line" id="cardTradStore">163 bytes + 8 check bits</div>
+        <div class="stat-line stat-unit">Bytes plus ECC per 64-bit word</div>
+        <div class="stat-line" id="cardTradOps">0 / 12,264 modeled ops</div>
+        <div class="stat-status" id="cardTradErr">—</div>
+        <div class="card-progress"><div class="card-progress-fill trad" id="tradBar"></div></div>
+      </div>
+      <div class="stat-card efficiency">
+        <h3>Efficiency</h3>
+        <div class="stat-big" id="ratioHeadline">—</div>
+        <div class="stat-line" id="ratioDetail">Run the comparison to see the ops gap.</div>
+        <div class="stat-foot" id="ratioFootnote">Simulated operation count — not a real CPU benchmark.</div>
+      </div>
+    </div>
+    <p class="storage-note"><b>Storage is not byte-equivalent.</b> P30 positions are symbolic units in this model. Traditional storage is measured in bytes plus ECC overhead. This demo compares encoding structure and modeled operation count, not direct memory footprint on current hardware.</p>
+  </section>
+
+  <div class="result" id="resultPanel">
+    <h3>Result</h3>
+    <div class="result-block" id="resultP30"></div>
+    <div class="result-block trad-block" id="resultTrad"></div>
+    <div class="result-takeaway" id="resultTakeaway"></div>
+    <p class="result-note" id="resultNote"></p>
+  </div>
+
+  <p class="replay-note">Replay timers are slow-motion. This demo compares <b>modeled operation counts</b>, not wall-clock hardware speed.</p>
+  </div>
+</header>
+
+<section class="mechanics-section" id="mechanicsSection">
+  <p class="mechanics-bridge">The panels below show <b>where that work comes from</b>: P30 verifies symbolic prime positions, while the traditional path recomputes ECC check bits across byte groups.</p>
 
 <div class="panes">
   <div class="pane">
     <div class="pane-head">
-      <span class="pane-title">P30 Prime 30 Clock</span>
-      <span class="pane-sub" id="p30Phase">Idle</span>
+      <div class="pane-title-row">
+        <div>
+          <div class="pane-title">P30 Prime Encoding</div>
+          <div class="pane-sub">Characters become positions on a 30-point prime clock</div>
+        </div>
+        <span class="pane-phase" id="p30Phase">Idle</span>
+      </div>
+      <div class="pane-pills">
+        <span class="pill">Char: <b id="p30Char">—</b></span>
+        <span class="pill">Position: <b id="p30Pos">—</b></span>
+        <span class="pill">Glyphs: <b id="p30Glyphs">0</b></span>
+        <span class="pill">Ops: <b id="p30OpsShort">0</b></span>
+      </div>
+      <div class="pane-progress" id="p30PaneProg">
+        <span class="pane-progress-lab" id="p30PaneProgLab">0 / 489 ops</span>
+        <div class="pane-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="p30PaneProgTrack">
+          <div class="pane-progress-fill p30" id="p30PaneBar"></div>
+        </div>
+      </div>
     </div>
-    <iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=1" title="P30 encoder"></iframe>
+    <div class="pane-now" id="p30Now">
+      <div class="now-main" id="p30NowMain">Ready</div>
+      <div class="now-sub" id="p30NowSub">P30 will map each character to a prime-clock position.</div>
+      <div class="now-meta" id="p30NowMeta"></div>
+    </div>
+    <div class="process-flow p30-flow" id="p30Flow">
+      <span class="flow-chain">Character → glyph → prime-clock position → verify</span>
+      <span class="flow-detail" id="p30FlowDetail">Each character maps to a glyph position, then P30 verifies that position on the prime clock.</span>
+    </div>
+    <div class="pane-body"><iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=8" title="P30 encoder" scrolling="no"></iframe></div>
   </div>
   <div class="divider" aria-hidden="true"></div>
-  <div class="pane">
+  <div class="pane trad-pane">
     <div class="pane-head">
-      <span class="pane-title">Traditional 64-Bit Word + ECC</span>
-      <span class="pane-sub" id="hamPhase">Idle</span>
+      <div class="pane-title-row">
+        <div>
+          <div class="pane-title">Traditional Encoding</div>
+          <div class="pane-sub">64-bit bytes with ECC check bits</div>
+        </div>
+        <span class="pane-phase" id="hamPhase">Idle</span>
+      </div>
+      <div class="pane-pills">
+        <span class="pill">Byte: <b id="hamByte">—</b></span>
+        <span class="pill">Word: <b id="hamWord">—</b></span>
+        <span class="pill">Bytes: <b id="hamBytes">0</b></span>
+        <span class="pill">Check bits: <b id="hamChecks">8</b></span>
+      </div>
+      <div class="pane-progress" id="hamPaneProg">
+        <span class="pane-progress-lab" id="hamPaneProgLab">0 / 12,264 ops</span>
+        <div class="pane-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="hamPaneProgTrack">
+          <div class="pane-progress-fill trad" id="hamPaneBar"></div>
+        </div>
+      </div>
     </div>
-    <iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=1" title="Hamming SECDED"></iframe>
+    <div class="pane-now" id="hamNow">
+      <div class="now-main" id="hamNowMain">Ready</div>
+      <div class="now-sub" id="hamNowSub">Traditional encoding will store each character as bytes, then run ECC checks.</div>
+      <div class="now-meta" id="hamNowMeta"></div>
+    </div>
+    <div class="process-flow trad-flow" id="tradFlow">
+      <span class="flow-chain">Character → byte → 8 bits → ECC check bits</span>
+      <span class="flow-detail" id="tradFlowDetail">Each character becomes one byte, then every bit is visited by the ECC verification pass.</span>
+    </div>
+    <div class="pane-body"><iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=8" title="Hamming SECDED" scrolling="no"></iframe></div>
   </div>
 </div>
 
-<div class="status" id="status">Press <b>Play</b> — both sides advance <b>one operation per tick</b> at the same rate. P30: Locate / Emit / Verify per character; Hamming: one step of the 584-op round trip.</div>
+<div class="mechanics-result" id="mechanicsResult" aria-live="polite">
+  <div class="mechanics-result-inner">
+    <div class="mr-head">Result</div>
+    <div id="mechanicsResultMain"></div>
+    <div class="mr-ops" id="mechanicsResultOps"></div>
+    <div class="mr-note" id="mechanicsResultNote"></div>
+  </div>
+</div>
+
+<div class="footer-status" id="status">Press <b>Run comparison</b> to encode the sentence on both sides in lockstep.</div>
+</section>
 
 <script>
 "use strict";
-var P30_MAX=489, HAM_MAX=12264, CHARS=163, WORDS=21;
+
+var DEFAULT_SENTENCE="The Great Salt Lake can be fully restored to full health within as little as 3 years by returning 1,150,000 AF/yr. Resulting Utah's lake effect and water security.";
+
 var playing=false;
-var opDelay=1;
+var paused=false;
+var runStarted=false;
+var opDelay=8;
 var tickTimer=null;
-var state={p30:{ops:0,progress:0,finished:false,playing:false},ham:{ops:0,progress:0,finished:false,playing:false,word:1}};
+var framesReady={p30:false,ham:false};
+
+var limits={p30Max:489, hamMax:12264, chars:163, words:21, p30Glyphs:167};
+
+var state={
+  p30:{ops:0,progress:0,finished:false,playing:false,ms:0,char:'',position:'',glyphs:0,opsMax:489,charIndex:-1,opPhase:''},
+  ham:{ops:0,progress:0,finished:false,playing:false,word:1,ms:0,byteIdx:'',bytesUsed:0,opsMax:12264,charIndex:-1,bitIndex:'',stepPhase:''}
+};
 
 var p30Frame=document.getElementById('p30Frame');
 var hamFrame=document.getElementById('hamFrame');
+var sentenceInput=document.getElementById('sentenceInput');
 
 function fmt(n){ return n.toLocaleString(); }
 
-function updateRace(){
-  var p=state.p30, h=state.ham;
-  document.getElementById('p30Ops').innerHTML=fmt(p.ops)+' <span>/ '+fmt(P30_MAX)+'</span>';
-  document.getElementById('hamOps').innerHTML=fmt(h.ops)+' <span>/ '+fmt(HAM_MAX)+'</span>';
-  document.getElementById('p30Bar').style.width=Math.min(100,p.ops/P30_MAX*100).toFixed(2)+'%';
-  document.getElementById('hamBar').style.width=Math.min(100,h.ops/HAM_MAX*100).toFixed(2)+'%';
-  document.getElementById('p30Meta').innerHTML='<b>'+p.progress+'</b> / '+CHARS+' characters'+(p.finished?' &middot; <b>done</b>':'');
-  document.getElementById('hamMeta').innerHTML='Word <b>'+Math.max(h.word,1)+'</b> / '+WORDS+(h.finished?' &middot; <b>done</b>':'');
-  var ratioEl=document.getElementById('ratioLive');
-  if(p.ops>0) ratioEl.textContent=(h.ops/Math.max(p.ops,1)).toFixed(1)+'\u00d7';
-  else ratioEl.textContent='\u2014';
-  document.getElementById('p30Phase').textContent=p.finished?'Complete':(p.playing?'Encoding':'Idle');
-  document.getElementById('hamPhase').textContent=h.finished?'Complete':(h.playing?'Checking':'Idle');
-  var st=document.getElementById('status');
-  if(p.finished&&h.finished){
-    st.innerHTML='Both finished. P30 spent <b>'+fmt(p.ops)+'</b> operations; Hamming SECDED spent <b>'+fmt(h.ops)+'</b> on the same message — a <b>'+(HAM_MAX/P30_MAX).toFixed(1)+'\u00d7</b> gap at full scale.';
-  }else if(p.finished&&!h.finished){
-    st.innerHTML='P30 is <b>done</b> at '+fmt(p.ops)+' operations. Hamming is still at '+fmt(h.ops)+' ('+(h.ops/HAM_MAX*100).toFixed(0)+'% of its total). The gap is the argument.';
+function calcLimits(text){
+  var chars=text.length;
+  var words=Math.max(1, Math.ceil(chars/8));
+  return {chars:chars,p30Max:chars*3,hamMax:words*584,words:words,p30Glyphs:chars+4,bytes:chars,checkBits:8};
+}
+
+function updateSentenceMeta(){
+  var L=calcLimits(sentenceInput.value);
+  limits=L;
+  document.getElementById('sentenceMeta').innerHTML=
+    '<b>'+L.chars+'</b> characters &middot; <b>'+fmt(L.p30Max)+'</b> P30 ops &middot; <b>'+L.p30Glyphs+'</b> positions &middot; <b>'+L.words+'</b> 64-bit words';
+}
+
+function pushSentence(){
+  var text=sentenceInput.value.trim()||DEFAULT_SENTENCE;
+  if(sentenceInput.value.trim()==='') sentenceInput.value=DEFAULT_SENTENCE;
+  updateSentenceMeta();
+  postBoth('setSentence',{text:text});
+}
+
+function dispChar(c){
+  if(c==='\u2423'||c===' ') return '\u2423';
+  return c;
+}
+
+function getHighlightIndex(){
+  if(!runStarted) return -1;
+  if(state.p30.finished&&state.ham.finished) return limits.chars;
+  if(!state.p30.finished&&state.p30.charIndex>=0) return state.p30.charIndex;
+  if(state.ham.charIndex>=0) return state.ham.charIndex;
+  return Math.max(state.p30.progress,0);
+}
+
+function updateSentenceHighlight(){
+  var text=sentenceInput.value;
+  var live=document.getElementById('sentenceLive');
+  var ta=sentenceInput;
+  var idx=getHighlightIndex();
+  if(!runStarted||idx<0){
+    live.hidden=true;
+    ta.classList.remove('hidden');
+    return;
+  }
+  live.hidden=false;
+  ta.classList.add('hidden');
+  var html='';
+  for(var i=0;i<text.length;i++){
+    var cls='ch';
+    if(i<idx||(idx>=limits.chars&&i<limits.chars)) cls+=' done';
+    if(i===idx&&idx<limits.chars) cls+=' active';
+    var c=text[i];
+    html+='<span class="'+cls+'">'+(c===' '?'\u00a0':esc(c))+'</span>';
+  }
+  live.innerHTML=html;
+}
+
+function renderPaneNow(side, main, sub, meta){
+  document.getElementById(side+'NowMain').innerHTML=main;
+  document.getElementById(side+'NowSub').innerHTML=sub||'';
+  document.getElementById(side+'NowMeta').textContent=meta||'';
+  document.getElementById(side+'NowSub').style.display=sub?'block':'none';
+  document.getElementById(side+'NowMeta').style.display=meta?'block':'none';
+}
+
+function buildP30PaneNow(p){
+  var pMax=state.p30.opsMax||limits.p30Max;
+  if(p.finished){
+    return {main:'Encoding <b>complete</b>', sub:'All characters mapped to prime-clock positions.', meta:''};
+  }
+  if(p.ops===0){
+    return {main:'<b>Ready</b>', sub:'P30 will map each character to a prime-clock position.', meta:''};
+  }
+  var ci=(p.charIndex>=0?p.charIndex:p.progress)+1;
+  var ch=p.char?dispChar(p.char):'';
+  var phase=p.opPhase||'Processing';
+  var sub={
+    Locate:'P30 finds the glyph position on the prime clock.',
+    Emit:'P30 emits the symbolic position.',
+    Verify:'P30 verifies the position is structurally valid.'
+  }[phase]||'P30 maps each character to a symbolic prime-clock position.';
+  return {
+    main:phase+' — character <b>'+ci+'</b> / '+limits.chars+(ch?' (“'+esc(ch)+'”)':''),
+    sub:sub,
+    meta:'Operation '+fmt(p.ops)+' / '+fmt(pMax)+(p.position&&p.position!=='—'?' · position '+p.position:'')
+  };
+}
+
+function buildHamPaneNow(h){
+  var hMax=state.ham.opsMax||limits.hamMax;
+  if(h.finished){
+    return {main:'ECC check <b>complete</b>', sub:'Full verification round trip finished.', meta:''};
+  }
+  if(h.ops===0){
+    return {main:'<b>Ready</b>', sub:'Traditional encoding will store each character as bytes, then run ECC checks.', meta:''};
+  }
+  if(h.stepPhase==='WRITE'&&h.charIndex>=0){
+    var ci=h.charIndex+1;
+    var ch=sentenceInput.value[h.charIndex]||'';
+    return {
+      main:'Encoding character <b>“'+esc(dispChar(ch))+'”</b> ('+ci+' / '+limits.chars+')',
+      sub:'Byte '+h.byteIdx+', bit '+h.bitIndex+' is folded into the ECC check total (XOR + AND mask).',
+      meta:'Every bit must be visited to verify the word · '+fmt(h.ops)+' / '+fmt(hMax)+' ops'
+    };
+  }
+  if(h.stepPhase==='READ'){
+    return {
+      main:'Verification pass — recomputing check bits',
+      sub:'Every bit in the 64-bit word must be visited again.',
+      meta:'Word '+formatHamWord(h)+' · '+fmt(h.ops)+' / '+fmt(hMax)+' ops'
+    };
+  }
+  return {
+    main:'Processing word '+formatHamWord(h),
+    sub:'Traditional encoding visits each bit to protect the word.',
+    meta:fmt(h.ops)+' / '+fmt(hMax)+' modeled ops'
+  };
+}
+
+function updatePauseBanner(){
+  var banner=document.getElementById('pauseBanner');
+  if(!paused||playing){
+    banner.classList.remove('visible');
+    return;
+  }
+  banner.classList.add('visible');
+  document.getElementById('pauseOps').textContent=fmt(state.p30.ops)+' P30 · '+fmt(state.ham.ops)+' traditional';
+  document.getElementById('pauseP30').textContent=fmt(state.p30.ops)+' / '+fmt(state.p30.opsMax||limits.p30Max);
+  document.getElementById('pauseTrad').textContent=fmt(state.ham.ops)+' / '+fmt(state.ham.opsMax||limits.hamMax);
+}
+
+function updateProgressStrip(p,h,pMax,hMax){
+  document.getElementById('stripP30').textContent=fmt(p.ops)+' / '+fmt(pMax);
+  document.getElementById('stripTrad').textContent=fmt(h.ops)+' / '+fmt(hMax);
+  var gapEl=document.getElementById('stripGap');
+  var lead=document.getElementById('stripLead');
+  var strip=document.getElementById('progressStrip');
+  var bothDone=p.finished&&h.finished;
+  document.body.classList.toggle('run-complete', bothDone);
+  strip.classList.toggle('is-complete', bothDone);
+  if(bothDone){
+    if(pMax>0) gapEl.textContent=(hMax/pMax).toFixed(1)+'×';
+    else gapEl.textContent='—';
+    return;
+  }
+  if(paused){
+    lead.innerHTML='Paused — press <b>Resume comparison</b> to continue';
   }else if(playing){
-    st.innerHTML='Lockstep: both sides advance one operation per tick (slow-motion replay, not hardware speed).';
+    lead.textContent='Running — P30 verifies symbolic positions, traditional recomputes ECC checks';
+  }else if(p.ops>0||h.ops>0){
+    lead.textContent='In progress';
+    if(p.ops>0) gapEl.textContent=(h.ops/Math.max(p.ops,1)).toFixed(1)+'×';
+    else gapEl.textContent='—';
+  }else{
+    lead.innerHTML='Press <b>Run comparison</b> to begin';
+    gapEl.textContent='—';
+    return;
+  }
+  if(p.ops>0) gapEl.textContent=(h.ops/Math.max(p.ops,1)).toFixed(1)+'×';
+  else gapEl.textContent='—';
+}
+
+function charBits(ch){
+  var code=(ch||' ').charCodeAt(0)&0xFF;
+  return code.toString(2).padStart(8,'0');
+}
+
+function updateP30Flow(p){
+  var el=document.getElementById('p30FlowDetail');
+  if(!el) return;
+  if(p.finished){
+    el.textContent='Complete — every character mapped and verified on the prime clock.';
+    return;
+  }
+  if(p.ops===0){
+    el.textContent='Each character maps to a glyph position, then P30 verifies that position on the prime clock.';
+    return;
+  }
+  if(p.opPhase&&p.charIndex>=0){
+    var ch=sentenceInput.value[p.charIndex]||'';
+    var ci=p.charIndex+1;
+    el.innerHTML='<b>'+esc(p.opPhase)+'</b> — character <b>'+ci+'</b> / '+limits.chars+
+      (ch?' (“'+esc(ch===' '?'\u2423':ch)+'”)':'')+
+      (p.position&&p.position!=='—'?' → position <b>'+esc(p.position)+'</b>':'');
+  }else{
+    el.textContent='Each character maps to a glyph position, then P30 verifies that position on the prime clock.';
   }
 }
 
+function updateTradFlow(h){
+  var el=document.getElementById('tradFlowDetail');
+  if(!el) return;
+  if(h.finished){
+    el.innerHTML='Complete — all bytes verified with ECC checks.';
+    return;
+  }
+  if(h.ops===0){
+    el.textContent='Each character becomes one byte, then every bit is visited by the ECC verification pass.';
+    return;
+  }
+  if(h.stepPhase==='WRITE'&&h.charIndex>=0){
+    var ch=sentenceInput.value[h.charIndex]||' ';
+    var bits=charBits(ch);
+    el.innerHTML='<b>"'+esc(ch===' '?'\u2423':ch)+'"</b> → '+bits+' → folded into ECC check totals (byte '+h.byteIdx+', bit '+h.bitIndex+')';
+  }else if(h.stepPhase==='READ'){
+    el.textContent='Verification pass — every bit in the 64-bit word is revisited.';
+  }else{
+    el.textContent='Processing word '+formatHamWord(h)+' — bytes become bits, bits feed check-bit recomputation.';
+  }
+}
+function setControlsState(){
+  var p=state.p30, h=state.ham;
+  var bothDone=p.finished&&h.finished;
+  var btn=document.getElementById('runBtn');
+  var viewBtn=document.getElementById('viewSummaryBtn');
+  var stepBtn=document.getElementById('stepBtn');
+  if(playing) btn.textContent='Pause';
+  else if(paused&&runStarted) btn.textContent='Resume comparison';
+  else if(bothDone) btn.textContent='Replay comparison';
+  else btn.textContent='Run comparison';
+  if(bothDone){
+    viewBtn.classList.add('primary');
+    btn.classList.remove('primary');
+  }else{
+    viewBtn.classList.remove('primary');
+    btn.classList.add('primary');
+  }
+  stepBtn.disabled=bothDone;
+  stepBtn.setAttribute('aria-hidden', bothDone?'true':'false');
+}
+function setRunButton(){ setControlsState(); }
+
+function setPhaseLabel(elId, finished, playing, doneText, activeText){
+  var el=document.getElementById(elId);
+  var isTrad=elId==='hamPhase';
+  if(finished){
+    el.textContent=doneText;
+    el.className='pane-phase '+(isTrad?'done-trad':'done-p30');
+  }else if(playing){
+    el.textContent=activeText;
+    el.className='pane-phase '+(isTrad?'active-trad':'active-p30');
+  }else{
+    el.textContent='Idle';
+    el.className='pane-phase idle';
+  }
+}
+
+function formatHamWord(h){
+  if(h.finished) return 'complete';
+  var w=Math.min(h.word||1, limits.words);
+  return w+' / '+limits.words;
+}
+
+function updatePaneProgress(side, ops, max, finished){
+  var bar=document.getElementById(side+'PaneBar');
+  var lab=document.getElementById(side+'PaneProgLab');
+  var wrap=document.getElementById(side+'PaneProg');
+  var track=document.getElementById(side+'PaneProgTrack');
+  if(!bar||!lab||!wrap) return;
+  var pct=max>0?Math.min(100, ops/max*100):0;
+  bar.style.width=pct.toFixed(1)+'%';
+  if(track) track.setAttribute('aria-valuenow', String(Math.round(pct)));
+  wrap.classList.toggle('is-done', finished);
+  if(finished) lab.textContent='Complete · '+fmt(ops)+' ops';
+  else if(ops===0) lab.textContent='0 / '+fmt(max)+' ops';
+  else lab.textContent=fmt(ops)+' / '+fmt(max)+' · '+Math.round(pct)+'%';
+}
+
+function updateSummary(){
+  var p=state.p30, h=state.ham;
+  var pMax=state.p30.opsMax||limits.p30Max;
+  var hMax=state.ham.opsMax||limits.hamMax;
+  var pPct=Math.min(100, pMax>0?p.ops/pMax*100:0);
+  var hPct=Math.min(100, hMax>0?h.ops/hMax*100:0);
+
+  document.getElementById('cardP30Time').textContent='Animation: '+fmt(Math.round(p.ms))+' ms';
+  document.getElementById('cardTradTime').textContent='Animation: '+fmt(Math.round(h.ms))+' ms';
+  document.getElementById('cardP30Store').textContent=fmt(p.finished?(p.glyphs||limits.chars):(p.glyphs||p.progress))+' symbolic positions';
+  document.getElementById('cardTradStore').textContent=fmt(limits.bytes)+' bytes + '+limits.checkBits+' check bits per word';
+  document.getElementById('cardP30Ops').textContent=fmt(p.ops)+' / '+fmt(pMax)+' modeled ops';
+  document.getElementById('cardTradOps').textContent=fmt(h.ops)+' / '+fmt(hMax)+' modeled ops';
+  document.getElementById('cardP30Err').textContent=p.finished?'Prime-valid · 100%':(p.ops>0?'Encoding… · '+Math.round(pPct)+'%':'Waiting');
+  document.getElementById('cardTradErr').textContent=h.finished?'ECC-valid · 100%':(h.ops>0?'Checking… · '+Math.round(hPct)+'%':'Waiting');
+
+  document.getElementById('p30Bar').style.width=pPct.toFixed(1)+'%';
+  document.getElementById('tradBar').style.width=hPct.toFixed(1)+'%';
+  updatePaneProgress('p30', p.ops, pMax, p.finished);
+  updatePaneProgress('ham', h.ops, hMax, h.finished);
+
+  var ratioHead=document.getElementById('ratioHeadline');
+  var ratioDetail=document.getElementById('ratioDetail');
+  var bothDone=p.finished&&h.finished;
+  if(bothDone){
+    var multFull=(hMax/pMax).toFixed(1);
+    ratioHead.textContent=multFull+'× more modeled work';
+    ratioDetail.innerHTML='Traditional: <b>'+fmt(hMax)+'</b> ops &middot; P30: <b>'+fmt(pMax)+'</b> ops';
+  }else if(p.ops>0||h.ops>0){
+    var multLive=(h.ops/Math.max(p.ops,1)).toFixed(1);
+    ratioHead.textContent=multLive+'× more demo operations (so far)';
+    ratioDetail.innerHTML='Traditional: <b>'+fmt(h.ops)+'</b> ops &middot; P30: <b>'+fmt(p.ops)+'</b> ops';
+  }else{
+    var multIdle=(hMax/pMax).toFixed(1);
+    ratioHead.textContent='Up to '+multIdle+'× demo operations';
+    ratioDetail.textContent='Run the comparison to watch the gap grow.';
+  }
+
+  setPhaseLabel('p30Phase', p.finished, p.playing, 'Encoding complete', 'Encoding');
+  setPhaseLabel('hamPhase', h.finished, h.playing, 'ECC check complete', 'Checking');
+
+  document.getElementById('p30Char').textContent=p.char||'—';
+  document.getElementById('p30Pos').textContent=p.position||'—';
+  document.getElementById('p30OpsShort').textContent=fmt(p.ops);
+  document.getElementById('p30Glyphs').textContent=fmt(p.glyphs||p.progress);
+
+  var byteLabel=h.byteIdx;
+  if(typeof byteLabel==='number') byteLabel=String(byteLabel);
+  else if(typeof byteLabel==='string'&&byteLabel.indexOf('Byte')===0) byteLabel=byteLabel.replace('Byte ','');
+  document.getElementById('hamByte').textContent=h.finished?'—':(byteLabel||'—');
+  document.getElementById('hamWord').textContent=formatHamWord(h);
+  document.getElementById('hamBytes').textContent=fmt(h.finished?limits.bytes:(h.bytesUsed||0));
+  document.getElementById('hamChecks').textContent=h.finished?'8 per word':'8';
+
+  var p30Now=buildP30PaneNow(p);
+  renderPaneNow('p30', p30Now.main, p30Now.sub, p30Now.meta);
+  var hamNow=buildHamPaneNow(h);
+  renderPaneNow('ham', hamNow.main, hamNow.sub, hamNow.meta);
+
+  updateSentenceHighlight();
+  updateProgressStrip(p,h,pMax,hMax);
+  updateP30Flow(p);
+  updateTradFlow(h);
+  updatePauseBanner();
+  updateResult();
+}
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function updateResult(){
+  var panel=document.getElementById('resultPanel');
+  var p=state.p30, h=state.ham;
+  if(!p.finished||!h.finished){ panel.classList.remove('visible'); updateMechanicsResult(); return; }
+  panel.classList.add('visible');
+  var pMax=state.p30.opsMax||limits.p30Max;
+  var hMax=state.ham.opsMax||limits.hamMax;
+  var ratio=(hMax/pMax).toFixed(1);
+
+  document.getElementById('resultP30').innerHTML=
+    '<b>P30</b> completed in <b>'+fmt(pMax)+'</b> modeled operations.';
+  document.getElementById('resultTrad').innerHTML=
+    '<b>Traditional</b> completed in <b>'+fmt(hMax)+'</b> modeled operations.';
+  document.getElementById('resultTakeaway').innerHTML=
+    'Traditional performed <b>'+ratio+'×</b> more modeled work in this demo.';
+  document.getElementById('resultNote').textContent=
+    'Storage units are not byte-equivalent; this compares modeled encoding and verification behavior.';
+  updateMechanicsResult(pMax, hMax, ratio);
+}
+
+function updateMechanicsResult(pMax, hMax, ratio){
+  var box=document.getElementById('mechanicsResult');
+  if(!box) return;
+  var p=state.p30, h=state.ham;
+  if(!p.finished||!h.finished){
+    document.getElementById('mechanicsResultMain').textContent='';
+    document.getElementById('mechanicsResultOps').textContent='';
+    document.getElementById('mechanicsResultNote').textContent='';
+    return;
+  }
+  if(!ratio){
+    pMax=state.p30.opsMax||limits.p30Max;
+    hMax=state.ham.opsMax||limits.hamMax;
+    ratio=(hMax/pMax).toFixed(1);
+  }
+  document.getElementById('mechanicsResultMain').innerHTML=
+    'Traditional performed <b>'+ratio+'×</b> more modeled operations in this simulation.';
+  document.getElementById('mechanicsResultOps').innerHTML=
+    'P30: <b>'+fmt(pMax)+'</b> ops &middot; Traditional: <b>'+fmt(hMax)+'</b> ops';
+  document.getElementById('mechanicsResultNote').textContent=
+    'Storage units are not byte-equivalent; this compares modeled encoding and verification behavior.';
+}
+
+function updateStatus(){
+  var p=state.p30, h=state.ham;
+  var st=document.getElementById('status');
+  if(p.finished&&h.finished){
+    st.innerHTML='Both finished — press <b>View summary</b> for the takeaway, <b>Replay comparison</b> to run again, or <b>Reset</b>.';
+  }else if(p.finished&&!h.finished){
+    st.innerHTML='P30 is <b>done</b> ('+fmt(p.ops)+' ops). Traditional is still checking ('+Math.round(h.ops/(state.ham.opsMax||limits.hamMax)*100)+'%).';
+  }else if(playing){
+    st.innerHTML='Lockstep replay — both sides advance one operation per tick.';
+  }else if(paused){
+    st.innerHTML='Paused — press <b>Resume comparison</b> to continue, or <b>Reset</b> to start over.';
+  }else{
+    st.innerHTML='Press <b>Run comparison</b> to start. Use <b>Next step</b> to advance one operation at a time.';
+  }
+  setRunButton();
+  updateSummary();
+}
+
 function postFrame(frame,cmd,extra){
-  var msg=Object.assign({cmd:cmd},extra||{});
-  try{frame.contentWindow.postMessage(msg,'*');}catch(e){}
+  try{frame.contentWindow.postMessage(Object.assign({cmd:cmd},extra||{}),'*');}catch(e){}
+}
+function postBoth(cmd,extra){ postFrame(p30Frame,cmd,extra); postFrame(hamFrame,cmd,extra); }
+
+function applySpeed(delay){
+  opDelay=delay;
+  document.querySelectorAll('.speed-btn').forEach(function(b){
+    b.classList.toggle('active', parseInt(b.dataset.delay,10)===delay);
+  });
+  postBoth('setSpeed',{delay:delay});
 }
 
-function postBoth(cmd,extra){
-  postFrame(p30Frame,cmd,extra);
-  postFrame(hamFrame,cmd,extra);
-}
-
-function applySpeed(){
-  postFrame(p30Frame,'setSpeed',{delay:opDelay});
-  postFrame(hamFrame,'setSpeed',{delay:opDelay});
-}
-
-function stopLockstep(){
+function stopLockstep(completed){
   playing=false;
   if(tickTimer){ clearTimeout(tickTimer); tickTimer=null; }
-  document.getElementById('playBtn').textContent='Play';
   postBoth('pause');
+  if(completed){
+    paused=false;
+    runStarted=false;
+  }else if(runStarted&&(state.p30.ops>0||state.ham.ops>0)&&!(state.p30.finished&&state.ham.finished)){
+    paused=true;
+  }else{
+    paused=false;
+    if(state.p30.ops===0&&state.ham.ops===0) runStarted=false;
+  }
+  setRunButton();
 }
 
 function lockstepTick(){
   if(!playing) return;
-  if(state.p30.finished && state.ham.finished){
-    stopLockstep();
-    updateRace();
+  if(state.p30.finished&&state.ham.finished){
+    stopLockstep(true);
+    updateStatus();
     return;
   }
   if(!state.p30.finished) postFrame(p30Frame,'step');
@@ -205,60 +963,123 @@ function lockstepTick(){
   tickTimer=setTimeout(lockstepTick, opDelay);
 }
 
-function idleStatus(){
-  document.getElementById('status').innerHTML='Press <b>Play</b> — both sides advance <b>one operation per tick</b> at the same rate. P30: Locate / Emit / Verify per character; Hamming: one step of the 584-op round trip.';
-}
-
 function resetState(){
-  stopLockstep();
-  state.p30={ops:0,progress:0,finished:false,playing:false};
-  state.ham={ops:0,progress:0,finished:false,playing:false,word:1};
+  stopLockstep(true);
+  state.p30={ops:0,progress:0,finished:false,playing:false,ms:0,char:'',position:'',glyphs:0,opsMax:limits.p30Max,charIndex:-1,opPhase:''};
+  state.ham={ops:0,progress:0,finished:false,playing:false,word:1,ms:0,byteIdx:'',bytesUsed:0,opsMax:limits.hamMax,charIndex:-1,bitIndex:'',stepPhase:''};
+  pushSentence();
   postBoth('reset');
-  updateRace();
+  updateStatus();
 }
 
-function play(){
+function runComparison(){
   if(playing){
-    stopLockstep();
+    stopLockstep(false);
+    updateStatus();
     return;
   }
-  resetState();
+  if(paused&&runStarted){
+    playing=true;
+    paused=false;
+    setRunButton();
+    lockstepTick();
+    updateStatus();
+    return;
+  }
+  pushSentence();
+  stopLockstep(true);
+  state.p30={ops:0,progress:0,finished:false,playing:false,ms:0,char:'',position:'',glyphs:0,opsMax:limits.p30Max,charIndex:-1,opPhase:''};
+  state.ham={ops:0,progress:0,finished:false,playing:false,word:1,ms:0,byteIdx:'',bytesUsed:0,opsMax:limits.hamMax,charIndex:-1,bitIndex:'',stepPhase:''};
+  postBoth('reset');
   playing=true;
-  document.getElementById('playBtn').textContent='Pause';
+  paused=false;
+  runStarted=true;
+  setView('mechanics');
+  setRunButton();
   lockstepTick();
+  updateStatus();
 }
 
-function reset(){
-  resetState();
-  idleStatus();
+function stepOnce(){
+  if(!framesReady.p30||!framesReady.ham) return;
+  if(state.p30.finished&&state.ham.finished) return;
+  pushSentence();
+  if(state.p30.ops===0&&state.ham.ops===0&&!playing){
+    postBoth('reset');
+    runStarted=true;
+  }
+  if(!state.p30.finished) postFrame(p30Frame,'step');
+  if(!state.ham.finished) postFrame(hamFrame,'step');
+  updateStatus();
 }
+
+function setView(mode){
+  document.body.classList.toggle('view-summary', mode==='summary');
+  document.body.classList.toggle('view-mechanics', mode==='mechanics');
+  document.querySelectorAll('.view-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.view===mode);
+  });
+  try{ localStorage.setItem('compareView', mode); }catch(e){}
+}
+
+function reset(){ resetState(); }
 
 window.addEventListener('message',function(e){
   var d=e.data;
   if(!d) return;
   if(d.type==='embed-ready'){
-    applySpeed();
+    if(d.source==='p30') framesReady.p30=true;
+    if(d.source==='hamming') framesReady.ham=true;
+    if(framesReady.p30&&framesReady.ham){ applySpeed(opDelay); pushSentence(); }
     return;
   }
   if(d.type!=='state') return;
   if(d.source==='p30'){
-    state.p30.ops=d.ops; state.p30.progress=d.progress;
-    state.p30.finished=d.finished; state.p30.playing=d.playing;
+    Object.assign(state.p30, {
+      ops:d.ops, progress:d.progress, finished:d.finished, playing:d.playing,
+      ms:d.ms||0, char:d.char||'', position:d.position||'',
+      glyphs:d.glyphs!=null?d.glyphs:d.progress,
+      charIndex:d.charIndex!=null?d.charIndex:-1,
+      opPhase:d.opPhase||''
+    });
+    if(d.opsMax) state.p30.opsMax=d.opsMax;
   }else if(d.source==='hamming'){
-    state.ham.ops=d.ops; state.ham.progress=d.progress;
-    state.ham.finished=d.finished; state.ham.playing=d.playing;
-    state.ham.word=d.word||1;
+    Object.assign(state.ham, {
+      ops:d.ops, progress:d.progress, finished:d.finished, playing:d.playing,
+      word:d.word||1, ms:d.ms||0, byteIdx:d.byteIdx!=null?d.byteIdx:'',
+      bytesUsed:d.bytesUsed!=null?d.bytesUsed:0,
+      charIndex:d.charIndex!=null?d.charIndex:-1,
+      bitIndex:d.bitIndex!=null?d.bitIndex:'',
+      stepPhase:d.stepPhase||''
+    });
+    if(d.opsMax) state.ham.opsMax=d.opsMax;
   }
-  if(state.p30.finished&&state.ham.finished&&playing){
-    stopLockstep();
-  }
-  updateRace();
+  if(state.p30.finished&&state.ham.finished&&playing) stopLockstep(true);
+  updateStatus();
 });
 
-document.getElementById('playBtn').addEventListener('click',play);
+document.getElementById('runBtn').addEventListener('click',runComparison);
+document.getElementById('stepBtn').addEventListener('click',stepOnce);
 document.getElementById('resetBtn').addEventListener('click',reset);
+document.getElementById('viewSummaryBtn').addEventListener('click',function(){ setView('summary'); });
+sentenceInput.addEventListener('input',function(){
+  updateSentenceMeta();
+  if(!runStarted) updateSentenceHighlight();
+});
+document.querySelectorAll('.speed-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){ applySpeed(parseInt(this.dataset.delay,10)); });
+});
+document.querySelectorAll('.view-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){ setView(this.dataset.view); });
+});
 
-updateRace();
+try{
+  var savedView=localStorage.getItem('compareView');
+  if(savedView==='mechanics') setView('mechanics');
+}catch(e){}
+
+updateSentenceMeta();
+updateStatus();
 </script>
 </body>
 </html>

@@ -59,6 +59,16 @@ python tools/bench_dual_fpga.py --mode max ...
 
 **Rough total:** ~\$320–360 for boards + sensors + hub (excluding optional thermocouples).
 
+### P30 Bench Carrier v1 (recommended for publication)
+
+Orderable dual-module carrier with onboard **INA3221** dual-rail sensing:
+
+- Hardware pack: [`hardware/p30-bench-carrier-v1/`](../../hardware/p30-bench-carrier-v1/)
+- 2× **Digilent Cmod A7-35T** on matched 5 V rails (~\$290–420 total with PCBA)
+- LiteX: `python fpga/litex/p30_soc.py --platform cmod_a7 --build-gateware`
+
+Same **XC7A35T** as Arty; cleaner power path than breadboard INA260 wiring.
+
 ## Procurement and wiring
 
 ### What measures what

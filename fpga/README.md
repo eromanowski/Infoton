@@ -41,6 +41,10 @@ python tools/verify_litex_soc.py
 
 See [`litex/README.md`](litex/README.md).
 
+## P30 bench carrier (orderable)
+
+Dual **Cmod A7-35T** thermal bench PCB: [`hardware/p30-bench-carrier-v1/`](../hardware/p30-bench-carrier-v1/)
+
 ## Planned layout
 
 ```
