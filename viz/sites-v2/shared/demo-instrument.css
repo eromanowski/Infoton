@@ -33,12 +33,36 @@
 .demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .stage,
 .demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .stage {
   background: var(--demo-bg) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .stage {
   max-height: min(760px, 75vh);
+}
+
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .stage {
+  height: auto;
+  max-height: none;
 }
 
 .demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .work,
 .demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .work {
   background: var(--demo-bg) !important;
+}
+
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .work {
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .clock-stage {
+  height: min(400px, 38vh);
+  min-height: 280px;
+  max-height: 420px;
+  flex: 0 0 auto;
+}
+
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .speed-note {
+  flex-shrink: 0;
 }
 
 .demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .panel-wrap,
@@ -72,6 +96,15 @@
   --border: var(--demo-border);
   --center: var(--demo-gold);
   --grid: #8f7ab8;
+  overflow: visible;
+}
+
+.demo-shell-instrument:has(.wgt-encoder) {
+  overflow: visible;
+}
+
+.demo-shell-instrument:has(.wgt-encoder) .demo-mount {
+  overflow: visible;
 }
 
 /* Panel instrumentation */

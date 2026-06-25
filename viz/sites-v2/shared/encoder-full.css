@@ -45,12 +45,22 @@
   font-family: 'Cormorant Garamond', serif;
   font-size: 18px;
   line-height: 1.5;
-  overflow: hidden;
+  overflow: visible;
 }
 .wgt-encoder-inner:not(.embed-compare) .stage {
   height: auto;
-  min-height: min(680px, 70vh);
-  max-height: min(860px, 78vh);
+  min-height: min(640px, 68vh);
+  max-height: none;
+}
+.wgt-encoder-inner:not(.embed-compare) .work {
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+.wgt-encoder-inner:not(.embed-compare) .clock-stage {
+  height: min(440px, 42vh);
+  min-height: 280px;
+  max-height: 460px;
+  flex: 0 0 auto;
 }
 .wgt-encoder-inner:not(.embed-compare) #open-repro-banner { display: none !important; }
 

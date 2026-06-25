@@ -541,10 +541,14 @@ body.theme-atom::before {
 }
 
 .demo-shell:has(.wgt-hamming) .demo-mount,
-.demo-shell:has(.wgt-encoder) .demo-mount,
 .demo-shell:has(.wgt-impact) .demo-mount,
 .demo-shell:has(.wgt-fleet) .demo-mount {
   min-height: min(680px, 72vh);
+}
+
+.demo-shell:has(.wgt-encoder) .demo-mount {
+  min-height: 0;
+  overflow: visible;
 }
 
 .demo-shell:has(.wgt-history) .demo-mount,
