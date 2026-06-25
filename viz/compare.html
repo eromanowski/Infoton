@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>P30 vs Traditional ECC | Side by Side</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -13,10 +15,12 @@
   --grid:#b0a0d0; --text:#f8f4ff; --text-m:#ddd0f4;
   --border:rgba(184,168,216,.14);
 }
-html{background:var(--bg)}
+html{height:100%;background:var(--bg)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',serif;font-size:19px;line-height:1.5;
-  min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden}
+body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-size:19px;line-height:1.5;
+  min-height:100%;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.header h1,.pane-title,.btn{font-family:'Cinzel','Segoe UI',system-ui,serif}
 
 .header{padding:1.2rem 1.5rem 1.1rem;background:var(--surface);flex-shrink:0}
 .header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
@@ -183,19 +187,20 @@ body.run-complete #runBtn:hover{background:var(--card)}
 
 .view-btn.active{background:var(--center);color:var(--space);font-weight:600}
 
-body.view-mechanics{min-height:100vh}
-body.view-mechanics .header{flex-shrink:0}
+body.view-mechanics{height:100%;max-height:100%;min-height:0;overflow:hidden}
+body.view-mechanics .header{flex-shrink:0;overflow-y:auto;max-height:min(42vh,480px)}
 body.view-mechanics .summary-only{display:none}
 body.view-mechanics .header{padding:.85rem 1.5rem .65rem}
 body.view-mechanics .header-top .header-intro{display:none}
 body.view-mechanics .replay-note{display:none}
 body.view-mechanics .progress-strip{display:flex}
-body.view-mechanics .mechanics-section{display:flex;flex-direction:column;margin-top:0;border-top:1px solid var(--border)}
-body.view-mechanics .mechanics-bridge{padding:.55rem 1.5rem .4rem;font-size:.95rem}
-body.view-mechanics .panes{align-items:stretch}
-body.view-mechanics .pane{overflow:visible}
-body.view-mechanics .pane-body{flex:none;overflow:visible;display:block;background:inherit}
-body.view-mechanics .pane iframe{height:580px;flex:none;display:block;border:0;width:100%}
+body.view-mechanics .mechanics-section{display:flex;flex-direction:column;flex:1 1 0;min-height:0;margin-top:0;border-top:1px solid var(--border);overflow:hidden}
+body.view-mechanics .mechanics-bridge{padding:.55rem 1.5rem .4rem;font-size:.95rem;flex-shrink:0}
+body.view-mechanics .panes{flex:1 1 0;min-height:0;align-items:stretch}
+body.view-mechanics .pane{min-height:0;overflow:hidden}
+body.view-mechanics .pane-head,body.view-mechanics .pane-now,body.view-mechanics .process-flow{flex-shrink:0}
+body.view-mechanics .pane-body{flex:1 1 0;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:inherit}
+body.view-mechanics .pane iframe{flex:1 1 0;width:100%;min-height:200px;height:100%;border:0;display:block;vertical-align:top}
 body.view-mechanics .footer-status{display:none}
 body.view-mechanics .pane-head{padding:8px 12px 6px}
 body.view-mechanics .pane-pills{display:none}
@@ -275,7 +280,7 @@ body.run-complete.view-mechanics .mechanics-section{padding-bottom:1.75rem}
 .mechanics-bridge b{color:var(--text);font-weight:600}
 body.view-summary .mechanics-section{display:none}
 body.view-summary .progress-strip{display:none}
-body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
+body.run-complete.view-mechanics .mechanics-result{flex-shrink:0}
 
 .footer-status{padding:10px 1.5rem;font:400 15px/1.45 'Cormorant Garamond',serif;color:var(--text-m);
   background:var(--surface);flex-shrink:0}
@@ -460,7 +465,7 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
       <span class="flow-chain">Character → glyph → prime-clock position → verify</span>
       <span class="flow-detail" id="p30FlowDetail">Each character maps to a glyph position, then P30 verifies that position on the prime clock.</span>
     </div>
-    <div class="pane-body"><iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=8" title="P30 encoder" scrolling="no"></iframe></div>
+    <div class="pane-body"><iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=8" title="P30 encoder"></iframe></div>
   </div>
   <div class="divider" aria-hidden="true"></div>
   <div class="pane trad-pane">
@@ -494,7 +499,7 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
       <span class="flow-chain">Character → byte → 8 bits → ECC check bits</span>
       <span class="flow-detail" id="tradFlowDetail">Each character becomes one byte, then every bit is visited by the ECC verification pass.</span>
     </div>
-    <div class="pane-body"><iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=8" title="Hamming SECDED" scrolling="no"></iframe></div>
+    <div class="pane-body"><iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=8" title="Hamming SECDED"></iframe></div>
   </div>
 </div>
 
@@ -537,6 +542,7 @@ function onFramesReady(){
   if(!framesReady.p30||!framesReady.ham) return;
   applySpeed(opDelay);
   pushSentence();
+  scheduleEmbedLayout();
 }
 function markFrameReady(side){
   framesReady[side]=true;
@@ -544,6 +550,40 @@ function markFrameReady(side){
 }
 p30Frame.addEventListener('load',function(){ markFrameReady('p30'); });
 hamFrame.addEventListener('load',function(){ markFrameReady('ham'); });
+
+var layoutRaf=0;
+function syncIframeHeights(){
+  document.querySelectorAll('.pane-body').forEach(function(body){
+    var frame=body.querySelector('iframe');
+    if(!frame) return;
+    var h=Math.floor(body.getBoundingClientRect().height);
+    if(h>0) frame.style.height=h+'px';
+  });
+}
+function scheduleEmbedLayout(){
+  if(layoutRaf) cancelAnimationFrame(layoutRaf);
+  layoutRaf=requestAnimationFrame(function(){
+    layoutRaf=requestAnimationFrame(function(){
+      layoutRaf=0;
+      syncIframeHeights();
+      postBoth('layout');
+    });
+  });
+}
+if(typeof ResizeObserver!=='undefined'){
+  var embedObs=new ResizeObserver(function(){ scheduleEmbedLayout(); });
+  document.querySelectorAll('.pane-body,.panes').forEach(function(el){ embedObs.observe(el); });
+  [p30Frame,hamFrame].forEach(function(frame){ embedObs.observe(frame); });
+}
+window.addEventListener('resize',scheduleEmbedLayout);
+window.addEventListener('load',scheduleEmbedLayout);
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',scheduleEmbedLayout);
+}
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(scheduleEmbedLayout);
+setTimeout(scheduleEmbedLayout,0);
+setTimeout(scheduleEmbedLayout,250);
+setTimeout(scheduleEmbedLayout,800);
 
 function fmt(n){ return n.toLocaleString(); }
 
@@ -1066,6 +1106,7 @@ function setView(mode){
     b.classList.toggle('active', b.dataset.view===mode);
   });
   try{ localStorage.setItem('compareView', mode); }catch(e){}
+  if(mode==='mechanics') scheduleEmbedLayout();
 }
 
 function reset(){ resetState(); }
