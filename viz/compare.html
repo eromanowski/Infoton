@@ -7,11 +7,57 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#12082a; --surface:#1a0e38; --surface-2:#231248; --card:#2a1558;
-  --center:#fada24; --btn-gold:#e4c040; --cyan:#6ed4f0; --orange:#f5a020; --red:#ff6b6b;
-  --space:#350498; --panel-bg:#350498; --panel-trad:#2a1068;
-  --grid:#b0a0d0; --text:#f8f4ff; --text-m:#ddd0f4;
-  --border:rgba(184,168,216,.14);
+  --bg:#120822;
+  --topbar:#1A0E35;
+  --panel:#220B4D;
+  --panel-2:#2E0C68;
+  --panel-soft:#32175E;
+  --panel-p30:#3D0094;
+  --panel-trad:#0E0618;
+  --panel-card:#2B1456;
+  --result-bg:#261733;
+  --result-border:#8B6A1F;
+
+  --p30-primary:#FFD84D;
+  --p30-active:#FFE85C;
+  --p30-secondary:#C026D3;
+  --p30-muted:#8B5CF6;
+  --p30-glow:rgba(255,216,77,.18);
+
+  --trad-burden:#F87171;
+  --trad-burden-hot:#EF4444;
+  --trad-burden-dim:#B91C1C;
+  --trad-overhead:#FB923C;
+  --trad-muted:#4A3058;
+  --trad-cell:#1A1028;
+
+  --trad-primary:var(--trad-burden);
+  --trad-active:var(--trad-overhead);
+
+  --success:#34D399;
+  --error:#EF4444;
+
+  --text-main:#F8F4FF;
+  --text-muted:#C9B8E8;
+  --text-faint:#8F7AB8;
+
+  --border-soft:rgba(255,255,255,.14);
+  --border-p30:rgba(255,216,77,.55);
+  --border-trad:rgba(248,113,113,.42);
+
+  /* aliases */
+  --center:var(--p30-primary);
+  --btn-gold:var(--p30-primary);
+  --space:#350498;
+  --surface:var(--topbar);
+  --surface-2:var(--panel-card);
+  --card:var(--panel-soft);
+  --panel-bg:var(--panel-p30);
+  --trad:var(--trad-primary);
+  --grid:var(--text-faint);
+  --text:var(--text-main);
+  --text-m:var(--text-muted);
+  --border:var(--border-soft);
 }
 html{background:var(--bg)}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -46,13 +92,12 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
 .sentence-input{width:100%;min-height:44px;max-height:52px;resize:none;overflow:auto;
   font:400 1.05rem/1.4 'Cormorant Garamond',serif;color:var(--text);background:var(--bg);
   border-radius:6px;padding:.5rem .75rem;border:1px solid var(--border)}
-.sentence-input:focus{outline:none;border-color:rgba(250,218,36,.45);box-shadow:0 0 0 2px rgba(250,218,36,.12)}
+.sentence-input:focus{outline:none;border-color:var(--border-p30);box-shadow:0 0 0 2px rgba(255,216,77,.12)}
 
 .controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:.85rem}
 .command-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:.65rem;row-gap:8px}
 .command-bar .controls{margin-top:0;flex:1 1 auto}
-.command-bar .speed-group,.command-bar .view-toggle{margin-top:0}
-.command-bar .view-toggle{margin-left:auto}
+.command-bar .speed-group{margin-top:0}
 .legend-drop{position:relative}
 .legend-drop summary{list-style:none;cursor:pointer;font:500 12px/1 'Cinzel',serif;padding:7px 12px;border-radius:5px;
   background:var(--bg);color:var(--text-m);transition:all .12s}
@@ -69,152 +114,146 @@ body{background:var(--bg);color:var(--text);font-family:'Cormorant Garamond',ser
 .btn.ghost{background:transparent;color:var(--text-m)}
 .btn.ghost:hover{color:var(--text);background:rgba(255,255,255,.05)}
 
-.toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:.65rem}
-body.view-summary .command-bar .legend-drop{display:none}
-body.view-mechanics .command-bar .legend-drop{display:inline-block}
-body.view-mechanics .toolbar{display:none}
-body.view-mechanics .theory{display:none}
-body.view-mechanics .header-top h1{font-size:1.15rem}
-body.view-mechanics .sentence-block{margin-top:.5rem}
-body.view-mechanics .sentence-top{margin-bottom:.25rem}
-body.view-mechanics .mechanics-bridge{display:none}
-body.view-mechanics .command-bar{margin-top:.45rem}
+.toolbar{display:none}
+body .theory{display:none}
+body .header-top h1{font-size:1.15rem}
+body .sentence-block{margin-top:.5rem}
+body .sentence-top{margin-bottom:.25rem}
+body .replay-note{display:none}
+body .progress-strip{display:flex}
+body .header{padding:.85rem 1.5rem .65rem}
+body .header-top .header-intro{display:none}
 .speed-group,.legend-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .toolbar-lab{font:600 12px/1 'Cinzel',serif;color:var(--grid);margin-right:2px}
 .speed-btn{font:500 12px/1 'Cinzel',serif;padding:7px 12px;border-radius:5px;cursor:pointer;
   background:var(--bg);border:none;color:var(--text-m);transition:all .12s}
 .speed-btn:hover{color:var(--text)}
-.speed-btn.active{background:var(--center);color:var(--space);font-weight:600}
-.legend-item{display:flex;align-items:center;gap:5px;font:400 14px/1 'Cormorant Garamond',serif;color:var(--text-m)}
+.speed-btn.active{background:var(--p30-primary);color:var(--space);font-weight:600}
+.legend-item{display:flex;align-items:center;gap:5px;font:400 14px/1 'Cormorant Garamond',serif;color:var(--text-muted)}
 .legend-swatch{width:11px;height:11px;border-radius:2px;flex-shrink:0}
-.legend-swatch.gold{background:var(--center)}
-.legend-swatch.purple{background:#6a4db8}
-.legend-swatch.blue{background:var(--cyan)}
-.legend-swatch.orange{background:var(--orange)}
-.legend-swatch.red{background:var(--red)}
+.legend-swatch.gold{background:var(--p30-primary)}
+.legend-swatch.burden{background:var(--trad-burden)}
+.legend-swatch.green{background:var(--success)}
+.legend-swatch.purple{background:var(--p30-muted)}
 
-.summary{margin-top:1.15rem;padding:1.15rem 0 0}
+.summary{margin-top:0;padding:0}
 .summary-title{font:600 12px/1 'Cinzel',serif;color:var(--grid);margin-bottom:.85rem;display:block}
 .summary-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:stretch}
 .stat-card{background:var(--surface-2);border-radius:10px;padding:1rem 1.05rem;display:grid;
   grid-template-rows:auto auto auto auto auto 1fr auto;gap:.4rem;min-height:11.5rem}
 .stat-card h3{font:600 13px/1.25 'Cinzel',serif;color:var(--text-m);font-weight:600;min-height:2.5em}
-.stat-card.p30 h3{color:var(--center)}
-.stat-card.trad h3{color:var(--cyan)}
-.stat-card.efficiency h3{color:var(--orange)}
-.stat-big{font:700 1.65rem/1.15 'Cinzel',serif;color:var(--text);font-variant-numeric:tabular-nums}
-.stat-card.efficiency .stat-big{color:var(--orange);font-size:1.45rem;line-height:1.25}
-.stat-line{font:400 16px/1.4 'Cormorant Garamond',serif;color:var(--text-m)}
-.stat-line.stat-unit{font-size:14px;color:var(--grid);font-style:italic;margin-top:-2px}
-.stat-line b{color:var(--text);font-weight:600;font-family:'Cinzel',serif;font-size:15px}
-.stat-status{font:500 13px/1 'Cinzel',serif;color:var(--text-m);margin-top:.15rem}
-.stat-card.p30 .stat-status{color:var(--center)}
-.stat-card.trad .stat-status{color:var(--cyan)}
-.stat-foot{font:400 13px/1.4 'Cormorant Garamond',serif;color:var(--text-m);font-style:italic;margin-top:.2rem}
+.stat-card.p30 h3{color:var(--p30-primary)}
+.stat-card.trad h3{color:var(--trad-burden)}
+.stat-card.efficiency h3{color:var(--text-muted)}
+.stat-big{font:700 1.65rem/1.15 'Cinzel',serif;color:var(--text-main);font-variant-numeric:tabular-nums}
+.stat-card.p30 .stat-big{color:var(--p30-primary)}
+.stat-card.trad .stat-big{color:var(--trad-burden-hot)}
+.stat-card.efficiency .stat-big{color:var(--p30-primary);font-size:1.45rem;line-height:1.25}
+.stat-line{font:400 16px/1.4 'Cormorant Garamond',serif;color:var(--text-muted)}
+.stat-line.stat-unit{font-size:14px;color:var(--text-faint);font-style:italic;margin-top:-2px}
+.stat-line b{color:var(--text-main);font-weight:600;font-family:'Cinzel',serif;font-size:15px}
+.stat-status{font:500 13px/1 'Cinzel',serif;color:var(--text-muted);margin-top:.15rem}
+.stat-card.p30 .stat-status{color:var(--text-faint)}
+.stat-card.trad .stat-status{color:var(--text-faint)}
+.stat-card.p30.is-valid .stat-status{color:var(--success)}
+.stat-card.trad.is-valid .stat-status{color:var(--trad-overhead)}
+.stat-foot{font:400 13px/1.4 'Cormorant Garamond',serif;color:var(--text-faint);font-style:italic;margin-top:.2rem}
 .card-progress{align-self:end;margin-top:.35rem;height:6px;border-radius:3px;background:rgba(0,0,0,.35);overflow:hidden}
 .card-progress-fill{height:100%;width:0;border-radius:3px;transition:width .08s linear}
-.card-progress-fill.p30{background:linear-gradient(90deg,var(--center),#ffe45a)}
-.card-progress-fill.trad{background:linear-gradient(90deg,var(--cyan),#3aa8d8)}
+.card-progress-fill.p30{background:linear-gradient(90deg,var(--p30-primary),var(--p30-active))}
+.card-progress-fill.trad{background:linear-gradient(90deg,var(--trad-burden-hot),var(--trad-overhead))}
 
-.storage-note{font:400 14px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.75rem;padding:.65rem .8rem;
-  background:rgba(110,212,240,.06);border-radius:6px;border-left:3px solid var(--cyan)}
-.storage-note b{color:var(--text);font-weight:600}
+.storage-note{font:400 14px/1.45 'Cormorant Garamond',serif;color:var(--text-muted);margin-top:.75rem;padding:.65rem .8rem;
+  background:rgba(255,255,255,.04);border-radius:6px;border-left:3px solid rgba(201,184,232,.45)}
+.storage-note b{color:var(--text-main);font-weight:600}
 
-.result{margin-top:1rem;padding:1rem 1.15rem;background:rgba(250,218,36,.11);border-radius:10px;display:none;
-  border:1.5px solid rgba(250,218,36,.42);box-shadow:0 0 28px rgba(250,218,36,.1)}
-.result.visible{display:block}
-.result h3{font:600 13px/1 'Cinzel',serif;color:var(--center);margin-bottom:.55rem}
-.result-block{font:400 1.02rem/1.55 'Cormorant Garamond',serif;color:var(--text);margin-bottom:.5rem}
-.result-block b{color:var(--center);font-weight:600}
-.result-block.trad-block b{color:var(--cyan)}
-.result-takeaway{font:500 1rem/1.5 'Cormorant Garamond',serif;color:var(--text);margin-top:.65rem;padding-top:.65rem;
-  border-top:1px solid rgba(250,218,36,.25)}
-.result-takeaway b{color:var(--center);font-weight:600}
-.result-note{font:400 14px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.45rem;font-style:italic}
-.replay-note{font:400 13px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.75rem}
+.num-p30{color:var(--p30-primary);font-family:'Cinzel',serif;font-weight:700}
+.num-trad{color:var(--trad-burden-hot);font-family:'Cinzel',serif;font-weight:700}
+.num-gap{color:var(--p30-primary);font-family:'Cinzel',serif;font-weight:700}
+.num-burden{color:var(--trad-burden-hot);font-family:'Cinzel',serif;font-weight:700}
 
-.view-toggle{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.view-toggle-lab{font:600 12px/1 'Cinzel',serif;color:var(--grid)}
-.view-btn{font:500 12px/1 'Cinzel',serif;padding:7px 14px;border-radius:5px;cursor:pointer;
-  background:var(--bg);border:none;color:var(--text-m);transition:all .12s}
-.view-btn:hover{color:var(--text)}
+.result-block{font:400 1.02rem/1.55 'Cormorant Garamond',serif;color:var(--text-main);margin-bottom:.5rem}
+.result-block b{color:var(--text-main);font-weight:600;font-family:'Cormorant Garamond',serif}
+.result-takeaway{font:500 1rem/1.5 'Cormorant Garamond',serif;color:var(--text-main);margin-top:.65rem;padding-top:.65rem;
+  border-top:1px solid var(--border-p30)}
+.result-note{font:400 14px/1.45 'Cormorant Garamond',serif;color:var(--text-muted);margin-top:.45rem;font-style:italic}
+.replay-note{font:400 13px/1.45 'Cormorant Garamond',serif;color:var(--text-faint);margin-top:.75rem}
+
+
+.progress-strip .strip-stats{display:flex;align-items:center;gap:.85rem 1.25rem;flex-wrap:wrap}
+.progress-strip b{color:var(--text-main);font-weight:600;font-family:'Cinzel',serif;font-size:15px}
+#stripP30 b{color:var(--p30-primary)}
+#stripTrad b{color:var(--trad-burden-hot)}
+.progress-strip .gap-val{color:var(--p30-primary);font-family:'Cinzel',serif;font-weight:700}
+
+.controls .btn-complete-cta{display:none}
+
+body{min-height:100vh}
+body .header{flex-shrink:0}
+body .command-bar{margin-top:.45rem}
+body .mechanics-section{display:flex;flex-direction:column;margin-top:0;border-top:1px solid var(--border)}
+body .mechanics-bridge{display:none}
+body .panes{align-items:stretch}
+body .pane{overflow:visible}
+body .pane-body{flex:none;overflow:visible;display:block;background:inherit}
+body .pane iframe{height:580px;flex:none;display:block;border:0;width:100%}
+body .footer-status{display:none}
+body .pane-head{padding:8px 12px 6px}
+body .pane-pills{display:none}
+
+.result-panel{display:none;padding:0;margin:0}
+body.run-complete .result-panel{display:block}
+body.run-complete .mechanics-section{padding-bottom:1.75rem}
+.result-panel-inner{max-width:none;width:100%;margin:0;padding:16px 1.5rem 22px;background:var(--result-bg);
+  border:1.5px solid var(--result-border);border-left:none;border-right:none;border-bottom:none}
+.result-panel-inner>h3{font:600 12px/1 'Cinzel',serif;color:var(--p30-primary);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.result-panel .summary-cards{margin-top:0;margin-bottom:1rem}
+.result-panel .storage-note{margin-top:1rem;margin-bottom:0}
+.result-panel .result-takeaway{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border-p30)}
+.result-panel .result-note{margin-top:.65rem}
+.result-panel .replay-note{display:block;margin-top:.75rem;font-size:13px}
+.result-panel .result-block,.result-panel .result-takeaway{display:none}
+body.run-complete .result-panel .result-block,body.run-complete .result-panel .result-takeaway{display:block}
 .sentence-input.hidden{display:none}
 .sentence-live{font:400 1.05rem/1.55 'Cormorant Garamond',serif;color:var(--text-m);background:var(--bg);
   border-radius:6px;padding:.55rem .75rem;border:1px solid var(--border);word-break:break-word}
 .sentence-live .ch{border-radius:2px;padding:0 1px;transition:background .08s,color .08s,box-shadow .08s}
-.sentence-live .ch.p30-done{color:var(--center);font-style:normal}
-.sentence-live .ch.p30-active{background:var(--center);color:var(--space);font-weight:600;font-style:normal;
-  box-shadow:0 0 10px rgba(250,218,36,.45)}
-.sentence-live .ch.trad-done{color:var(--cyan);font-style:normal}
+.sentence-live .ch.p30-done{color:var(--p30-primary);font-style:normal}
+.sentence-live .ch.p30-active{background:var(--p30-primary);color:var(--space);font-weight:600;font-style:normal;
+  box-shadow:0 0 12px rgba(255,216,77,.5)}
+.sentence-live .ch.trad-done{color:var(--trad-burden);font-style:normal;opacity:.75}
 .sentence-live .ch.trad-active{color:#fff;font-weight:600;font-style:normal;
-  box-shadow:inset 0 -3px 0 var(--cyan),0 0 12px rgba(110,212,240,.5);background:rgba(110,212,240,.18)}
-.sentence-live .ch.trad-read{color:rgba(142,228,255,.95);background:rgba(110,212,240,.1);
-  box-shadow:inset 0 -2px 0 rgba(110,212,240,.55)}
-.sentence-live .ch.p30-active.trad-active{background:linear-gradient(180deg,var(--center) 58%,rgba(110,212,240,.35) 58%);
-  color:var(--space);box-shadow:0 0 10px rgba(250,218,36,.4),inset 0 -3px 0 var(--cyan)}
+  box-shadow:inset 0 -3px 0 var(--trad-burden-hot),0 0 10px rgba(239,68,68,.35);background:rgba(239,68,68,.14)}
+.sentence-live .ch.trad-read{color:rgba(248,150,150,.88);background:rgba(185,28,28,.18);
+  box-shadow:inset 0 -2px 0 rgba(248,113,113,.5)}
+.sentence-live .ch.p30-active.trad-active{background:linear-gradient(180deg,var(--p30-primary) 58%,rgba(239,68,68,.32) 58%);
+  color:var(--space);box-shadow:0 0 12px var(--p30-glow),inset 0 -3px 0 var(--trad-burden-hot)}
 
-.pause-banner{font:400 15px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.65rem;padding:.55rem .75rem;
-  background:rgba(250,218,36,.08);border-radius:6px;border-left:3px solid var(--btn-gold);display:none}
+.pause-banner{font:400 15px/1.45 'Cormorant Garamond',serif;color:var(--text-muted);margin-top:.65rem;padding:.55rem .75rem;
+  background:rgba(255,255,255,.05);border-radius:6px;border-left:3px solid var(--p30-primary);display:none}
 .pause-banner.visible{display:block}
-.pause-banner b{color:var(--center);font-weight:600}
+.pause-banner b{color:var(--p30-primary);font-weight:600}
 
 .progress-strip{display:none;align-items:center;gap:.85rem 1.25rem;flex-wrap:wrap;margin-top:.5rem;padding:.5rem .85rem;
   background:var(--surface-2);border-radius:8px;font:400 15px/1.4 'Cormorant Garamond',serif;color:var(--text-m)}
 .progress-strip .strip-lead{color:var(--text-m);flex:1 1 12rem;min-width:10rem}
-.progress-strip .strip-lead b{color:var(--center);font-weight:600}
+.progress-strip .strip-lead b{color:var(--p30-primary);font-weight:600}
 .progress-strip .strip-complete-lead{display:none;align-items:center;gap:.35rem;flex-wrap:wrap}
 .progress-strip.is-complete .strip-lead:not(.strip-complete-lead){display:none}
 .progress-strip.is-complete .strip-complete-lead{display:flex}
 .strip-cta{font:600 11px/1 'Cinzel',serif;letter-spacing:.04em;padding:5px 10px;border-radius:5px;cursor:pointer;
-  border:1px solid rgba(250,218,36,.55);background:rgba(250,218,36,.18);color:var(--center);transition:all .12s}
-.strip-cta:hover{background:rgba(250,218,36,.32);color:#fff}
+  border:1px solid var(--border-p30);background:rgba(255,216,77,.14);color:var(--p30-primary);transition:all .12s}
+.strip-cta:hover{background:rgba(255,216,77,.24);color:#fff}
 .strip-cta-ghost{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:var(--text)}
 .strip-cta-ghost:hover{background:rgba(255,255,255,.14);color:var(--text)}
-.controls .btn-complete-cta{display:none}
-body.run-complete .controls .btn-complete-cta{display:inline-block}
 body.run-complete .controls #stepBtn{display:none}
-body.run-complete #viewSummaryBtn{background:var(--btn-gold);color:var(--space);font-weight:700}
-body.run-complete #viewSummaryBtn:hover{background:#f0d060}
 body.run-complete #runBtn{background:var(--surface-2);color:var(--text);font-weight:600}
 body.run-complete #runBtn:hover{background:var(--card)}
-.progress-strip .strip-stats{display:flex;align-items:center;gap:.85rem 1.25rem;flex-wrap:wrap}
-.progress-strip b{color:var(--text);font-weight:600;font-family:'Cinzel',serif;font-size:15px}
-.progress-strip .gap-val{color:var(--orange);font-family:'Cinzel',serif;font-weight:700}
-
-.view-btn.active{background:var(--center);color:var(--space);font-weight:600}
-
-body.view-mechanics{min-height:100vh}
-body.view-mechanics .header{flex-shrink:0}
-body.view-mechanics .summary-only{display:none}
-body.view-mechanics .header{padding:.85rem 1.5rem .65rem}
-body.view-mechanics .header-top .header-intro{display:none}
-body.view-mechanics .replay-note{display:none}
-body.view-mechanics .progress-strip{display:flex}
-body.view-mechanics .mechanics-section{display:flex;flex-direction:column;margin-top:0;border-top:1px solid var(--border)}
-body.view-mechanics .mechanics-bridge{padding:.55rem 1.5rem .4rem;font-size:.95rem}
-body.view-mechanics .panes{align-items:stretch}
-body.view-mechanics .pane{overflow:visible}
-body.view-mechanics .pane-body{flex:none;overflow:visible;display:block;background:inherit}
-body.view-mechanics .pane iframe{height:580px;flex:none;display:block;border:0;width:100%}
-body.view-mechanics .footer-status{display:none}
-body.view-mechanics .pane-head{padding:8px 12px 6px}
-body.view-mechanics .pane-pills{display:none}
-
-.mechanics-result{display:none;padding:0;margin:0}
-body.run-complete.view-mechanics .mechanics-result{display:block}
-body.run-complete.view-mechanics .mechanics-section{padding-bottom:1.75rem}
-.mechanics-result-inner{max-width:none;width:100%;margin:0;padding:16px 1.5rem 22px;background:rgba(250,218,36,.1);
-  border:1.5px solid rgba(250,218,36,.38);border-left:none;border-right:none;border-bottom:none;
-  font:400 1.02rem/1.55 'Cormorant Garamond',serif;color:var(--text)}
-.mechanics-result-inner .mr-head{font:600 12px/1 'Cinzel',serif;color:var(--center);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
-.mechanics-result-inner b{color:var(--center);font-weight:600;font-family:'Cinzel',serif}
-.mechanics-result-inner .mr-ops{color:var(--text-m);margin-top:6px;font-size:.98rem}
-.mechanics-result-inner .mr-note{color:var(--text-m);font-size:.92rem;font-style:italic;margin-top:8px}
 
 .pane-now .now-main{font:500 16px/1.4 'Cormorant Garamond',serif;color:var(--text)}
 .pane-now .now-sub{font:400 14px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:4px}
 .pane-now .now-meta{font:500 11px/1.35 'Cinzel',serif;color:var(--grid);margin-top:5px;letter-spacing:.02em}
-.pane.trad-pane .pane-now .now-main b,.pane.trad-pane .pane-now .now-sub b{color:var(--cyan)}
+.pane.trad-pane .pane-now .now-main b,.pane.trad-pane .pane-now .now-sub b{color:var(--trad-burden)}
 
 .tip{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;
   background:rgba(184,168,216,.2);color:var(--grid);font:600 10px/1 'Cinzel',serif;cursor:help;
@@ -226,60 +265,64 @@ body.run-complete.view-mechanics .mechanics-section{padding-bottom:1.75rem}
 .tip:hover::after,.tip:focus::after{opacity:1}
 
 .panes{display:grid;grid-template-columns:1fr 2px 1fr;min-height:0;background:var(--bg);align-items:stretch}
-.divider{background:var(--cyan);opacity:.4;align-self:stretch}
-.pane{display:flex;flex-direction:column;min-width:0;background:var(--panel-bg)}
-.pane.trad-pane{background:var(--panel-trad)}
+.divider{background:linear-gradient(180deg,var(--p30-muted),var(--trad-burden-dim));opacity:.45;align-self:stretch;width:2px}
+.pane{display:flex;flex-direction:column;min-width:0;background:var(--panel-bg);
+  box-shadow:inset 0 1px 0 rgba(255,216,77,.1),inset 0 0 40px rgba(255,216,77,.03)}
+.pane.trad-pane{background:var(--panel-trad);
+  box-shadow:inset 0 0 72px rgba(0,0,0,.45),inset 0 1px 0 rgba(248,113,113,.08)}
 .pane-head{padding:10px 14px 8px;flex-shrink:0;background:rgba(0,0,0,.12)}
+.pane:not(.trad-pane) .pane-head{background:rgba(255,216,77,.05)}
+.pane.trad-pane .pane-head{background:rgba(0,0,0,.32)}
 .pane-title-row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
-.pane-title{font:600 15px/1.25 'Cinzel',serif;color:var(--text)}
-.pane.trad-pane .pane-title{color:var(--cyan)}
-.pane-sub{font:italic 400 14px/1.35 'Cormorant Garamond',serif;color:var(--text-m);margin-top:2px}
+.pane-title{font:600 15px/1.25 'Cinzel',serif;color:var(--text-main)}
+.pane:not(.trad-pane) .pane-title{color:var(--p30-primary);text-shadow:0 0 20px rgba(255,216,77,.15)}
+.pane.trad-pane .pane-title{color:var(--trad-burden)}
+.pane-sub{font:italic 400 14px/1.35 'Cormorant Garamond',serif;color:var(--text-muted);margin-top:2px}
+.pane.trad-pane .pane-sub{color:var(--text-faint)}
 .pane-phase{font:500 12px/1.1 'Cinzel',serif;letter-spacing:.03em;padding:5px 11px;border-radius:5px;white-space:nowrap}
-.pane-phase.idle{color:var(--text-m);background:rgba(255,255,255,.06)}
-.pane-phase.active-p30{color:var(--center);background:rgba(250,218,36,.12)}
-.pane-phase.active-trad{color:var(--cyan);background:rgba(110,212,240,.12)}
-.pane-phase.done-p30{color:var(--center);background:rgba(250,218,36,.18)}
-.pane-phase.done-trad{color:var(--cyan);background:rgba(110,212,240,.18)}
+.pane-phase.idle{color:var(--text-faint);background:rgba(255,255,255,.06)}
+.pane-phase.active-p30{color:var(--p30-primary);background:rgba(255,216,77,.14);box-shadow:0 0 12px rgba(255,216,77,.12)}
+.pane-phase.active-trad{color:var(--trad-burden);background:rgba(239,68,68,.12)}
+.pane-phase.done-p30{color:var(--success);background:rgba(52,211,153,.16)}
+.pane-phase.done-trad{color:var(--trad-overhead);background:rgba(251,146,60,.12)}
 .pane-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .pane-progress{display:flex;align-items:center;gap:8px;margin-top:8px}
 .pane-progress-lab{font:500 10px/1.2 'Cinzel',serif;color:var(--grid);white-space:nowrap;flex-shrink:0;min-width:6.5rem}
 .pane-progress-track{flex:1;height:5px;border-radius:3px;background:rgba(0,0,0,.38);overflow:hidden}
 .pane-progress-fill{height:100%;width:0;border-radius:3px;transition:width .1s linear}
-.pane-progress-fill.p30{background:linear-gradient(90deg,var(--center),#ffe45a)}
-.pane-progress-fill.trad{background:linear-gradient(90deg,var(--cyan),#3aa8d8)}
-.pane-progress.is-done .pane-progress-lab{color:var(--center)}
-.pane.trad-pane .pane-progress.is-done .pane-progress-lab{color:var(--cyan)}
-.pill{font:400 14px/1 'Cormorant Garamond',serif;color:var(--text-m);background:rgba(0,0,0,.22);
+.pane-progress-fill.p30{background:linear-gradient(90deg,var(--p30-primary),var(--p30-active));box-shadow:0 0 8px rgba(255,216,77,.35)}
+.pane-progress-fill.trad{background:linear-gradient(90deg,var(--trad-burden-dim),var(--trad-overhead))}
+.pane-progress.is-done .pane-progress-lab{color:var(--p30-primary)}
+.pane.trad-pane .pane-progress.is-done .pane-progress-lab{color:var(--trad-burden)}
+.pane.trad-pane .pane-progress-lab{color:var(--text-faint)}
+.pill{font:400 14px/1 'Cormorant Garamond',serif;color:var(--text-muted);background:rgba(0,0,0,.22);
   padding:5px 10px;border-radius:20px;white-space:nowrap}
-.pill b{color:var(--text);font-weight:600;font-family:'Cinzel',serif;font-size:13px}
+.pane.trad-pane .pill{color:var(--text-faint)}
+.pill b{color:var(--text-main);font-weight:600;font-family:'Cinzel',serif;font-size:13px}
 .pane-now{margin:6px 14px 0;padding:10px 12px;background:rgba(0,0,0,.28);border-radius:6px;
-  border-left:3px solid var(--center);flex-shrink:0}
-.pane-now b{color:var(--center);font-weight:600}
-.pane.trad-pane .pane-now{border-left-color:var(--cyan)}
+  border-left:3px solid var(--p30-primary);flex-shrink:0;box-shadow:0 0 16px rgba(255,216,77,.06)}
+.pane-now b{color:var(--p30-primary);font-weight:600}
+.pane.trad-pane .pane-now{border-left-color:var(--trad-burden);background:rgba(0,0,0,.42);box-shadow:none}
+.pane.trad-pane .pane-now b{color:var(--trad-burden)}
 .process-flow{margin:6px 14px 8px;padding:8px 10px;border-radius:6px;flex-shrink:0;
-  font:400 13px/1.45 'Cormorant Garamond',serif;color:var(--text-m)}
+  font:400 13px/1.45 'Cormorant Garamond',serif;color:var(--text-muted)}
 .process-flow .flow-chain{display:block;font:600 11px/1.3 'Cinzel',serif;letter-spacing:.03em;margin-bottom:4px}
 .process-flow .flow-detail{display:block;font-size:14px;line-height:1.45}
-.process-flow .flow-detail b{color:var(--text);font-weight:600}
-.p30-flow{background:rgba(250,218,36,.08);border:1px solid rgba(250,218,36,.22)}
-.p30-flow .flow-chain{color:var(--center)}
-.trad-flow{background:rgba(110,212,240,.08);border:1px solid rgba(110,212,240,.22)}
-.trad-flow .flow-chain{color:var(--cyan)}
+.process-flow .flow-detail b{color:var(--text-main);font-weight:600}
+.p30-flow{background:rgba(255,216,77,.08);border:1px solid var(--border-p30)}
+.p30-flow .flow-chain{color:var(--p30-primary)}
+.trad-flow{background:rgba(239,68,68,.07);border:1px solid var(--border-trad)}
+.trad-flow .flow-chain{color:var(--trad-burden)}
+.pane.trad-pane .process-flow{color:var(--text-faint)}
 .pane-body{flex:none;display:block;background:inherit;overflow:visible}
 .pane-body iframe{border:0;width:100%;min-height:240px;display:block}
 .pane.trad-pane .pane-body iframe{background:var(--panel-trad)}
 .pane:not(.trad-pane) .pane-body iframe{background:var(--panel-bg)}
 
-.mechanics-section{border-top:1px solid var(--border);margin-top:1rem;background:var(--bg)}
-.mechanics-bridge{padding:.85rem 1.5rem .65rem;font:400 1rem/1.5 'Cormorant Garamond',serif;color:var(--text-m);max-width:52rem}
-.mechanics-bridge b{color:var(--text);font-weight:600}
-body.view-summary .mechanics-section{display:none}
-body.view-summary .progress-strip{display:none}
-body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
-
+.mechanics-section{border-top:1px solid var(--border);margin-top:0;background:var(--bg)}
 .footer-status{padding:10px 1.5rem;font:400 15px/1.45 'Cormorant Garamond',serif;color:var(--text-m);
   background:var(--surface);flex-shrink:0}
-.footer-status b{color:var(--center);font-weight:600}
+.footer-status b{color:var(--p30-primary);font-weight:600}
 
 @media(max-width:900px){
   .summary-cards{grid-template-columns:1fr}
@@ -295,7 +338,7 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
 }
 </style>
 </head>
-<body class="view-mechanics">
+<body>
 
 <header class="header">
   <div class="header-top">
@@ -327,7 +370,6 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
 
   <div class="command-bar">
     <div class="controls">
-      <button class="btn btn-complete-cta" id="viewSummaryBtn" type="button">View summary</button>
       <button class="btn primary" id="runBtn" type="button">Run comparison</button>
       <button class="btn" id="stepBtn" type="button">Next step</button>
       <button class="btn ghost" id="resetBtn" type="button">Reset</button>
@@ -339,89 +381,27 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
       <button class="speed-btn active" type="button" data-delay="8">Normal</button>
       <button class="speed-btn" type="button" data-delay="2">Fast</button>
     </div>
-    <div class="view-toggle">
-      <span class="view-toggle-lab">View</span>
-      <button class="view-btn" type="button" data-view="summary">Summary</button>
-      <button class="view-btn active" type="button" data-view="mechanics">How it works</button>
-    </div>
     <details class="legend-drop">
       <summary>Legend</summary>
       <div class="legend-drop-body">
-        <span class="legend-item"><span class="legend-swatch gold"></span> Active P30</span>
-        <span class="legend-item"><span class="legend-swatch blue"></span> Traditional cursor</span>
+        <span class="legend-item"><span class="legend-swatch gold"></span> P30 active</span>
+        <span class="legend-item"><span class="legend-swatch burden"></span> ECC / traditional burden</span>
+        <span class="legend-item"><span class="legend-swatch green"></span> P30 complete</span>
         <span class="legend-item"><span class="legend-swatch purple"></span> Inactive</span>
-        <span class="legend-item"><span class="legend-swatch blue"></span> Byte data</span>
-        <span class="legend-item"><span class="legend-swatch orange"></span> Check bit</span>
-        <span class="legend-item"><span class="legend-swatch red"></span> Error</span>
       </div>
     </details>
-  </div>
-
-  <div class="toolbar" aria-label="Color legend (summary view)">
-    <div class="legend-group">
-      <span class="toolbar-lab">Legend</span>
-      <span class="legend-item"><span class="legend-swatch gold"></span> Active P30</span>
-      <span class="legend-item"><span class="legend-swatch blue"></span> Traditional cursor</span>
-      <span class="legend-item"><span class="legend-swatch purple"></span> Inactive</span>
-      <span class="legend-item"><span class="legend-swatch blue"></span> Byte data</span>
-      <span class="legend-item"><span class="legend-swatch orange"></span> Check bit</span>
-      <span class="legend-item"><span class="legend-swatch red"></span> Error</span>
-    </div>
   </div>
 
   <div class="progress-strip" id="progressStrip">
     <span class="strip-lead" id="stripLead">Press <b>Run comparison</b> to begin</span>
     <span class="strip-lead strip-complete-lead" id="stripCompleteLead">
-      Complete — view the summary for the takeaway, or reset to replay.
+      Complete — scroll to the result below, or reset to replay.
     </span>
     <span class="strip-stats">
       <span>P30 <b id="stripP30">0 / 489</b></span>
       <span>Traditional <b id="stripTrad">0 / 12,264</b></span>
       <span>Ops gap <b class="gap-val" id="stripGap">—</b></span>
     </span>
-  </div>
-
-  <div class="summary-only">
-  <section class="summary" aria-label="Comparison summary">
-    <span class="summary-title">Comparison at a glance</span>
-    <div class="summary-cards">
-      <div class="stat-card p30">
-        <h3>P30 Prime <span class="tip" tabindex="0" data-tip="Characters mapped to positions on a 30-point prime clock.">Encoding</span></h3>
-        <div class="stat-big" id="cardP30Time">0 ms</div>
-        <div class="stat-line" id="cardP30Store">0 symbolic positions</div>
-        <div class="stat-line stat-unit">Symbolic units in this model</div>
-        <div class="stat-line" id="cardP30Ops">0 / 489 modeled ops</div>
-        <div class="stat-status" id="cardP30Err">—</div>
-        <div class="card-progress"><div class="card-progress-fill p30" id="p30Bar"></div></div>
-      </div>
-      <div class="stat-card trad">
-        <h3>Traditional 64-bit + <span class="tip" tabindex="0" data-tip="Error-correcting check bits alongside each 64-bit word.">ECC</span></h3>
-        <div class="stat-big" id="cardTradTime">0 ms</div>
-        <div class="stat-line" id="cardTradStore">163 bytes + 8 check bits</div>
-        <div class="stat-line stat-unit">Bytes plus ECC per 64-bit word</div>
-        <div class="stat-line" id="cardTradOps">0 / 12,264 modeled ops</div>
-        <div class="stat-status" id="cardTradErr">—</div>
-        <div class="card-progress"><div class="card-progress-fill trad" id="tradBar"></div></div>
-      </div>
-      <div class="stat-card efficiency">
-        <h3>Efficiency</h3>
-        <div class="stat-big" id="ratioHeadline">—</div>
-        <div class="stat-line" id="ratioDetail">Run the comparison to see the ops gap.</div>
-        <div class="stat-foot" id="ratioFootnote">Simulated operation count — not a real CPU benchmark.</div>
-      </div>
-    </div>
-    <p class="storage-note"><b>Storage is not byte-equivalent.</b> P30 positions are symbolic units in this model. Traditional storage is measured in bytes plus ECC overhead. This demo compares encoding structure and modeled operation count, not direct memory footprint on current hardware.</p>
-  </section>
-
-  <div class="result" id="resultPanel">
-    <h3>Result</h3>
-    <div class="result-block" id="resultP30"></div>
-    <div class="result-block trad-block" id="resultTrad"></div>
-    <div class="result-takeaway" id="resultTakeaway"></div>
-    <p class="result-note" id="resultNote"></p>
-  </div>
-
-  <p class="replay-note">Replay timers are slow-motion. This demo compares <b>modeled operation counts</b>, not wall-clock hardware speed.</p>
   </div>
 </header>
 
@@ -498,12 +478,44 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
   </div>
 </div>
 
-<div class="mechanics-result" id="mechanicsResult" aria-live="polite">
-  <div class="mechanics-result-inner">
-    <div class="mr-head">Result</div>
-    <div id="mechanicsResultMain"></div>
-    <div class="mr-ops" id="mechanicsResultOps"></div>
-    <div class="mr-note" id="mechanicsResultNote"></div>
+<div class="result-panel" id="resultPanel" aria-live="polite">
+  <div class="result-panel-inner">
+    <h3>Result</h3>
+    <section class="summary" aria-label="Comparison at a glance">
+      <span class="summary-title">Comparison at a glance</span>
+      <div class="summary-cards">
+        <div class="stat-card p30">
+          <h3>P30 Prime <span class="tip" tabindex="0" data-tip="Characters mapped to positions on a 30-point prime clock.">Encoding</span></h3>
+          <div class="stat-big" id="cardP30Time">0 ms</div>
+          <div class="stat-line" id="cardP30Store">0 symbolic positions</div>
+          <div class="stat-line stat-unit">Symbolic units in this model</div>
+          <div class="stat-line" id="cardP30Ops">0 / 489 modeled ops</div>
+          <div class="stat-status" id="cardP30Err">—</div>
+          <div class="card-progress"><div class="card-progress-fill p30" id="p30Bar"></div></div>
+        </div>
+        <div class="stat-card trad">
+          <h3>Traditional 64-bit + <span class="tip" tabindex="0" data-tip="Error-correcting check bits alongside each 64-bit word.">ECC</span></h3>
+          <div class="stat-big" id="cardTradTime">0 ms</div>
+          <div class="stat-line" id="cardTradStore">163 bytes + 8 check bits</div>
+          <div class="stat-line stat-unit">Bytes plus ECC per 64-bit word</div>
+          <div class="stat-line" id="cardTradOps">0 / 12,264 modeled ops</div>
+          <div class="stat-status" id="cardTradErr">—</div>
+          <div class="card-progress"><div class="card-progress-fill trad" id="tradBar"></div></div>
+        </div>
+        <div class="stat-card efficiency">
+          <h3>Efficiency</h3>
+          <div class="stat-big" id="ratioHeadline">—</div>
+          <div class="stat-line" id="ratioDetail">Run the comparison to see the ops gap.</div>
+          <div class="stat-foot" id="ratioFootnote">Simulated operation count — not a real CPU benchmark.</div>
+        </div>
+      </div>
+    </section>
+    <div class="result-block" id="resultP30"></div>
+    <div class="result-block trad-block" id="resultTrad"></div>
+    <div class="result-takeaway" id="resultTakeaway"></div>
+    <p class="storage-note"><b>Storage is not byte-equivalent.</b> P30 positions are symbolic units in this model. Traditional storage is measured in bytes plus ECC overhead. This demo compares encoding structure and modeled operation count, not direct memory footprint on current hardware.</p>
+    <p class="result-note" id="resultNote"></p>
+    <p class="replay-note">Replay timers are slow-motion. This demo compares <b>modeled operation counts</b>, not wall-clock hardware speed.</p>
   </div>
 </div>
 
@@ -783,19 +795,12 @@ function setControlsState(){
   var p=state.p30, h=state.ham;
   var bothDone=p.finished&&h.finished;
   var btn=document.getElementById('runBtn');
-  var viewBtn=document.getElementById('viewSummaryBtn');
   var stepBtn=document.getElementById('stepBtn');
   if(playing) btn.textContent='Pause';
   else if(paused&&runStarted) btn.textContent='Resume comparison';
   else if(bothDone) btn.textContent='Replay comparison';
   else btn.textContent='Run comparison';
-  if(bothDone){
-    viewBtn.classList.add('primary');
-    btn.classList.remove('primary');
-  }else{
-    viewBtn.classList.remove('primary');
-    btn.classList.add('primary');
-  }
+  btn.classList.toggle('primary', !bothDone);
   stepBtn.disabled=bothDone;
   stepBtn.setAttribute('aria-hidden', bothDone?'true':'false');
 }
@@ -852,6 +857,8 @@ function updateSummary(){
   document.getElementById('cardTradOps').textContent=fmt(h.ops)+' / '+fmt(hMax)+' modeled ops';
   document.getElementById('cardP30Err').textContent=p.finished?'Prime-valid · 100%':(p.ops>0?'Encoding… · '+Math.round(pPct)+'%':'Waiting');
   document.getElementById('cardTradErr').textContent=h.finished?'ECC-valid · 100%':(h.ops>0?'Checking… · '+Math.round(hPct)+'%':'Waiting');
+  document.querySelector('.stat-card.p30').classList.toggle('is-valid', p.finished);
+  document.querySelector('.stat-card.trad').classList.toggle('is-valid', h.finished);
 
   document.getElementById('p30Bar').style.width=pPct.toFixed(1)+'%';
   document.getElementById('tradBar').style.width=hPct.toFixed(1)+'%';
@@ -864,11 +871,11 @@ function updateSummary(){
   if(bothDone){
     var multFull=(hMax/pMax).toFixed(1);
     ratioHead.textContent=multFull+'× more modeled work';
-    ratioDetail.innerHTML='Traditional: <b>'+fmt(hMax)+'</b> ops &middot; P30: <b>'+fmt(pMax)+'</b> ops';
+    ratioDetail.innerHTML='Traditional: <span class="num-trad">'+fmt(hMax)+'</span> ops &middot; P30: <span class="num-p30">'+fmt(pMax)+'</span> ops';
   }else if(p.ops>0||h.ops>0){
     var multLive=(h.ops/Math.max(p.ops,1)).toFixed(1);
     ratioHead.textContent=multLive+'× more demo operations (so far)';
-    ratioDetail.innerHTML='Traditional: <b>'+fmt(h.ops)+'</b> ops &middot; P30: <b>'+fmt(p.ops)+'</b> ops';
+    ratioDetail.innerHTML='Traditional: <span class="num-trad">'+fmt(h.ops)+'</span> ops &middot; P30: <span class="num-p30">'+fmt(p.ops)+'</span> ops';
   }else{
     var multIdle=(hMax/pMax).toFixed(1);
     ratioHead.textContent='Up to '+multIdle+'× demo operations';
@@ -907,45 +914,20 @@ function updateSummary(){
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function updateResult(){
-  var panel=document.getElementById('resultPanel');
   var p=state.p30, h=state.ham;
-  if(!p.finished||!h.finished){ panel.classList.remove('visible'); updateMechanicsResult(); return; }
-  panel.classList.add('visible');
+  if(!p.finished||!h.finished) return;
   var pMax=state.p30.opsMax||limits.p30Max;
   var hMax=state.ham.opsMax||limits.hamMax;
   var ratio=(hMax/pMax).toFixed(1);
 
   document.getElementById('resultP30').innerHTML=
-    '<b>P30</b> completed in <b>'+fmt(pMax)+'</b> modeled operations.';
+    '<b>P30</b> completed in <span class="num-p30">'+fmt(pMax)+' ops</span>.';
   document.getElementById('resultTrad').innerHTML=
-    '<b>Traditional</b> completed in <b>'+fmt(hMax)+'</b> modeled operations.';
+    '<b>Traditional</b> completed in <span class="num-trad">'+fmt(hMax)+' ops</span>.';
   document.getElementById('resultTakeaway').innerHTML=
-    'Traditional performed <b>'+ratio+'×</b> more modeled work in this demo.';
+    'Traditional performed <span class="num-gap">'+ratio+'×</span> more modeled work in this demo. '+
+    'P30: <span class="num-p30">'+fmt(pMax)+' ops</span> · Traditional: <span class="num-trad">'+fmt(hMax)+' ops</span>.';
   document.getElementById('resultNote').textContent=
-    'Storage units are not byte-equivalent; this compares modeled encoding and verification behavior.';
-  updateMechanicsResult(pMax, hMax, ratio);
-}
-
-function updateMechanicsResult(pMax, hMax, ratio){
-  var box=document.getElementById('mechanicsResult');
-  if(!box) return;
-  var p=state.p30, h=state.ham;
-  if(!p.finished||!h.finished){
-    document.getElementById('mechanicsResultMain').textContent='';
-    document.getElementById('mechanicsResultOps').textContent='';
-    document.getElementById('mechanicsResultNote').textContent='';
-    return;
-  }
-  if(!ratio){
-    pMax=state.p30.opsMax||limits.p30Max;
-    hMax=state.ham.opsMax||limits.hamMax;
-    ratio=(hMax/pMax).toFixed(1);
-  }
-  document.getElementById('mechanicsResultMain').innerHTML=
-    'Traditional performed <b>'+ratio+'×</b> more modeled operations in this simulation.';
-  document.getElementById('mechanicsResultOps').innerHTML=
-    'P30: <b>'+fmt(pMax)+'</b> ops &middot; Traditional: <b>'+fmt(hMax)+'</b> ops';
-  document.getElementById('mechanicsResultNote').textContent=
     'Storage units are not byte-equivalent; this compares modeled encoding and verification behavior.';
 }
 
@@ -953,7 +935,7 @@ function updateStatus(){
   var p=state.p30, h=state.ham;
   var st=document.getElementById('status');
   if(p.finished&&h.finished){
-    st.innerHTML='Both finished — press <b>View summary</b> for the takeaway, <b>Replay comparison</b> to run again, or <b>Reset</b>.';
+    st.innerHTML='Both finished — scroll to the <b>Result</b> below, <b>Replay comparison</b> to run again, or <b>Reset</b>.';
   }else if(p.finished&&!h.finished){
     st.innerHTML='P30 is <b>done</b> ('+fmt(p.ops)+' ops). Traditional is still checking ('+Math.round(h.ops/(state.ham.opsMax||limits.hamMax)*100)+'%).';
   }else if(playing){
@@ -1039,7 +1021,6 @@ function runComparison(){
   playing=true;
   paused=false;
   runStarted=true;
-  setView('mechanics');
   setRunButton();
   lockstepTick();
   updateStatus();
@@ -1057,15 +1038,6 @@ function stepOnce(){
   if(!state.p30.finished) postFrame(p30Frame,'step');
   if(!state.ham.finished) postFrame(hamFrame,'step');
   updateStatus();
-}
-
-function setView(mode){
-  document.body.classList.toggle('view-summary', mode==='summary');
-  document.body.classList.toggle('view-mechanics', mode==='mechanics');
-  document.querySelectorAll('.view-btn').forEach(function(b){
-    b.classList.toggle('active', b.dataset.view===mode);
-  });
-  try{ localStorage.setItem('compareView', mode); }catch(e){}
 }
 
 function reset(){ resetState(); }
@@ -1107,7 +1079,6 @@ window.addEventListener('message',function(e){
 document.getElementById('runBtn').addEventListener('click',runComparison);
 document.getElementById('stepBtn').addEventListener('click',stepOnce);
 document.getElementById('resetBtn').addEventListener('click',reset);
-document.getElementById('viewSummaryBtn').addEventListener('click',function(){ setView('summary'); });
 sentenceInput.addEventListener('input',function(){
   updateSentenceMeta();
   if(!runStarted) updateSentenceHighlight();
@@ -1115,13 +1086,6 @@ sentenceInput.addEventListener('input',function(){
 document.querySelectorAll('.speed-btn').forEach(function(btn){
   btn.addEventListener('click',function(){ applySpeed(parseInt(this.dataset.delay,10)); });
 });
-document.querySelectorAll('.view-btn').forEach(function(btn){
-  btn.addEventListener('click',function(){ setView(this.dataset.view); });
-});
-
-try{
-  if(localStorage.getItem('compareView')==='summary') setView('summary');
-}catch(e){}
 
 updateSentenceMeta();
 updateStatus();

@@ -180,10 +180,10 @@ footer{padding:.85rem 3rem;border-top:2px solid var(--space);
   font:400 14px/1.7 'Cormorant Garamond',serif;color:var(--text-m)}
 footer a{color:var(--space)}
 @media(max-width:1080px){.stage{grid-template-columns:1fr;max-height:none;height:auto}.panel{border-left:none;border-top:2px solid var(--space)}.clock-stage{height:420px;min-height:420px;max-height:420px}}
-body.embed-compare{overflow:hidden!important;height:auto!important;min-height:0!important;margin:0;background:var(--space)!important}
+body.embed-compare{overflow:hidden!important;height:auto!important;min-height:0!important;margin:0;background:#3D0094!important}
 body.embed-compare #open-repro-banner,body.embed-compare>header,body.embed-compare footer,body.embed-compare .panel-wrap{display:none!important}
-body.embed-compare .stage{grid-template-columns:1fr;height:auto;min-height:100%;max-height:none;background:var(--space)!important}
-body.embed-compare .work{height:auto;min-height:100%;padding:.15rem .5rem 0;background:var(--space)!important;
+body.embed-compare .stage{grid-template-columns:1fr;height:auto;min-height:100%;max-height:none;background:#3D0094!important}
+body.embed-compare .work{height:auto;min-height:100%;padding:.15rem .5rem 0;background:#3D0094!important;
   display:flex;flex-direction:column;justify-content:flex-start}
 body.embed-compare .work-tabs,body.embed-compare .controls,body.embed-compare .speed-note{display:none!important}
 body.embed-compare .tweet-banner,body.embed-compare .run-timer,body.embed-compare .work-head{display:none!important}
@@ -480,23 +480,28 @@ function resize(){
 
 function draw(){
   ctx.clearRect(0,0,cw,chh);
+  var P30_GOLD='#FFD84D';
+  var P30_GOLD_LIT='#FFE85C';
+  var P30_VIOLET='#8B5CF6';
+  var activeCol=EMBED_COMPARE?P30_GOLD:'#e97158';
+  var activeLit=EMBED_COMPARE?P30_GOLD_LIT:'#e97158';
   // rim
   ctx.beginPath(); ctx.arc(cx0,cy0,R,0,2*Math.PI);
-  ctx.strokeStyle='rgba(110,84,163,0.7)'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.strokeStyle=EMBED_COMPARE?'rgba(255,216,77,0.35)':'rgba(110,84,163,0.7)'; ctx.lineWidth=1.5; ctx.stroke();
 
   // spokes + beads for the 8 data residues
   SPOKE_RES.forEach(function(r){
     var ang=resAngle(r);
-    var col=RES_COL[r];
+    var col=EMBED_COMPARE?P30_VIOLET:(RES_COL[r]);
     // spoke line
     ctx.beginPath();
     ctx.moveTo(cx0+Math.cos(ang)*R*0.17, cy0+Math.sin(ang)*R*0.17);
     ctx.lineTo(cx0+Math.cos(ang)*R*0.97, cy0+Math.sin(ang)*R*0.97);
-    ctx.strokeStyle=hexA(col, litRes===r?0.95:0.4); ctx.lineWidth=litRes===r?2.4:1.4; ctx.stroke();
+    ctx.strokeStyle=hexA(col, litRes===r?(EMBED_COMPARE?1:0.95):0.4); ctx.lineWidth=litRes===r?2.4:1.4; ctx.stroke();
     // d=8 qudit basis label at hub (totative ket |r⟩)
     var hr=R*0.11, hx=cx0+Math.cos(ang)*hr, hy=cy0+Math.sin(ang)*hr;
     ctx.textAlign='center'; ctx.textBaseline='middle';
-    ctx.fillStyle=hexA(col, litRes===r?1:0.88);
+    ctx.fillStyle=hexA(litRes===r?activeCol:col, litRes===r?1:0.88);
     ctx.font='600 11px Cinzel, serif';
     ctx.fillText('|'+r+'\u27e9', hx, hy);
     // beads: every Tier 1 coprime value on this spoke, radius by index
@@ -507,8 +512,10 @@ function draw(){
       var on=(litVal!==null && vv===litVal);
       // bead sized to hold its glyph
       ctx.beginPath(); ctx.arc(bx,by, on?8:6.5, 0,2*Math.PI);
-      ctx.fillStyle = on ? '#e97158' : hexA(col,0.9); ctx.fill();
-      if(on){ ctx.lineWidth=1.5; ctx.strokeStyle='#fff'; ctx.stroke(); }
+      ctx.fillStyle = on ? activeCol : hexA(EMBED_COMPARE?P30_VIOLET:col,0.9); ctx.fill();
+      if(on){ ctx.lineWidth=1.5; ctx.strokeStyle='#fff'; ctx.stroke();
+        if(EMBED_COMPARE){ ctx.shadowColor='rgba(255,216,77,0.55)'; ctx.shadowBlur=10; ctx.stroke(); ctx.shadowBlur=0; }
+      }
       // character-to-value mapping intentionally not rendered on the beads
     });
   });
@@ -525,25 +532,25 @@ function draw(){
     var litThis = (litRes===res && SPOKE_RES.indexOf(res)>=0);
     // node on the circle
     ctx.beginPath(); ctx.arc(nx,ny, litThis?6:(prime?4.5:3), 0,2*Math.PI);
-    if(litThis) ctx.fillStyle='#e97158';
-    else if(ctrl) ctx.fillStyle='#fada24';
-    else if(prime) ctx.fillStyle=BASIS_COL[n]||'#cc4778';
-    else ctx.fillStyle='rgba(110,84,163,0.6)';
+    if(litThis) ctx.fillStyle=activeCol;
+    else if(ctrl) ctx.fillStyle=P30_GOLD;
+    else if(prime) ctx.fillStyle=EMBED_COMPARE?P30_VIOLET:(BASIS_COL[n]||'#cc4778');
+    else ctx.fillStyle=EMBED_COMPARE?'rgba(139,92,246,0.35)':'rgba(110,84,163,0.6)';
     ctx.fill();
     // rim label outside the ring, quantum ket notation for every position
     var lr=R*1.14;
     var lx=cx0+Math.cos(ang)*lr, ly=cy0+Math.sin(ang)*lr;
     ctx.textAlign='center'; ctx.textBaseline='middle';
     if(ctrl){
-      ctx.fillStyle = litThis ? '#e97158' : '#fada24';
+      ctx.fillStyle = litThis ? activeCol : P30_GOLD;
       ctx.font='700 17px Cinzel, serif';
       ctx.fillText('|'+n+'\u27e9', lx, ly);
     } else if(prime){
-      ctx.fillStyle = litThis ? '#e97158' : (BASIS_COL[n]||'#cc4778');
+      ctx.fillStyle = litThis ? activeCol : (EMBED_COMPARE?P30_VIOLET:(BASIS_COL[n]||'#cc4778'));
       ctx.font='700 17px Cinzel, serif';
       ctx.fillText('|'+n+'\u27e9', lx, ly);
     } else {
-      ctx.fillStyle = litThis ? '#e97158' : 'rgba(180,168,214,0.9)';
+      ctx.fillStyle = litThis ? activeCol : (EMBED_COMPARE?'rgba(201,184,232,0.65)':'rgba(180,168,214,0.9)');
       ctx.font='400 15px Cinzel, serif';
       ctx.fillText(String(n), lx, ly);
     }
@@ -552,10 +559,10 @@ function draw(){
   (function(){
     var aTop=dialAngle(30), a15=dialAngle(15);
     var tx=cx0+Math.cos(aTop)*R, ty=cy0+Math.sin(aTop)*R;
-    ctx.beginPath(); ctx.arc(tx,ty,5.5,0,2*Math.PI); ctx.fillStyle='#fada24'; ctx.fill();
+    ctx.beginPath(); ctx.arc(tx,ty,5.5,0,2*Math.PI); ctx.fillStyle=P30_GOLD; ctx.fill();
     var bx=cx0+Math.cos(a15)*R, by=cy0+Math.sin(a15)*R;
     ctx.beginPath(); ctx.moveTo(tx,ty); ctx.lineTo(bx,by);
-    ctx.strokeStyle='rgba(110,84,163,0.4)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.strokeStyle=EMBED_COMPARE?'rgba(255,216,77,0.25)':'rgba(110,84,163,0.4)'; ctx.lineWidth=1; ctx.stroke();
   })();
 
   // ── Error injection + correction overlay ───────────────────────
@@ -563,9 +570,9 @@ function draw(){
 
   // hub
   ctx.beginPath(); ctx.arc(cx0,cy0,R*0.12,0,2*Math.PI);
-  ctx.fillStyle='rgba(53,4,152,0.85)'; ctx.fill();
-  ctx.strokeStyle='rgba(250,218,36,0.4)'; ctx.lineWidth=1.5; ctx.stroke();
-  ctx.fillStyle='#fada24'; ctx.font='700 21px Cinzel, serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillStyle=EMBED_COMPARE?'rgba(61,0,148,0.92)':'rgba(53,4,152,0.85)'; ctx.fill();
+  ctx.strokeStyle=EMBED_COMPARE?'rgba(255,216,77,0.55)':'rgba(250,218,36,0.4)'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle=P30_GOLD; ctx.font='700 21px Cinzel, serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
   ctx.fillText('P30', cx0, cy0);
 }
 
