@@ -30,10 +30,11 @@ jobs:
         run: |
           mkdir -p _site
           cp -r viz/* _site/
-          # Investor brief SPA at site root; shared assets live beside index.html
+          # Investor brief v1 at site root
           cp viz/sites/index.html _site/index.html
           cp -r viz/sites/shared _site/shared
-          # Classic hub landing remains at /landing.html
+          # Investor brief v2 (native widgets)
+          cp -r viz/sites-v2 _site/sites-v2
           cp viz/landing.html _site/landing.html
           touch _site/.nojekyll
 

@@ -1,0 +1,24 @@
+/* Auto-extracted from viz/encoder.html — re-run extract_embed_css.py */
+.wgt-encoder-inner.embed-compare{overflow:hidden!important;height:auto!important;min-height:0!important;margin:0;background:#3D0094!important}
+.wgt-encoder-inner.embed-compare #open-repro-banner,.wgt-encoder-inner.embed-compare>header,.wgt-encoder-inner.embed-compare footer,.wgt-encoder-inner.embed-compare .panel-wrap{display:none!important}
+.wgt-encoder-inner.embed-compare .stage{grid-template-columns:1fr;height:auto;min-height:100%;max-height:none;background:#3D0094!important}
+.wgt-encoder-inner.embed-compare .work{height:auto;min-height:100%;padding:.15rem .5rem 0;background:#3D0094!important;
+  display:flex;flex-direction:column;justify-content:flex-start}
+.wgt-encoder-inner.embed-compare .work-tabs,.wgt-encoder-inner.embed-compare .controls,.wgt-encoder-inner.embed-compare .speed-note{display:none!important}
+.wgt-encoder-inner.embed-compare .tweet-banner,.wgt-encoder-inner.embed-compare .run-timer,.wgt-encoder-inner.embed-compare .work-head{display:none!important}
+.wgt-encoder-inner.embed-compare .caption{display:none!important}
+.wgt-encoder-inner.embed-compare .clock-stage{flex:0 1 auto;height:auto;min-height:0;max-height:none;order:1;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;padding:4px 6px 10px;overflow:visible}
+.wgt-encoder-inner.embed-compare .clock-visual{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:0;width:100%}
+.wgt-encoder-inner.embed-compare .clock-canvas-wrap{flex:0 0 auto;position:relative;width:auto;height:auto}
+.wgt-encoder-inner.embed-compare #clock{position:relative!important;inset:auto!important;width:auto!important;height:auto!important;display:block}
+.wgt-encoder-inner.embed-compare .p30-bridge{display:none!important}
+.wgt-encoder-inner.embed-compare .phase-tag,
+.wgt-encoder-inner.embed-compare .run-timer,
+.wgt-encoder-inner.embed-compare .tweet-banner,
+.wgt-encoder-inner.embed-compare .caption,
+.wgt-encoder-inner.embed-compare .work-tabs,
+.wgt-encoder-inner.embed-compare .controls,
+.wgt-encoder-inner.embed-compare .speed-note { display: none !important; }
+.wgt-encoder-inner.embed-compare { overflow: hidden; background: #3D0094 !important; }
+

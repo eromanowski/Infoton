@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P30 vs Traditional ECC | Side by Side</title>
+<meta name="description" content="Side-by-side P30 vs Hamming SECDED — native widgets, no iframes.">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="sites-v2/shared/widgets.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100vh; background: #120822; }
+  #mount { width: 100%; min-height: 100vh; }
+</style>
+</head>
+<body>
+<div id="mount"></div>
+<script src="sites-v2/shared/demo-util.js"></script>
+<script src="sites-v2/shared/loader.js"></script>
+<script src="sites-v2/widgets/registry.js"></script>
+<script>
+(function () {
+  var mount = document.getElementById('mount');
+  P30WidgetLoader.ensure('compare').then(function () {
+    P30WidgetRegistry.mount(mount, 'compare', null, { embed: true, standalone: true });
+  });
+})();
+</script>
+</body>
+</html>

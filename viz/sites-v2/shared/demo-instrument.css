@@ -1,0 +1,779 @@
+/* Dark instrumentation theme — demos embedded in the investor brief */
+
+.demo-shell-instrument {
+  --demo-bg: #1b0d35;
+  --demo-panel: #160b28;
+  --demo-panel-soft: #24104a;
+  --demo-gold: #f6d24a;
+  --demo-cyan: #4cc9f0;
+  --demo-green: #34d399;
+  --demo-red: #f87171;
+  --demo-text: #f8f4ff;
+  --demo-muted: #b8a8d8;
+  --demo-border: rgba(255, 255, 255, 0.12);
+
+  background: #160a2b !important;
+  border: 1px solid var(--demo-border) !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45) !important;
+}
+
+.demo-shell-instrument .live-proof-section {
+  margin-top: 0;
+  padding: 1.35rem 1.5rem 1.1rem;
+  border-top: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.deck-chapter .demo-shell-instrument {
+  margin-top: 2.5rem;
+}
+
+/* ── Hamming + encoder full demos ── */
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .stage,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .stage {
+  background: var(--demo-bg) !important;
+  max-height: min(760px, 75vh);
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .work,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .work {
+  background: var(--demo-bg) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .panel-wrap,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .panel-wrap {
+  border-left: 1px solid var(--demo-border) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .panel,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .panel {
+  background: var(--demo-panel) !important;
+  color: var(--demo-text) !important;
+}
+
+.demo-shell-instrument .wgt-hamming {
+  --bg: var(--demo-panel);
+  --space: var(--demo-bg);
+  --text: var(--demo-text);
+  --text-m: var(--demo-muted);
+  --text-d: rgba(184, 168, 216, 0.55);
+  --border: var(--demo-border);
+  --center: var(--demo-gold);
+  --grid: #8f7ab8;
+}
+
+.demo-shell-instrument .wgt-encoder {
+  --bg: var(--demo-panel);
+  --space: var(--demo-bg);
+  --text: var(--demo-text);
+  --text-m: var(--demo-muted);
+  --text-d: rgba(184, 168, 216, 0.55);
+  --border: var(--demo-border);
+  --center: var(--demo-gold);
+  --grid: #8f7ab8;
+}
+
+/* Panel instrumentation */
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .p-title,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .p-title {
+  color: var(--demo-muted) !important;
+  letter-spacing: 0.14em;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .counter .c-name,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .counter .c-name,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .store-lab,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .store-lab,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .elab,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .elab {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .counter .c-val,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .counter .c-val {
+  color: var(--demo-cyan) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .counter.write .c-val {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .counter.read .c-val {
+  color: var(--demo-cyan) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .counter.total .c-val,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .counter.total .c-name {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .store-row,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .store-row,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .counter,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .counter,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .erow,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .erow {
+  border-color: var(--demo-border) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .store-val,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .store-val,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .eval,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .eval {
+  color: var(--demo-cyan) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .store-cap,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .store-cap,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .energy-cap,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .energy-cap,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .bytes-cap,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .ratio-cap,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .p30-cap,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .mode-note {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) #tempSel,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) #tempSel {
+  background: var(--demo-panel-soft) !important;
+  color: var(--demo-text) !important;
+  border-color: var(--demo-border) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .ratio-big,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .p30-val,
+.demo-shell-instrument .wgt-encoder-inner:not(.embed-compare) .ratio-big {
+  color: var(--demo-gold) !important;
+}
+
+/* Bit grid — quiet default, glow on active only */
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .bit {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  color: rgba(184, 168, 216, 0.65) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .bit.active {
+  background: var(--demo-green) !important;
+  border-color: rgba(255, 255, 255, 0.85) !important;
+  color: #082418 !important;
+  box-shadow: 0 0 18px rgba(52, 211, 153, 0.45) !important;
+  transform: scale(1.06) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .bit.watched {
+  background: rgba(76, 201, 240, 0.22) !important;
+  border-color: rgba(76, 201, 240, 0.45) !important;
+  color: var(--demo-text) !important;
+  box-shadow: 0 0 10px rgba(76, 201, 240, 0.2) !important;
+  animation: none !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .bit.coverage {
+  background: rgba(76, 201, 240, 0.14) !important;
+  border-color: rgba(76, 201, 240, 0.28) !important;
+  box-shadow: none !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .bit.corrupted {
+  background: var(--demo-red) !important;
+  box-shadow: 0 0 16px rgba(248, 113, 113, 0.45) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .bit.fixed {
+  background: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .check-col {
+  background: rgba(36, 16, 74, 0.55) !important;
+  border-color: rgba(246, 210, 74, 0.22) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .check-col .ctitle {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .check-cell {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .check-cell.computing {
+  background: rgba(76, 201, 240, 0.35) !important;
+  border-color: rgba(76, 201, 240, 0.55) !important;
+  color: var(--demo-text) !important;
+  box-shadow: 0 0 12px rgba(76, 201, 240, 0.25) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .check-cell.match,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .check-cell.done {
+  background: rgba(52, 211, 153, 0.28) !important;
+  border-color: rgba(52, 211, 153, 0.45) !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .byte-row.examining,
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .byte-row.active-byte {
+  background: rgba(52, 211, 153, 0.08) !important;
+  border-color: rgba(52, 211, 153, 0.28) !important;
+  box-shadow: none !important;
+}
+
+.demo-shell-instrument .wgt-hamming-inner:not(.embed-compare) .byte-char {
+  color: var(--demo-gold) !important;
+}
+
+/* Grouped controls */
+.demo-shell-instrument .demo-control-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+}
+
+.demo-shell-instrument .demo-cmd-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.demo-shell-instrument .demo-cmd-lab {
+  font: 600 10px/1 var(--font-display, 'Cinzel', serif);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--demo-muted);
+  min-width: 3.25rem;
+  flex-shrink: 0;
+}
+
+.demo-shell-instrument .demo-run-btns {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.demo-shell-instrument .demo-status-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+  flex-wrap: wrap;
+  padding: 0.55rem 0.85rem;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--demo-border);
+  border-radius: 8px;
+}
+
+.demo-shell-instrument .demo-status-strip .phase-tag {
+  font: 600 12px/1 var(--font-display, 'Cinzel', serif) !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  padding: 5px 12px !important;
+  border-radius: 6px !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .demo-status-strip .phase-tag:not(:empty):not([data-idle]) {
+  color: var(--demo-gold);
+  border-color: rgba(246, 210, 74, 0.28);
+}
+
+.demo-shell-instrument .demo-status-strip .run-timer {
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 0.65rem !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.demo-shell-instrument .demo-status-strip .run-timer-elapsed {
+  font-size: 15px !important;
+  color: var(--demo-cyan) !important;
+}
+
+.demo-shell-instrument .demo-status-strip .run-timer-meta {
+  font-size: 13px !important;
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .work-head-right {
+  display: none !important;
+}
+
+.demo-shell-instrument .demo-tab,
+.demo-shell-instrument .work-tab {
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  padding: 6px 12px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .demo-tab.active,
+.demo-shell-instrument .work-tab.active {
+  background: rgba(246, 210, 74, 0.14) !important;
+  border-color: rgba(246, 210, 74, 0.35) !important;
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .btn {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: var(--demo-text) !important;
+  font-size: 11px !important;
+  padding: 7px 14px !important;
+}
+
+.demo-shell-instrument .btn.primary {
+  background: rgba(246, 210, 74, 0.18) !important;
+  border-color: rgba(246, 210, 74, 0.4) !important;
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .btn.danger,
+.demo-shell-instrument .btn.err {
+  background: rgba(248, 113, 113, 0.12) !important;
+  border-color: rgba(248, 113, 113, 0.35) !important;
+  color: var(--demo-red) !important;
+}
+
+.demo-shell-instrument .tier-btn {
+  font-size: 10px !important;
+  padding: 5px 10px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .tier-btn.active {
+  background: rgba(76, 201, 240, 0.14) !important;
+  border-color: rgba(76, 201, 240, 0.35) !important;
+  color: var(--demo-cyan) !important;
+}
+
+.demo-shell-instrument .controls {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  padding-top: 0 !important;
+}
+
+.demo-shell-instrument .speed-tiers {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.demo-shell-instrument .speed-lab {
+  display: none;
+}
+
+.demo-shell-instrument .caption {
+  background: rgba(0, 0, 0, 0.22) !important;
+  border-left-color: rgba(246, 210, 74, 0.45) !important;
+  color: var(--demo-muted) !important;
+  font-size: 14px !important;
+}
+
+.demo-shell-instrument .caption b {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .speed-note {
+  font-size: 12px !important;
+  color: rgba(184, 168, 216, 0.65) !important;
+  font-style: italic;
+  line-height: 1.45;
+}
+
+.demo-shell-instrument .tweet-banner {
+  background: rgba(0, 0, 0, 0.22) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+.demo-shell-instrument .tweet-meta,
+.demo-shell-instrument .word-progress {
+  color: var(--demo-cyan) !important;
+}
+
+/* Impact / fleet stage widgets */
+.demo-shell-instrument .wgt-stage {
+  background: var(--demo-bg) !important;
+}
+
+.demo-shell-instrument .wgt-work {
+  background: var(--demo-bg) !important;
+}
+
+.demo-shell-instrument .wgt-panel {
+  background: var(--demo-panel) !important;
+  border-left: 1px solid var(--demo-border) !important;
+  color: var(--demo-text) !important;
+}
+
+.demo-shell-instrument .wgt-p-title {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-dmath,
+.demo-shell-instrument .wgt-r-name,
+.demo-shell-instrument .wgt-big-sub,
+.demo-shell-instrument .wgt-ratio-cap {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-dmath .hl,
+.demo-shell-instrument .wgt-ratio-num {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .wgt-dmath .pp,
+.demo-shell-instrument .wgt-big.p30 .wgt-big-val,
+.demo-shell-instrument .wgt-r-val.p30 {
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-dmath .by,
+.demo-shell-instrument .wgt-big.byte .wgt-big-val,
+.demo-shell-instrument .wgt-r-val.byte {
+  color: var(--demo-cyan) !important;
+}
+
+.demo-shell-instrument .wgt-big.byte {
+  background: rgba(76, 201, 240, 0.08) !important;
+  border-color: rgba(76, 201, 240, 0.22) !important;
+}
+
+.demo-shell-instrument .wgt-big.p30 {
+  background: rgba(52, 211, 153, 0.08) !important;
+  border-color: rgba(52, 211, 153, 0.22) !important;
+}
+
+.demo-shell-instrument .wgt-big:not(.byte):not(.p30) {
+  background: rgba(52, 211, 153, 0.08) !important;
+  border-color: rgba(52, 211, 153, 0.22) !important;
+}
+
+.demo-shell-instrument .wgt-big:not(.byte):not(.p30) .wgt-big-lab,
+.demo-shell-instrument .wgt-big:not(.byte):not(.p30) .wgt-big-val {
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-row {
+  border-bottom-color: var(--demo-border);
+}
+
+.demo-shell-instrument .wgt-r-val.neu {
+  color: var(--demo-text) !important;
+}
+
+/* ── Fleet (The Scale) ── */
+.demo-shell-instrument .wgt-fleet .wgt-work,
+.demo-shell-instrument .wgt-fleet .wgt-panel {
+  max-height: none;
+  overflow: visible;
+}
+
+.demo-shell-instrument .wgt-rtab {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--demo-border);
+  color: var(--demo-muted);
+}
+
+.demo-shell-instrument .wgt-rtab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--demo-text);
+}
+
+.demo-shell-instrument .wgt-rtab.active {
+  background: rgba(246, 210, 74, 0.14);
+  border-color: rgba(246, 210, 74, 0.45);
+  color: var(--demo-gold);
+  font-weight: 600;
+}
+
+.demo-shell-instrument .wgt-work-tag {
+  color: var(--demo-gold);
+  border-color: rgba(246, 210, 74, 0.4);
+}
+
+.demo-shell-instrument .wgt-deploy {
+  background: rgba(0, 0, 0, 0.22);
+  border-color: var(--demo-border);
+}
+
+.demo-shell-instrument .wgt-deploy-val,
+.demo-shell-instrument .wgt-fbl-r {
+  color: var(--demo-gold);
+}
+
+.demo-shell-instrument .wgt-deploy input[type=range] {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.demo-shell-instrument .wgt-deploy input[type=range]::-webkit-slider-thumb {
+  background: var(--demo-gold);
+  border-color: var(--demo-bg);
+}
+
+.demo-shell-instrument .wgt-caption {
+  background: rgba(0, 0, 0, 0.22);
+  border-left: 3px solid rgba(246, 210, 74, 0.45);
+  color: var(--demo-muted);
+  font-size: 14px;
+}
+
+.demo-shell-instrument .wgt-caption b {
+  color: var(--demo-gold);
+}
+
+.demo-shell-instrument .wgt-react-n {
+  color: var(--demo-green);
+}
+
+.demo-shell-instrument .wgt-heat-n {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .work-tab-sep {
+  display: none !important;
+}
+
+.demo-shell-instrument .live-proof-lead a {
+  color: var(--demo-cyan);
+}
+
+/* ── History (Why now) — page scroll, no inner panes ── */
+.demo-shell-instrument:has(.wgt-history) {
+  overflow: visible;
+}
+
+.demo-shell-instrument .wgt-stage-history {
+  align-items: stretch;
+  min-height: 0;
+}
+
+.demo-shell-instrument .wgt-history .wgt-work,
+.demo-shell-instrument .wgt-history .wgt-panel {
+  max-height: none;
+  overflow: visible;
+}
+
+.demo-shell-instrument .wgt-bt-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: var(--demo-border) !important;
+  box-shadow: none !important;
+}
+
+.demo-shell-instrument .wgt-bt-card.landauer {
+  background: rgba(246, 210, 74, 0.08) !important;
+  border-color: rgba(246, 210, 74, 0.28) !important;
+}
+
+.demo-shell-instrument .wgt-bt-card.spec {
+  background: rgba(248, 113, 113, 0.08) !important;
+  border-color: rgba(248, 113, 113, 0.28) !important;
+}
+
+.demo-shell-instrument .wgt-bt-card.precedent {
+  background: rgba(52, 211, 153, 0.08) !important;
+  border-color: rgba(52, 211, 153, 0.28) !important;
+  box-shadow: none !important;
+}
+
+.demo-shell-instrument .wgt-bt-card.future {
+  background: rgba(246, 210, 74, 0.1) !important;
+  border-color: rgba(246, 210, 74, 0.32) !important;
+  box-shadow: 0 0 20px rgba(246, 210, 74, 0.08) !important;
+}
+
+.demo-shell-instrument .wgt-bt-yr-num {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .wgt-bt-card.precedent .wgt-bt-yr-num {
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-bt-card.spec .wgt-bt-yr-num {
+  color: var(--demo-red) !important;
+}
+
+.demo-shell-instrument .wgt-bt-bw {
+  background: rgba(76, 201, 240, 0.14) !important;
+  color: var(--demo-cyan) !important;
+  border: 1px solid rgba(76, 201, 240, 0.28);
+}
+
+.demo-shell-instrument .wgt-bt-bw.variable {
+  background: rgba(246, 210, 74, 0.12) !important;
+  color: var(--demo-gold) !important;
+  border-color: rgba(246, 210, 74, 0.28);
+}
+
+.demo-shell-instrument .wgt-bt-bw.green {
+  background: rgba(52, 211, 153, 0.14) !important;
+  color: var(--demo-green) !important;
+  border-color: rgba(52, 211, 153, 0.28);
+}
+
+.demo-shell-instrument .wgt-bt-bw.none {
+  background: rgba(248, 113, 113, 0.12) !important;
+  color: var(--demo-red) !important;
+  border-color: rgba(248, 113, 113, 0.28);
+}
+
+.demo-shell-instrument .wgt-bt-bit.on {
+  background: rgba(52, 211, 153, 0.35) !important;
+  border-color: rgba(52, 211, 153, 0.55) !important;
+  color: var(--demo-text) !important;
+}
+
+.demo-shell-instrument .wgt-bt-bit.flex {
+  background: rgba(246, 210, 74, 0.12) !important;
+  border-color: rgba(246, 210, 74, 0.35) !important;
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-bt-eq {
+  background: rgba(246, 210, 74, 0.12) !important;
+  color: var(--demo-gold) !important;
+  border: 1px solid rgba(246, 210, 74, 0.28);
+}
+
+.demo-shell-instrument .wgt-bt-floor {
+  background: rgba(0, 0, 0, 0.22) !important;
+  border-color: var(--demo-border) !important;
+}
+
+.demo-shell-instrument .wgt-bt-floor-t {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .wgt-proof-hero {
+  background: rgba(52, 211, 153, 0.08) !important;
+  border-color: rgba(52, 211, 153, 0.28) !important;
+}
+
+.demo-shell-instrument .wgt-ph-tag {
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-ph-head,
+.demo-shell-instrument .wgt-dh-head {
+  color: var(--demo-text) !important;
+}
+
+.demo-shell-instrument .wgt-ph-body,
+.demo-shell-instrument .wgt-dh-body {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-ph-body b {
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-deploy-hero {
+  background: rgba(246, 210, 74, 0.08) !important;
+  border-color: rgba(246, 210, 74, 0.28) !important;
+}
+
+.demo-shell-instrument .wgt-dh-tag {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .wgt-dh-body b {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .wgt-takeaway {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: var(--demo-border) !important;
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-takeaway b {
+  color: var(--demo-gold) !important;
+}
+
+/* ── Learn (Close / diligence) ── */
+.demo-shell-instrument .wgt-learn-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.demo-shell-instrument .wgt-learn-chip {
+  font: 600 10px/1 var(--font-display, 'Cinzel', serif);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--demo-border);
+  color: var(--demo-muted);
+}
+
+.demo-shell-instrument:has(.wgt-learn) {
+  overflow: visible;
+}
+
+.demo-shell-instrument .wgt-learn {
+  background: var(--demo-bg) !important;
+  padding: 1.25rem 1.5rem 1.5rem !important;
+  max-height: none;
+  overflow: visible;
+  border-radius: 0;
+}
+
+.demo-shell-instrument .wgt-refs-list li {
+  color: var(--demo-text) !important;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--demo-border);
+  border-radius: 8px;
+}
+
+.demo-shell-instrument .wgt-refs-list li b {
+  color: var(--demo-gold) !important;
+}
+
+.demo-shell-instrument .wgt-refs-list a {
+  color: var(--demo-cyan) !important;
+}
+
+.demo-shell-instrument .wgt-refnote {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-learn-foot {
+  border-top-color: var(--demo-border) !important;
+  color: var(--demo-muted) !important;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--demo-border);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin-top: 1.25rem;
+}
+
+.demo-shell-instrument .wgt {
+  --w-text: var(--demo-text);
+  --w-text-m: var(--demo-muted);
+  --w-text-d: rgba(184, 168, 216, 0.55);
+  --w-border: var(--demo-border);
+  --w-space: var(--demo-bg);
+  --w-center: var(--demo-gold);
+  --w-grid: #8f7ab8;
+}
