@@ -288,7 +288,7 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
 }
 </style>
 </head>
-<body class="view-summary">
+<body class="view-mechanics">
 
 <header class="header">
   <div class="header-top">
@@ -333,8 +333,8 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
     </div>
     <div class="view-toggle">
       <span class="view-toggle-lab">View</span>
-      <button class="view-btn active" type="button" data-view="summary">Summary</button>
-      <button class="view-btn" type="button" data-view="mechanics">How it works</button>
+      <button class="view-btn" type="button" data-view="summary">Summary</button>
+      <button class="view-btn active" type="button" data-view="mechanics">How it works</button>
     </div>
     <details class="legend-drop">
       <summary>Legend</summary>
@@ -1074,8 +1074,7 @@ document.querySelectorAll('.view-btn').forEach(function(btn){
 });
 
 try{
-  var savedView=localStorage.getItem('compareView');
-  if(savedView==='mechanics') setView('mechanics');
+  if(localStorage.getItem('compareView')==='summary') setView('summary');
 }catch(e){}
 
 updateSentenceMeta();
