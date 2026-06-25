@@ -199,8 +199,8 @@ body.view-mechanics .mechanics-bridge{padding:.55rem 1.5rem .4rem;font-size:.95r
 body.view-mechanics .panes{flex:1 1 0;min-height:0;align-items:stretch}
 body.view-mechanics .pane{min-height:0;overflow:hidden}
 body.view-mechanics .pane-head,body.view-mechanics .pane-now,body.view-mechanics .process-flow{flex-shrink:0}
-body.view-mechanics .pane-body{flex:1 1 0;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:inherit}
-body.view-mechanics .pane iframe{flex:1 1 0;width:100%;min-height:200px;height:100%;border:0;display:block;vertical-align:top}
+body.view-mechanics .pane-body{flex:1 1 0;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:inherit;contain:layout}
+body.view-mechanics .pane iframe{flex:1 1 0;width:100%;max-width:100%;min-height:200px;height:100%;border:0;display:block;vertical-align:top;transform:translateZ(0)}
 body.view-mechanics .footer-status{display:none}
 body.view-mechanics .pane-head{padding:8px 12px 6px}
 body.view-mechanics .pane-pills{display:none}
@@ -465,7 +465,7 @@ body.run-complete.view-mechanics .mechanics-result{flex-shrink:0}
       <span class="flow-chain">Character → glyph → prime-clock position → verify</span>
       <span class="flow-detail" id="p30FlowDetail">Each character maps to a glyph position, then P30 verifies that position on the prime clock.</span>
     </div>
-    <div class="pane-body"><iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=8" title="P30 encoder"></iframe></div>
+    <div class="pane-body"><iframe id="p30Frame" src="encoder.html?embed=compare&amp;delay=8&amp;v=3" title="P30 encoder"></iframe></div>
   </div>
   <div class="divider" aria-hidden="true"></div>
   <div class="pane trad-pane">
@@ -499,7 +499,7 @@ body.run-complete.view-mechanics .mechanics-result{flex-shrink:0}
       <span class="flow-chain">Character → byte → 8 bits → ECC check bits</span>
       <span class="flow-detail" id="tradFlowDetail">Each character becomes one byte, then every bit is visited by the ECC verification pass.</span>
     </div>
-    <div class="pane-body"><iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=8" title="Hamming SECDED"></iframe></div>
+    <div class="pane-body"><iframe id="hamFrame" src="hamming.html?embed=compare&amp;delay=8&amp;v=3" title="Hamming SECDED"></iframe></div>
   </div>
 </div>
 
@@ -556,8 +556,11 @@ function syncIframeHeights(){
   document.querySelectorAll('.pane-body').forEach(function(body){
     var frame=body.querySelector('iframe');
     if(!frame) return;
-    var h=Math.floor(body.getBoundingClientRect().height);
+    var rect=body.getBoundingClientRect();
+    var h=Math.floor(rect.height);
+    var w=Math.floor(rect.width);
     if(h>0) frame.style.height=h+'px';
+    if(w>0) frame.style.width=w+'px';
   });
 }
 function scheduleEmbedLayout(){
@@ -577,6 +580,7 @@ if(typeof ResizeObserver!=='undefined'){
 }
 window.addEventListener('resize',scheduleEmbedLayout);
 window.addEventListener('load',scheduleEmbedLayout);
+window.addEventListener('pageshow',scheduleEmbedLayout);
 if(window.visualViewport){
   window.visualViewport.addEventListener('resize',scheduleEmbedLayout);
 }
