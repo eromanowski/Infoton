@@ -282,6 +282,13 @@ body.embed-compare .check-cell .ccov{display:none}
 body.embed-compare .check-cell .cval{background:rgba(255,255,255,.22)!important;font-size:13px!important;min-width:20px!important;padding:2px 4px!important}
 body.embed-compare .check-col .ctitle{font-size:11px;line-height:1.25;color:#8ee4ff!important}
 body.embed-compare .check-col .ctitle-sub{font-size:10px;color:rgba(142,228,255,.88)!important}
+@media (max-height:720px){
+  body.embed-compare{--embed-bit-w:30px;--embed-tag-w:82px;--embed-gap:4px}
+  body.embed-compare .bit{height:30px;font-size:13px}
+  body.embed-compare .bit .bn{font-size:13px}
+  body.embed-compare .byte-tag{font-size:12px;padding-top:6px}
+  body.embed-compare .check-col{width:96px;flex:0 0 96px;min-width:96px;padding:8px}
+}
 body.embed-compare .byte-row.active-byte{opacity:1!important;background:rgba(110,212,240,.22)!important;
   box-shadow:0 0 28px rgba(110,212,240,.4)!important;
   outline:2px solid rgba(110,212,240,.75);outline-offset:-2px;
