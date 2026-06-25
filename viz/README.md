@@ -6,7 +6,7 @@ Interactive demos extracted from [infoton.ai/infoton-p30](https://infoton.ai/inf
 
 | File | Infoton widget | Description |
 |------|----------------|-------------|
-| [`landing.html`](landing.html) | — | Pages home — links to comparison + hub |
+| [`sites/index.html`](sites/index.html) | — | **Investor brief SPA** — hash routes `#/compare`, `#/encode`, etc. |
 | [`compare.html`](compare.html) | — | **P30 vs Hamming** side-by-side race (489 vs 12,264 ops) |
 | [`encoder.html`](encoder.html) | Main encoder | Prime 30 clock, Play/Step, Library vs BIOS panel |
 | [`hamming.html`](hamming.html) | Byte cost | 584-op Hamming SECDED animation per 64-bit word |

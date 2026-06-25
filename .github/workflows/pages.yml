@@ -30,8 +30,11 @@ jobs:
         run: |
           mkdir -p _site
           cp -r viz/* _site/
-          # Site root = landing; encoder lives at encoder.html (compare iframes depend on this)
-          cp viz/landing.html _site/index.html
+          # Investor brief SPA at site root; shared assets live beside index.html
+          cp viz/sites/index.html _site/index.html
+          cp -r viz/sites/shared _site/shared
+          # Classic hub landing remains at /landing.html
+          cp viz/landing.html _site/landing.html
           touch _site/.nojekyll
 
       - uses: actions/upload-pages-artifact@v3

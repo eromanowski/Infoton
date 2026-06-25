@@ -138,17 +138,38 @@ body .header-top .header-intro{display:none}
 
 .summary{margin-top:0;padding:0}
 .summary-title{font:600 12px/1 'Cinzel',serif;color:var(--grid);margin-bottom:.85rem;display:block}
-.summary-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:stretch}
+.summary-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
 .stat-card{background:var(--surface-2);border-radius:10px;padding:1rem 1.05rem;display:grid;
   grid-template-rows:auto auto auto auto auto 1fr auto;gap:.4rem;min-height:11.5rem}
 .stat-card h3{font:600 13px/1.25 'Cinzel',serif;color:var(--text-m);font-weight:600;min-height:2.5em}
 .stat-card.p30 h3{color:var(--p30-primary)}
 .stat-card.trad h3{color:var(--trad-burden)}
-.stat-card.efficiency h3{color:var(--text-muted)}
-.stat-big{font:700 1.65rem/1.15 'Cinzel',serif;color:var(--text-main);font-variant-numeric:tabular-nums}
-.stat-card.p30 .stat-big{color:var(--p30-primary)}
-.stat-card.trad .stat-big{color:var(--trad-burden-hot)}
-.stat-card.efficiency .stat-big{color:var(--p30-primary);font-size:1.45rem;line-height:1.25}
+.stat-card.efficiency{
+  grid-column:1/-1;display:flex;flex-direction:column;gap:.55rem;min-height:auto;padding:1.1rem 1.15rem}
+.stat-card.efficiency h3{
+  font:600 12px/1 'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-faint);min-height:auto;margin:0}
+.eff-headline{font:500 1.12rem/1.4 'Cormorant Garamond',serif;color:var(--text-main);margin:0}
+.eff-headline .eff-sofar{font:400 14px/1.4 'Cormorant Garamond',serif;color:var(--text-faint);font-style:italic}
+.eff-ops-pair{display:flex;flex-wrap:wrap;gap:.35rem 1.5rem;font:500 15px/1.35 'Cinzel',serif;margin:0}
+.eff-ops-line{margin:0}
+.eff-bars{display:flex;flex-direction:column;gap:7px;margin:.15rem 0}
+.eff-bar-row{display:grid;grid-template-columns:5.75rem 1fr;gap:10px;align-items:center}
+.eff-bar-lab{font:600 11px/1 'Cinzel',serif;letter-spacing:.04em;color:var(--text-faint);white-space:nowrap}
+.eff-bar-row.p30 .eff-bar-lab{color:var(--p30-primary)}
+.eff-bar-row.trad .eff-bar-lab{color:var(--trad-burden)}
+.eff-bar-track{height:11px;background:rgba(0,0,0,.38);border-radius:3px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.eff-bar-fill{height:100%;width:0;border-radius:2px;transition:width .12s linear;min-width:3px}
+.eff-bar-fill.p30{background:linear-gradient(90deg,var(--p30-primary),var(--p30-active));box-shadow:0 0 8px rgba(255,216,77,.25)}
+.eff-bar-fill.trad{background:linear-gradient(90deg,var(--trad-burden-dim),var(--trad-overhead))}
+.eff-math{
+  font:600 14px/1.45 'Cinzel',serif;color:var(--text-muted);margin:0;
+  padding:.5rem .7rem;background:rgba(255,255,255,.04);border-radius:6px;
+  font-variant-numeric:tabular-nums;border:1px solid rgba(255,255,255,.06)}
+.eff-math .eff-sofar{font:500 12px/1.4 'Cormorant Garamond',serif;color:var(--text-faint);font-style:italic}
+.eff-expl{font:400 14px/1.5 'Cormorant Garamond',serif;color:var(--text-muted);display:grid;gap:.3rem;margin:0}
+.eff-expl p{margin:0}
+.stat-card.efficiency .stat-foot{margin-top:.1rem}
 .stat-line{font:400 16px/1.4 'Cormorant Garamond',serif;color:var(--text-muted)}
 .stat-line.stat-unit{font-size:14px;color:var(--text-faint);font-style:italic;margin-top:-2px}
 .stat-line b{color:var(--text-main);font-weight:600;font-family:'Cinzel',serif;font-size:15px}
@@ -357,7 +378,6 @@ body.run-complete #runBtn:hover{background:var(--card)}
 
 @media(max-width:900px){
   .summary-cards{grid-template-columns:1fr}
-  .stat-card.efficiency{order:-1}
   .panes{grid-template-columns:1fr;grid-template-rows:auto 2px auto}
   .pane iframe{min-height:360px}
   .sentence-meta{text-align:left;width:100%}
@@ -377,7 +397,7 @@ body.run-complete #runBtn:hover{background:var(--card)}
       <h1>Same Sentence, Two Encoding Systems</h1>
       <p class="header-intro">Watch the same sentence get encoded two ways: with <b>P30 Prime Encoding</b> and with a traditional <b>64-bit byte system + ECC</b>. Compare symbolic storage, modeled operations, and error checking in real time.</p>
     </div>
-    <a class="home-link" href="landing.html">Home</a>
+    <a class="home-link" href="sites/index.html#/compare">Brief</a>
   </div>
 
   <details class="theory">
@@ -535,9 +555,27 @@ body.run-complete #runBtn:hover{background:var(--card)}
         </div>
         <div class="stat-card efficiency">
           <h3>Efficiency</h3>
-          <div class="stat-big" id="ratioHeadline">—</div>
-          <div class="stat-line" id="ratioDetail">Run the comparison to see the ops gap.</div>
-          <div class="stat-foot" id="ratioFootnote">Simulated operation count — not a real CPU benchmark.</div>
+          <p class="eff-headline" id="ratioHeadline">Run the comparison to see the operation gap.</p>
+          <div class="eff-ops-pair">
+            <p class="eff-ops-line">P30: <span id="effP30Ops">—</span></p>
+            <p class="eff-ops-line">Traditional: <span id="effTradOps">—</span></p>
+          </div>
+          <div class="eff-bars" aria-hidden="false">
+            <div class="eff-bar-row p30">
+              <span class="eff-bar-lab">P30</span>
+              <div class="eff-bar-track"><div class="eff-bar-fill p30" id="effP30Bar"></div></div>
+            </div>
+            <div class="eff-bar-row trad">
+              <span class="eff-bar-lab">Traditional</span>
+              <div class="eff-bar-track"><div class="eff-bar-fill trad" id="effTradBar"></div></div>
+            </div>
+          </div>
+          <div class="eff-math" id="ratioMath">—</div>
+          <div class="eff-expl">
+            <p>ECC verification revisits bit positions across byte groups.</p>
+            <p>P30 verifies symbolic positions in this model.</p>
+          </div>
+          <div class="stat-foot" id="ratioFootnote">Modeled operation count — not CPU speed.</div>
         </div>
       </div>
     </section>
@@ -917,22 +955,7 @@ function updateSummary(){
   updatePaneProgress('p30', p.ops, pMax, p.finished);
   updatePaneProgress('ham', h.ops, hMax, h.finished);
 
-  var ratioHead=document.getElementById('ratioHeadline');
-  var ratioDetail=document.getElementById('ratioDetail');
-  var bothDone=p.finished&&h.finished;
-  if(bothDone){
-    var multFull=(hMax/pMax).toFixed(1);
-    ratioHead.textContent=multFull+'× more modeled work';
-    ratioDetail.innerHTML='Traditional: <span class="num-trad">'+fmt(hMax)+'</span> ops &middot; P30: <span class="num-p30">'+fmt(pMax)+'</span> ops';
-  }else if(p.ops>0||h.ops>0){
-    var multLive=(h.ops/Math.max(p.ops,1)).toFixed(1);
-    ratioHead.textContent=multLive+'× more demo operations (so far)';
-    ratioDetail.innerHTML='Traditional: <span class="num-trad">'+fmt(h.ops)+'</span> ops &middot; P30: <span class="num-p30">'+fmt(p.ops)+'</span> ops';
-  }else{
-    var multIdle=(hMax/pMax).toFixed(1);
-    ratioHead.textContent='Up to '+multIdle+'× demo operations';
-    ratioDetail.textContent='Run the comparison to watch the gap grow.';
-  }
+  updateEfficiencyCard(p, h, pMax, hMax);
 
   setPhaseLabel('p30Phase', p.finished, p.playing, 'Encoding complete', 'Encoding');
   setPhaseLabel('hamPhase', h.finished, h.playing, 'ECC check complete', 'Checking');
@@ -970,6 +993,50 @@ function updateSummary(){
 
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+function updateEfficiencyCard(p, h, pMax, hMax){
+  var head=document.getElementById('ratioHeadline');
+  var p30OpsEl=document.getElementById('effP30Ops');
+  var tradOpsEl=document.getElementById('effTradOps');
+  var mathEl=document.getElementById('ratioMath');
+  var p30Bar=document.getElementById('effP30Bar');
+  var tradBar=document.getElementById('effTradBar');
+  if(!head||!p30OpsEl||!tradOpsEl||!mathEl) return;
+
+  var bothDone=p.finished&&h.finished;
+  var pShow, hShow, pMath, hMath;
+
+  if(bothDone){
+    pShow=pMax; hShow=hMax; pMath=pMax; hMath=hMax;
+    head.innerHTML='Traditional performs <span class="num-gap">'+(hMax/Math.max(pMax,1)).toFixed(1)+'×</span> more modeled operations';
+  }else if(p.ops>0||h.ops>0){
+    pShow=p.ops; hShow=h.ops; pMath=Math.max(p.ops,1); hMath=h.ops;
+    head.innerHTML='Traditional performing <span class="num-gap">'+(h.ops/Math.max(p.ops,1)).toFixed(1)+'×</span> more operations <span class="eff-sofar">(so far)</span>';
+  }else if(runStarted){
+    pShow=0; hShow=0; pMath=0; hMath=0;
+    head.textContent='Encoding the same sentence on both sides…';
+  }else{
+    pShow=pMax; hShow=hMax; pMath=pMax; hMath=hMax;
+    head.innerHTML='Up to <span class="num-gap">'+(hMax/Math.max(pMax,1)).toFixed(1)+'×</span> more modeled operations';
+  }
+
+  p30OpsEl.innerHTML=pShow>0||!runStarted||bothDone?'<span class="num-p30">'+fmt(pShow)+' ops</span>':'—';
+  tradOpsEl.innerHTML=hShow>0||!runStarted||bothDone?'<span class="num-trad">'+fmt(hShow)+' ops</span>':'—';
+
+  var barMax=Math.max(pShow,hShow,1);
+  if(p30Bar) p30Bar.style.width=(pShow/barMax*100).toFixed(1)+'%';
+  if(tradBar) tradBar.style.width=(hShow/barMax*100).toFixed(1)+'%';
+
+  if(bothDone){
+    mathEl.innerHTML='<span class="num-trad">'+fmt(hMax)+'</span> ÷ <span class="num-p30">'+fmt(pMax)+'</span> = <span class="num-gap">'+(hMax/Math.max(pMax,1)).toFixed(1)+'×</span>';
+  }else if(p.ops>0||h.ops>0){
+    mathEl.innerHTML='<span class="num-trad">'+fmt(hMath)+'</span> ÷ <span class="num-p30">'+fmt(pMath)+'</span> = <span class="num-gap">'+(hMath/Math.max(pMath,1)).toFixed(1)+'×</span> <span class="eff-sofar">(so far)</span>';
+  }else if(!runStarted){
+    mathEl.innerHTML='<span class="num-trad">'+fmt(hMax)+'</span> ÷ <span class="num-p30">'+fmt(pMax)+'</span> = <span class="num-gap">'+(hMax/Math.max(pMax,1)).toFixed(1)+'×</span>';
+  }else{
+    mathEl.textContent='—';
+  }
+}
+
 function updateResult(){
   var p=state.p30, h=state.ham;
   if(!p.finished||!h.finished) return;
@@ -982,7 +1049,7 @@ function updateResult(){
   document.getElementById('resultTrad').innerHTML=
     '<b>Traditional</b> completed in <span class="num-trad">'+fmt(hMax)+' ops</span>.';
   document.getElementById('resultTakeaway').innerHTML=
-    'Traditional performed <span class="num-gap">'+ratio+'×</span> more modeled work in this demo. '+
+    'Traditional used <span class="num-gap">'+ratio+'×</span> more operations in this simulation. '+
     'P30: <span class="num-p30">'+fmt(pMax)+' ops</span> · Traditional: <span class="num-trad">'+fmt(hMax)+' ops</span>.';
   document.getElementById('resultNote').textContent=
     'Storage units are not byte-equivalent; this compares modeled encoding and verification behavior.';
