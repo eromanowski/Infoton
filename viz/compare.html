@@ -141,10 +141,17 @@ body.view-mechanics .command-bar{margin-top:.45rem}
 .sentence-input.hidden{display:none}
 .sentence-live{font:400 1.05rem/1.55 'Cormorant Garamond',serif;color:var(--text-m);background:var(--bg);
   border-radius:6px;padding:.55rem .75rem;border:1px solid var(--border);word-break:break-word}
-.sentence-live .ch{border-radius:2px;padding:0 1px;transition:background .08s,color .08s}
-.sentence-live .ch.done{color:var(--center);font-style:normal}
-.sentence-live .ch.active{background:var(--center);color:var(--space);font-weight:600;font-style:normal;
+.sentence-live .ch{border-radius:2px;padding:0 1px;transition:background .08s,color .08s,box-shadow .08s}
+.sentence-live .ch.p30-done{color:var(--center);font-style:normal}
+.sentence-live .ch.p30-active{background:var(--center);color:var(--space);font-weight:600;font-style:normal;
   box-shadow:0 0 10px rgba(250,218,36,.45)}
+.sentence-live .ch.trad-done{color:var(--cyan);font-style:normal}
+.sentence-live .ch.trad-active{color:#fff;font-weight:600;font-style:normal;
+  box-shadow:inset 0 -3px 0 var(--cyan),0 0 12px rgba(110,212,240,.5);background:rgba(110,212,240,.18)}
+.sentence-live .ch.trad-read{color:rgba(142,228,255,.95);background:rgba(110,212,240,.1);
+  box-shadow:inset 0 -2px 0 rgba(110,212,240,.55)}
+.sentence-live .ch.p30-active.trad-active{background:linear-gradient(180deg,var(--center) 58%,rgba(110,212,240,.35) 58%);
+  color:var(--space);box-shadow:0 0 10px rgba(250,218,36,.4),inset 0 -3px 0 var(--cyan)}
 
 .pause-banner{font:400 15px/1.45 'Cormorant Garamond',serif;color:var(--text-m);margin-top:.65rem;padding:.55rem .75rem;
   background:rgba(250,218,36,.08);border-radius:6px;border-left:3px solid var(--btn-gold);display:none}
@@ -327,6 +334,7 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
     </div>
     <div class="speed-group">
       <span class="toolbar-lab">Speed</span>
+      <button class="speed-btn" type="button" data-delay="500">Snail</button>
       <button class="speed-btn" type="button" data-delay="22">Slow</button>
       <button class="speed-btn active" type="button" data-delay="8">Normal</button>
       <button class="speed-btn" type="button" data-delay="2">Fast</button>
@@ -340,6 +348,7 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
       <summary>Legend</summary>
       <div class="legend-drop-body">
         <span class="legend-item"><span class="legend-swatch gold"></span> Active P30</span>
+        <span class="legend-item"><span class="legend-swatch blue"></span> Traditional cursor</span>
         <span class="legend-item"><span class="legend-swatch purple"></span> Inactive</span>
         <span class="legend-item"><span class="legend-swatch blue"></span> Byte data</span>
         <span class="legend-item"><span class="legend-swatch orange"></span> Check bit</span>
@@ -352,6 +361,7 @@ body.view-mechanics .mechanics-section{display:flex;flex-direction:column}
     <div class="legend-group">
       <span class="toolbar-lab">Legend</span>
       <span class="legend-item"><span class="legend-swatch gold"></span> Active P30</span>
+      <span class="legend-item"><span class="legend-swatch blue"></span> Traditional cursor</span>
       <span class="legend-item"><span class="legend-swatch purple"></span> Inactive</span>
       <span class="legend-item"><span class="legend-swatch blue"></span> Byte data</span>
       <span class="legend-item"><span class="legend-swatch orange"></span> Check bit</span>
@@ -523,6 +533,18 @@ var p30Frame=document.getElementById('p30Frame');
 var hamFrame=document.getElementById('hamFrame');
 var sentenceInput=document.getElementById('sentenceInput');
 
+function onFramesReady(){
+  if(!framesReady.p30||!framesReady.ham) return;
+  applySpeed(opDelay);
+  pushSentence();
+}
+function markFrameReady(side){
+  framesReady[side]=true;
+  onFramesReady();
+}
+p30Frame.addEventListener('load',function(){ markFrameReady('p30'); });
+hamFrame.addEventListener('load',function(){ markFrameReady('ham'); });
+
 function fmt(n){ return n.toLocaleString(); }
 
 function calcLimits(text){
@@ -550,31 +572,54 @@ function dispChar(c){
   return c;
 }
 
-function getHighlightIndex(){
+function getP30HighlightIndex(){
   if(!runStarted) return -1;
-  if(state.p30.finished&&state.ham.finished) return limits.chars;
-  if(!state.p30.finished&&state.p30.charIndex>=0) return state.p30.charIndex;
-  if(state.ham.charIndex>=0) return state.ham.charIndex;
+  if(state.p30.finished) return limits.chars;
+  if(state.p30.charIndex>=0) return state.p30.charIndex;
   return Math.max(state.p30.progress,0);
+}
+
+function getTradHighlightIndex(){
+  if(!runStarted) return -1;
+  if(state.ham.finished) return limits.chars;
+  if(state.ham.charIndex>=0) return state.ham.charIndex;
+  return -1;
+}
+
+function getTradReadWord(){
+  if(!runStarted||state.ham.finished||state.ham.stepPhase!=='READ') return -1;
+  var w=state.ham.word;
+  if(typeof w!=='number'||w<1) return 0;
+  return w-1;
 }
 
 function updateSentenceHighlight(){
   var text=sentenceInput.value;
   var live=document.getElementById('sentenceLive');
   var ta=sentenceInput;
-  var idx=getHighlightIndex();
-  if(!runStarted||idx<0){
+  if(!runStarted){
     live.hidden=true;
     ta.classList.remove('hidden');
     return;
   }
   live.hidden=false;
   ta.classList.add('hidden');
+  var p30Idx=getP30HighlightIndex();
+  var tradIdx=getTradHighlightIndex();
+  var tradWord=getTradReadWord();
   var html='';
   for(var i=0;i<text.length;i++){
     var cls='ch';
-    if(i<idx||(idx>=limits.chars&&i<limits.chars)) cls+=' done';
-    if(i===idx&&idx<limits.chars) cls+=' active';
+    if(state.p30.finished||i<p30Idx) cls+=' p30-done';
+    if(i===p30Idx&&p30Idx<limits.chars&&!state.p30.finished) cls+=' p30-active';
+    if(tradWord>=0){
+      var ws=tradWord*8, we=Math.min(ws+8,text.length);
+      if(i>=ws&&i<we) cls+=' trad-read';
+      if(i===tradIdx&&tradIdx>=ws&&tradIdx<we) cls+=' trad-active';
+    }else if(state.ham.finished||i<tradIdx) cls+=' trad-done';
+    if(tradWord<0&&i===tradIdx&&tradIdx<limits.chars&&!state.ham.finished&&state.ham.stepPhase==='WRITE'){
+      cls+=' trad-active';
+    }
     var c=text[i];
     html+='<span class="'+cls+'">'+(c===' '?'\u00a0':esc(c))+'</span>';
   }
@@ -1001,13 +1046,14 @@ function runComparison(){
 }
 
 function stepOnce(){
-  if(!framesReady.p30||!framesReady.ham) return;
   if(state.p30.finished&&state.ham.finished) return;
+  if(playing) stopLockstep(false);
+  paused=false;
   pushSentence();
-  if(state.p30.ops===0&&state.ham.ops===0&&!playing){
+  if(state.p30.ops===0&&state.ham.ops===0){
     postBoth('reset');
-    runStarted=true;
   }
+  runStarted=true;
   if(!state.p30.finished) postFrame(p30Frame,'step');
   if(!state.ham.finished) postFrame(hamFrame,'step');
   updateStatus();
@@ -1030,7 +1076,7 @@ window.addEventListener('message',function(e){
   if(d.type==='embed-ready'){
     if(d.source==='p30') framesReady.p30=true;
     if(d.source==='hamming') framesReady.ham=true;
-    if(framesReady.p30&&framesReady.ham){ applySpeed(opDelay); pushSentence(); }
+    onFramesReady();
     return;
   }
   if(d.type!=='state') return;

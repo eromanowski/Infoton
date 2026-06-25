@@ -1030,7 +1030,7 @@ if(EMBED_COMPARE){
     if(d.cmd==='play') play();
     else if(d.cmd==='pause') stop();
     else if(d.cmd==='reset') reset();
-    else if(d.cmd==='step') stepOp();
+    else if(d.cmd==='step'){ stop(); stepOp(); }
     else if(d.cmd==='setSpeed'&&d.delay) stepDelay=parseInt(d.delay,10);
     else if(d.cmd==='setSentence'&&d.text) applySentence(d.text);
   });
@@ -1039,4 +1039,4 @@ if(EMBED_COMPARE){
 }
 </script>
 </body>
-</html></body>
+</html>

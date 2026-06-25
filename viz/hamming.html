@@ -1074,8 +1074,8 @@ if(EMBED_COMPARE){
     else if(d.cmd==='reset') reset();
     else if(d.cmd==='step'){
       if(el.phaseTag.textContent==='Complete') return;
+      stop();
       if(!runClock.running) runClockStart();
-      if(!playing) playing=true;
       step();
     }
     else if(d.cmd==='setSpeed'&&d.delay) stepDelay=parseInt(d.delay,10);
@@ -1087,4 +1087,4 @@ if(EMBED_COMPARE){
 }
 </script>
 </body>
-</html></body>
+</html>
