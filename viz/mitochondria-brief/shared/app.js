@@ -1,14 +1,16 @@
 (function (global) {
   'use strict';
 
-  var concepts = global.P30_CONCEPTS;
-  var thesis = global.P30_THESIS;
-  var story = global.P30_STORY;
-  var navItems = global.P30_NAV;
+  var concepts = global.MITO_CONCEPTS;
+  var thesis = global.MITO_THESIS;
+  var story = global.MITO_STORY;
+  var navItems = global.MITO_NAV;
   var registry = global.P30WidgetRegistry;
   var loader = global.P30WidgetLoader;
 
   var activeWidget = null;
+  var INSTRUMENT_SLIDES = { calculator: 1 };
+  var FIRST_BEAT = story.beats[0];
 
   function conceptById(id) {
     for (var i = 0; i < concepts.length; i++) {
@@ -54,27 +56,21 @@
     var o = opts || { embed: true };
     if (c) o.title = c.title;
 
-    loader.ensureConcept(c || conceptById('compare')).then(function () {
+    loader.ensureConcept(c).then(function () {
       if (!document.body.contains(mountEl)) return;
       mountEl.innerHTML = '';
-      activeWidget = registry.mount(mountEl, c ? c.widget : 'compare', c ? c.demo : null, o);
+      activeWidget = registry.mount(mountEl, c ? c.widget : null, c ? c.demo : null, o);
     }).catch(function () {
       mountEl.innerHTML = '<p class="demo-error">Demo failed to load.</p>';
     });
   }
 
-  var INSTRUMENT_SLIDES = { hamming: 1, encode: 1, energy: 1, fleet: 1, history: 1, learn: 1, mitochondria: 1 };
-
   function demoShellHtml(c) {
     if (!c.widget && !c.demo) return '';
     var cls = 'demo-shell';
-    if (c.id === 'compare') cls += ' demo-shell-tall demo-shell-compare';
-    else if (c.id === 'hamming' || c.id === 'encode') {
-      cls += ' demo-shell-tall';
-    }
     if (INSTRUMENT_SLIDES[c.id]) cls += ' demo-shell-instrument';
     var head = '';
-    if ((c.demoSectionTitle || c.demoLead) && c.id !== 'compare') {
+    if (c.demoSectionTitle || c.demoLead) {
       head =
         '<div class="live-proof-section">' +
           '<h3 class="live-proof-title">' + (c.demoSectionTitle || 'Live demo') + '</h3>' +
@@ -83,14 +79,6 @@
             : '') +
           '<p class="live-proof-lead">' + (c.demoLead || '') + '</p>' +
         '</div>';
-    } else if (c.id === 'compare' && c.demoLead) {
-      head =
-        '<div class="live-proof-section">' +
-          '<h3 class="live-proof-title">Live proof</h3>' +
-          '<p class="live-proof-lead">' + c.demoLead + '</p>' +
-        '</div>';
-    } else if (c.demoLabel) {
-      head = '<div class="demo-shell-head">' + c.demoLabel + '</div>';
     }
     return (
       '<section class="' + cls + '">' +
@@ -135,7 +123,7 @@
       return (
         '<div class="sticky-bar">' +
           '<a class="sticky-btn ghost" href="#/">← Overview</a>' +
-          '<a class="sticky-btn primary" href="#/hamming">Begin briefing →</a>' +
+          '<a class="sticky-btn primary" href="#/' + FIRST_BEAT + '">Begin briefing →</a>' +
         '</div>'
       );
     }
@@ -203,7 +191,7 @@
         renderProgress('home') +
         '<section class="hero">' +
           '<p class="hero-eyebrow">' + t.eyebrow + '</p>' +
-          '<h1>' + t.headline.replace('1964 byte tax', '<em>1964 byte tax</em>') + '</h1>' +
+          '<h1>' + (t.headlineHtml || t.headline) + '</h1>' +
           '<p class="hero-hook">' + t.hookLine + '</p>' +
           '<p class="hero-sub">' + t.subhead + '</p>' +
           '<div class="metric-row">' + metrics + '</div>' +
@@ -213,10 +201,10 @@
           '</div>' +
         '</section>' +
         '<section class="proof-embed">' +
-          '<section class="demo-shell demo-shell-hero demo-shell-tall demo-shell-compare">' +
+          '<section class="demo-shell demo-shell-hero demo-shell-instrument">' +
             '<div class="live-proof-section">' +
-              '<h3 class="live-proof-title">Live proof</h3>' +
-              '<p class="live-proof-lead">Run the same sentence through both systems and compare modeled operations — or <a href="#/compare">open the full briefing slide</a>.</p>' +
+              '<h3 class="live-proof-title">Live demo</h3>' +
+              '<p class="live-proof-lead">Drag Δψ<sub>m</sub> on the Quantum Heartbeat calculator — or <a href="#/calculator">open the full demo slide</a>.</p>' +
             '</div>' +
             '<div class="demo-mount" id="demo-mount"></div>' +
           '</section>' +
@@ -245,49 +233,22 @@
             '<div class="trust-col trust-risks"><h3>We will not hide</h3><ul>' + risks + '</ul></div>' +
           '</div>' +
         '</section>' +
-        '<section class="appendix-block">' +
-          '<p class="appendix-lead">Deep dives · appendix</p>' +
-          '<div class="appendix-links">' + appendix + '</div>' +
-        '</section>' +
+        (appendix
+          ? '<section class="appendix-block">' +
+              '<p class="appendix-lead">Related · appendix</p>' +
+              '<div class="appendix-links">' + appendix + '</div>' +
+            '</section>'
+          : '') +
       '</div>'
     );
   }
 
-  function renderAppendixExtra(c) {
-    if (c.id === 'physics') {
-      return (
-        '<div class="physics-eq"><div class="eq">E ≥ k<sub>B</sub> T ln(2) ≈ 3.35 zJ @ 350 K</div></div>' +
-        '<div class="mini-links">' +
-          '<a href="#/compare">Proof →</a>' +
-          '<a href="#/learn">Diligence →</a>' +
-          '<a href="https://doi.org/10.5281/zenodo.18210355" target="_blank" rel="noopener">Zenodo →</a>' +
-        '</div>'
-      );
-    }
-    if (c.id === 'mitochondria') {
-      return (
-        '<div class="explore-stage">' +
-          '<div class="svg-viz" aria-hidden="true">' +
-            '<svg viewBox="0 0 300 300"><ellipse cx="150" cy="150" rx="94" ry="68" fill="rgba(52,211,153,0.15)" stroke="rgba(52,211,153,0.7)" stroke-width="2"/></svg>' +
-          '</div>' +
-          '<div class="cell-copy"><p>Second-act market · size the core round on data-center economics first.</p></div>' +
-        '</div>'
-      );
-    }
-    if (c.id === 'atomic') {
-      return (
-        '<div class="ask-table compact">' +
-          '<div class="ask-row"><div class="ask-phase">Phase 1</div><div class="ask-body"><strong>Library proof</strong><span>Funded now</span></div></div>' +
-          '<div class="ask-row"><div class="ask-phase">Phase 2</div><div class="ask-body"><strong>FPGA soak</strong><span>Measured thermal</span></div></div>' +
-          '<div class="ask-row"><div class="ask-phase">Phase 3</div><div class="ask-body"><strong>Sky130 MPW</strong><span>75× native</span></div></div>' +
-        '</div>'
-      );
-    }
-    return '';
+  function renderExtra(c) {
+    return c.extraHtml || '';
   }
 
   function renderChapter(c) {
-    var demo = (c.widget || c.demo) ? demoShellHtml(c) : renderAppendixExtra(c);
+    var demo = (c.widget || c.demo) ? demoShellHtml(c) : renderExtra(c);
     return (
       '<div class="deck deck-chapter">' +
         '<div class="page-enter">' +
@@ -334,10 +295,10 @@
 
     if (id === 'home') {
       setBodyTheme(null);
-      document.title = 'Infoton P30 — Investor Brief v2';
+      document.title = 'Virtual Mitochondria — Investor Brief';
       app.innerHTML = renderHome();
       renderNav('home');
-      mountDemo(document.getElementById('demo-mount'), conceptById('compare'), { embed: true, compact: true });
+      mountDemo(document.getElementById('demo-mount'), conceptById('calculator'), { embed: true, compact: true });
       return;
     }
 
@@ -348,18 +309,16 @@
     }
 
     setBodyTheme(c.theme);
-    document.title = c.title + ' · Infoton P30';
+    document.title = c.title + ' · Virtual Mitochondria';
     app.innerHTML = renderChapter(c);
     renderNav(id);
-    mountDemo(document.getElementById('demo-mount'), c, {
-      embed: c.id !== 'hamming' && c.id !== 'encode',
-      compact: c.id !== 'compare',
-      tall: c.id === 'compare' || c.id === 'hamming' || c.id === 'encode',
-    });
+    if (c.widget || c.demo) {
+      mountDemo(document.getElementById('demo-mount'), c, { embed: true, compact: c.id !== 'calculator' });
+    }
     window.scrollTo(0, 0);
   }
 
-  global.P30App = { route: route, destroyWidget: destroyWidget };
+  global.MitoApp = { route: route, destroyWidget: destroyWidget };
 
   window.addEventListener('hashchange', route);
   if (!location.hash) location.hash = '#/';

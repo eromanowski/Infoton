@@ -17,7 +17,7 @@ const WIDGET_ROUTES = [
   { hash: '/history', expectWidget: true },
   { hash: '/learn', expectWidget: true },
   { hash: '/physics', expectWidget: false },
-  { hash: '/mitochondria', expectWidget: false },
+  { hash: '/mitochondria', expectWidget: true },
   { hash: '/atomic', expectWidget: false },
 ];
 
@@ -221,6 +221,27 @@ async function qaNoIframes(page) {
   if (!issues.some((i) => i.where === where)) pass(where, 'No iframes in #app on sampled routes');
 }
 
+async function qaMitochondria(page) {
+  const where = 'mitochondria-calc';
+  await page.goto(`${BASE}/sites-v2/index.html#/mitochondria`, { waitUntil: 'domcontentloaded' });
+  await waitForDemo(page);
+
+  const wgt = page.locator('.wgt-mito');
+  if (!(await wgt.count())) {
+    fail(where, 'Mitochondria widget missing');
+    return;
+  }
+
+  const badge = page.locator('[data-wgt="stateBadge"]');
+  const badgeText = ((await badge.textContent()) || '').trim();
+  if (badgeText !== 'HEALTHY') fail(where, `Expected HEALTHY at default, got "${badgeText}"`);
+  else pass(where, 'Default 150 mV shows HEALTHY state');
+
+  const psi = page.locator('[data-wgt="psiVal"]');
+  if (((await psi.textContent()) || '').trim() !== '150') fail(where, 'Default psi not 150');
+  else pass(where, 'Default membrane potential 150 mV');
+}
+
 async function main() {
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
@@ -240,6 +261,7 @@ async function main() {
     await qaCompareV2(page);
     await qaMobileStack(page);
     await qaNoIframes(page);
+    await qaMitochondria(page);
   } finally {
     await browser.close();
   }

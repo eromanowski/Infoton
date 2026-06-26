@@ -7,6 +7,7 @@
 @import url('encoder-full.css');
 @import url('encoder-embed.css');
 @import url('demo-instrument.css');
+@import url('mitochondria.css');
 
 .demo-shell:has(.wgt-compare) {
   background: #160b2b;

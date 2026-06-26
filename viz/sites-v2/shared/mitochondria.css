@@ -1,0 +1,221 @@
+/* Virtual Mitochondria widget — cell theme */
+
+.wgt-stage-mito {
+  grid-template-columns: 1fr min(360px, 38%);
+}
+
+.wgt-mito .wgt-work {
+  background: linear-gradient(165deg, #0b2e1f 0%, #0f3d28 45%, #134832 100%);
+}
+
+.wgt-mito .wgt-panel {
+  border-left-color: #134832;
+}
+
+.wgt-mito .wgt-work-title {
+  font: 600 13px/1.2 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(220, 252, 231, 0.92);
+}
+
+.wgt-mito-state {
+  font: 600 10px/1 'Cinzel', serif;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.wgt-mito-state.state-healthy {
+  color: #6ee7b7;
+  border-color: rgba(110, 231, 183, 0.55);
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.wgt-mito-state.state-dys {
+  color: #fca5a5;
+  border-color: rgba(248, 113, 113, 0.5);
+  background: rgba(127, 29, 29, 0.25);
+}
+
+.wgt-mito-state.state-mild {
+  color: #fde68a;
+  border-color: rgba(253, 224, 71, 0.45);
+  background: rgba(120, 90, 10, 0.25);
+}
+
+.wgt-mito-state.state-path {
+  color: #fdba74;
+  border-color: rgba(251, 146, 60, 0.5);
+  background: rgba(124, 45, 18, 0.25);
+}
+
+.wgt-mito-state.state-cancer {
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.55);
+  background: rgba(127, 29, 29, 0.35);
+}
+
+.wgt-mito-hero {
+  display: grid;
+  gap: 1rem;
+}
+
+.wgt-mito-lab {
+  display: block;
+  font: 500 14px/1.3 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.85);
+  margin-bottom: 0.35rem;
+}
+
+.wgt-mito-psi-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.wgt-mito-psi-row input[type='range'] {
+  flex: 1;
+  accent-color: #34d399;
+}
+
+.wgt-mito-psi-val {
+  font: 600 22px/1 'Cinzel', serif;
+  color: #a7f3d0;
+  min-width: 5.5rem;
+  text-align: right;
+}
+
+.wgt-mito-scale {
+  display: flex;
+  justify-content: space-between;
+  font: 400 11px/1.2 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.45);
+  margin-top: 0.25rem;
+}
+
+.wgt-mito-coh-head {
+  display: flex;
+  justify-content: space-between;
+  font: 500 13px/1.3 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.78);
+  margin-bottom: 0.35rem;
+}
+
+.wgt-mito-coh-track {
+  height: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid rgba(110, 231, 183, 0.25);
+}
+
+.wgt-mito-coh-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #059669, #6ee7b7);
+  transition: width 0.15s ease;
+}
+
+.wgt-mito-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.wgt-mito-metric {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(110, 231, 183, 0.18);
+  border-radius: 6px;
+  padding: 0.45rem 0.5rem;
+}
+
+.wgt-mito-metric.biomarker {
+  border-color: rgba(253, 224, 71, 0.25);
+}
+
+.wgt-mito-k {
+  display: block;
+  font: 600 9px/1.2 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(220, 252, 231, 0.55);
+}
+
+.wgt-mito-v {
+  display: block;
+  font: 600 18px/1.2 'Cinzel', serif;
+  color: #ecfdf5;
+  margin-top: 0.15rem;
+}
+
+.wgt-mito-v.sm {
+  font-size: 11px;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 500;
+}
+
+.wgt-mito-desc {
+  font: 400 14px/1.45 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.72);
+  margin: 0;
+}
+
+.wgt-mito .wgt-caption {
+  color: rgba(220, 252, 231, 0.5);
+  font-size: 13px;
+}
+
+.wgt-mito-deriv .wgt-dmath {
+  color: #134832;
+}
+
+.wgt-mito-care {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(19, 72, 50, 0.12);
+}
+
+.wgt-mito-care:last-child {
+  border-bottom: none;
+}
+
+.wgt-mito-care-title {
+  font: 600 11px/1.3 'Cinzel', serif;
+  letter-spacing: 0.04em;
+  color: #134832;
+}
+
+.wgt-mito-care-body {
+  font: 400 14px/1.4 'Cormorant Garamond', serif;
+  color: rgba(19, 72, 50, 0.78);
+  margin-top: 0.2rem;
+}
+
+.wgt-mito-ref {
+  font: 400 14px/1.45 'Cormorant Garamond', serif;
+  color: rgba(19, 72, 50, 0.78);
+  margin: 0 0 0.5rem;
+}
+
+.wgt-mito-link {
+  font: 600 12px/1 'Cinzel', serif;
+  color: #059669;
+  text-decoration: none;
+}
+
+.wgt-mito-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .wgt-mito-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .wgt-mito-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

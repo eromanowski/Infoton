@@ -330,13 +330,13 @@ window.P30_CONCEPTS = [
 
     titleHtml: 'Life sciences <em>optionality</em>',
 
-    pitch: 'Virtual Mitochondria — information-energy applied to biological health. Second act; size the round on compute.',
+    pitch: 'Virtual Mitochondria — membrane potential Δψₘ drives a quantum → thermodynamic → biomarker chain. Full investor brief available separately; P30 appendix keeps the live calculator.',
 
     theme: 'cell',
 
-    stats: ['Δψₘ', 'CERN Zenodo', 'JC-1 path'],
+    stats: ['Δψₘ', 'Zenodo', 'Investor brief'],
 
-    widget: null,
+    widget: 'mitochondria',
 
     demo: null,
 
@@ -344,11 +344,17 @@ window.P30_CONCEPTS = [
 
     chapter: 'Appendix · Platform',
 
-    takeaway: 'Option value — not the wedge.',
+    takeaway: 'Standalone fundraise deck at mitochondria-brief — this slide is the live demo hook for P30 LPs.',
 
-    riskNote: 'Separate regulatory horizon.',
+    riskNote: 'Separate regulatory horizon. Calculator is educational, not diagnostic.',
 
-    footerNote: '<a href="https://zenodo.org/records/18373065">Zenodo 18373065</a>',
+    demoSectionTitle: 'Mitochondria calculator',
+
+    demoSectionSubtitle: 'Drag membrane potential — watch coherence, ATP, and ROS respond.',
+
+    demoLead: 'Ported from the Infoton Virtual Mitochondria model. JC-1 assay Δψₘ in mV feeds the same equation chain published on Zenodo.',
+
+    footerNote: '<a href="../mitochondria-brief/index.html#/">Full investor brief →</a> · <a href="https://zenodo.org/records/18373065">Zenodo 18373065</a>',
 
   },
 
