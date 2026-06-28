@@ -4,6 +4,244 @@
   color: #6ee7b7;
 }
 
+/* ============================================================
+   Clinical reskin — COMMENTED OUT (uncomment block to compare).
+   Shifts Cinzel/Cormorant + gold/purple → Inter + clinical teal.
+   Also uncomment the Inter/IBM Plex font link in index.html.
+   Does NOT touch sites-v2/shared/tokens.css.
+   ============================================================
+body.page-mito-brief {
+  --font-display: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --bg: #0a1019;
+  --bg-elevated: #111a26;
+  --surface: #111a26;
+  --surface-2: #16202e;
+  --space: #06222b;
+  --gold: #2dd4bf;
+  --gold-dim: #5eead4;
+  --gold-soft: #99f6e4;
+  --grid: #7c93a8;
+  --muted: #93a4b8;
+  --text: #eef4fb;
+  --text-soft: #c2d0df;
+  --border-gold: rgba(45, 212, 191, 0.28);
+  --glass: rgba(17, 26, 38, 0.92);
+}
+
+body.page-mito-brief.page-home::before {
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -15%, rgba(45, 212, 191, 0.07), transparent 55%),
+    var(--bg);
+}
+
+.page-mito-brief code,
+.page-mito-brief .mito-eq-step code {
+  font-family: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+}
+
+.page-mito-brief .btn-primary:hover,
+.page-mito-brief .sticky-btn.primary:hover { background: #5eead4; }
+.page-mito-brief .pillar-num { color: rgba(45, 212, 191, 0.22); }
+.page-mito-brief .insight-panel { border-left-color: rgba(45, 212, 191, 0.5); }
+.page-mito-brief .demo-shell,
+.page-mito-brief .demo-shell:has(.wgt-mito),
+.page-mito-brief .demo-shell.demo-shell-instrument:has(.wgt-mito) { background: #0d1722; }
+.page-mito-brief .demo-shell:not(.demo-shell-compare) .demo-shell-head { background: #0f2a33; }
+.page-mito-brief .demo-loading { font-family: var(--font-body); }
+
+.page-mito-brief .nav-brand span:first-of-type {
+  color: #5eead4;
+}
+   ============================================================ */
+
+/* ── "This is / is not yet" scope box ── */
+.scope-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 0 0 1.5rem;
+}
+
+.scope-col {
+  padding: 1.1rem 1.2rem;
+  border-radius: 10px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+}
+
+.scope-col h4 {
+  font: 600 10px/1 var(--font-display);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+
+.scope-is { border-top: 2px solid var(--green); }
+.scope-isnot { border-top: 2px solid #f59e0b; }
+.scope-is h4 { color: #6ee7b7; }
+.scope-isnot h4 { color: #fbbf24; }
+
+.scope-col ul { list-style: none; }
+
+.scope-col li {
+  position: relative;
+  padding: 0.3rem 0 0.3rem 1.35rem;
+  font: 400 0.95rem/1.45 var(--font-body);
+  color: var(--text-soft);
+}
+
+.scope-is li::before {
+  content: '\2713';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  font-weight: 700;
+}
+
+.scope-isnot li::before {
+  content: '\2014';
+  position: absolute;
+  left: 0;
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+/* ── Guided "Try this" steps ── */
+.try-this {
+  margin-top: 1rem;
+  padding: 1rem 1.15rem;
+  border-radius: 10px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(110, 231, 183, 0.25);
+}
+
+.try-this-tag {
+  display: inline-block;
+  font: 600 10px/1 var(--font-display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6ee7b7;
+  margin-bottom: 0.6rem;
+}
+
+.try-this-steps {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.try-this-steps li {
+  font: 400 0.98rem/1.5 var(--font-body);
+  color: var(--text-soft);
+  margin-bottom: 0.35rem;
+}
+
+.try-this-steps li:last-child { margin-bottom: 0; }
+.try-this-steps strong { color: var(--text); font-weight: 600; }
+
+/* ── Validation status (today / not yet / unlocks) ── */
+.vstatus-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.vstatus-col {
+  padding: 1.1rem 1.2rem;
+  border-radius: 10px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+}
+
+.vstatus-col h4 {
+  font: 600 10px/1.2 var(--font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.7rem;
+}
+
+.vstatus-today { border-top: 2px solid var(--green); }
+.vstatus-open { border-top: 2px solid #f59e0b; }
+.vstatus-unlock { border-top: 2px solid #6366f1; }
+.vstatus-today h4 { color: #6ee7b7; }
+.vstatus-open h4 { color: #fbbf24; }
+.vstatus-unlock h4 { color: #a5b4fc; }
+
+.vstatus-col ul { list-style: none; }
+
+.vstatus-col li {
+  position: relative;
+  padding: 0.32rem 0 0.32rem 0.95rem;
+  font: 400 0.92rem/1.4 var(--font-body);
+  color: var(--text-soft);
+}
+
+.vstatus-col li::before {
+  content: '\00b7';
+  position: absolute;
+  left: 0;
+  font-weight: 700;
+}
+
+.vstatus-today li::before { color: var(--green); }
+.vstatus-open li::before { color: #f59e0b; }
+.vstatus-unlock li::before { color: #818cf8; }
+
+/* ── Demo fallback (keystone asset never fully dies) ── */
+.demo-fallback {
+  padding: 1.75rem 1.5rem;
+  text-align: center;
+}
+
+.demo-fallback-note {
+  font: 400 0.95rem/1.5 var(--font-body);
+  color: var(--muted);
+  margin-bottom: 1.1rem;
+}
+
+.demo-fallback-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+  max-width: 640px;
+  margin: 0 auto 1.1rem;
+}
+
+.demo-fallback-grid > div {
+  padding: 0.9rem 0.5rem;
+  border-radius: 8px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+}
+
+.dfb-val {
+  display: block;
+  font: 600 1.05rem/1.1 var(--font-display);
+  color: var(--gold);
+}
+
+.dfb-lab {
+  display: block;
+  margin-top: 0.3rem;
+  font: 400 0.72rem/1.3 var(--font-body);
+  color: var(--muted);
+}
+
+.demo-fallback-cta a {
+  font: 600 0.9rem/1 var(--font-body);
+  color: #6ee7b7;
+  text-decoration: none;
+}
+
+.demo-fallback-cta a:hover { text-decoration: underline; }
+
+@media (max-width: 768px) {
+  .scope-box { grid-template-columns: 1fr; }
+  .vstatus-grid { grid-template-columns: 1fr; }
+  .demo-fallback-grid { grid-template-columns: 1fr 1fr; }
+}
+
 .mito-panel {
   margin: 0 0 1rem;
   padding: 1.25rem 1.35rem;
@@ -14,13 +252,13 @@
 }
 
 .mito-quote-std {
-  font: 500 16px/1.45 'Cormorant Garamond', serif;
+  font: 500 16px/1.45 var(--font-body);
   color: var(--text-soft);
   margin: 0 0 0.75rem;
 }
 
 .mito-quote-vm {
-  font: 600 18px/1.5 'Cormorant Garamond', serif;
+  font: 600 18px/1.5 var(--font-body);
   color: #a7f3d0;
   margin: 0;
 }
@@ -32,7 +270,7 @@
 }
 
 .mito-panel-note {
-  font: 400 13px/1.45 'Cormorant Garamond', serif;
+  font: 400 13px/1.45 var(--font-body);
   color: var(--muted);
   margin: 0.85rem 0 0;
 }
@@ -52,16 +290,16 @@
   background: var(--glass);
   border: 1px solid var(--border);
   border-radius: 6px;
-  font: 500 15px/1.35 'Cormorant Garamond', serif;
+  font: 500 15px/1.35 var(--font-body);
 }
 
 .mito-eq-step span {
-  font: 600 11px/1 'Cinzel', serif;
+  font: 600 11px/1 var(--font-display);
   color: var(--gold);
 }
 
 .mito-eq-step code {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: var(--font-body);
   font-size: 16px;
   color: #a7f3d0;
 }
@@ -82,7 +320,7 @@
 }
 
 .mito-product-card h4 {
-  font: 600 12px/1.2 'Cinzel', serif;
+  font: 600 12px/1.2 var(--font-display);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #6ee7b7;
@@ -90,7 +328,7 @@
 }
 
 .mito-product-card p {
-  font: 400 14px/1.45 'Cormorant Garamond', serif;
+  font: 400 14px/1.45 var(--font-body);
   color: var(--text-soft);
   margin: 0;
 }
@@ -105,13 +343,13 @@
 
 .mito-care-item strong {
   display: block;
-  font: 600 12px/1.3 'Cinzel', serif;
+  font: 600 12px/1.3 var(--font-display);
   color: #6ee7b7;
   margin-bottom: 0.25rem;
 }
 
 .mito-care-item span {
-  font: 400 14px/1.4 'Cormorant Garamond', serif;
+  font: 400 14px/1.4 var(--font-body);
   color: var(--text-soft);
 }
 
@@ -122,7 +360,7 @@
 }
 
 .mito-ref-list a {
-  font: 600 14px/1.4 'Cormorant Garamond', serif;
+  font: 600 14px/1.4 var(--font-body);
   color: #6ee7b7;
   text-decoration: none;
 }
@@ -144,7 +382,7 @@
 }
 
 .mini-links a {
-  font: 600 13px/1 'Cinzel', serif;
+  font: 600 13px/1 var(--font-display);
   color: #6ee7b7;
   text-decoration: none;
 }

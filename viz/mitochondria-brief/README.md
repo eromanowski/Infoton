@@ -13,17 +13,20 @@ Then visit: [http://localhost:8081/mitochondria-brief/index.html](http://localho
 
 ## Structure
 
-| Route | Content |
-|-------|---------|
-| `/` | Overview + embedded calculator |
-| `#/problem` | Imaging vs bioenergetics gap |
-| `#/science` | Equation chain + Zenodo links |
-| `#/calculator` | Full Quantum Heartbeat widget |
-| `#/product` | Platform + roadmap |
-| `#/market` | TAM + care pathways |
-| `#/moat` | IP + publications |
-| `#/close` | The ask + contact |
-| `#/p30` | Link to P30 datacenter brief |
+| Route | Label | Content |
+|-------|-------|---------|
+| `/` | Overview | Hero + "is / is not yet" scope box + embedded calculator + validation path |
+| `#/problem` | Problem | Imaging vs bioenergetics gap |
+| `#/model` | Model | Equation chain + Zenodo links (was `#/science`) |
+| `#/calculator` | Demo | Full Quantum Heartbeat widget + guided "Try this" |
+| `#/workflow` | Workflow | Signal → longitudinal stability score + roadmap (was `#/product`) |
+| `#/validation` | Validation | Established today / not yet proven / this round unlocks (was `#/moat`) |
+| `#/business` | Business | Research-use beachhead + who pays (was `#/market`) |
+| `#/ask` | Ask | The ask + contact (was `#/close`) |
+| `#/composable` | Appendix | Composable physics primitive |
+| `#/p30` | Appendix | Link to P30 datacenter brief |
+
+Old route IDs (`science`, `product`, `market`, `moat`, `close`) auto-redirect to the new ones, so existing deep links keep working.
 
 ## Deploy
 

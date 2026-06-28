@@ -350,11 +350,11 @@ window.P30_CONCEPTS = [
 
     demoSectionTitle: 'Mitochondria calculator',
 
-    demoSectionSubtitle: 'Drag membrane potential — watch coherence, ATP, and ROS respond.',
+    demoSectionSubtitle: '§5 driver: Δψₘ slider. Advanced inverts §1–§4 columns from Walker (2026).',
 
     demoLead: 'Ported from the Infoton Virtual Mitochondria model. JC-1 assay Δψₘ in mV feeds the same equation chain published on Zenodo.',
 
-    footerNote: '<a href="../mitochondria-brief/index.html#/">Full investor brief →</a> · <a href="https://zenodo.org/records/18373065">Zenodo 18373065</a>',
+    footerNote: '<a href="../mitochondria-brief/index.html#/">Full investor brief →</a> · <a href="https://infoton.ai/mitochondria">infoton.ai/mitochondria</a> · <a href="https://zenodo.org/records/18373065">Zenodo 18373065</a>',
 
   },
 

@@ -6,6 +6,11 @@ import math
 from dataclasses import dataclass
 from typing import Literal
 
+MODEL = "infoton-virtual-mitochondria"
+MODEL_VERSION = "1.1.0"
+CONSTANTS_TAG = "CODATA-2018"
+SCHEMA_REF = "https://infoton.ai/spec/mitochondria.schema.json"
+
 ELEMENTARY_CHARGE = 1.602176634e-19
 PLANCK_CONSTANT_REDUCED = 1.054571817e-34
 SPEED_OF_LIGHT = 299792458.0
@@ -144,6 +149,98 @@ def calculate(psi_mmV: float) -> MitoResult:
         energy_thermal_j=energy_thermal_j,
         state_id=classify_state(psi_mmV),
     )
+
+
+# ── Derived quantities (platform extension / exploratory) ────────────────────
+# Mirror viz/sites-v2/widgets/lib/mitochondria-core.js exactly so the snapshot
+# contract and conformance vectors are identical across the JS and Python cores.
+
+
+def coherence_unit(r: MitoResult) -> float:
+    """Coherence health on 0..1 (1 = fully coherent healthy band)."""
+    c = r.tau_ratio
+    if not math.isfinite(c) or c <= 0:
+        return 0.0
+    return max(0.0, min(1.0, c))
+
+
+def coherent_cycles_q(r: MitoResult) -> float:
+    """Coherent cycles Q = ω·τ / 2π (0 when coherence has collapsed)."""
+    if r.tau_coh_s > 0:
+        return (r.omega_rad_s * r.tau_coh_s) / (2.0 * math.pi)
+    return 0.0
+
+
+def fission_fusion_coherence(r: MitoResult) -> float:
+    """Fission/fusion — Model A (coherence-derived heuristic). Exploratory."""
+    coh = coherence_unit(r)
+    return max(0.25, min(4.0, 1.0 / max(coh, 0.25)))
+
+
+def fission_fusion_psi(r: MitoResult) -> float:
+    """Fission/fusion — Model B (Δψ/literature-grounded). Exploratory."""
+    return max(0.2, min(4.0, 2.0 ** ((150.0 - r.psi_mmV) / 30.0)))
+
+
+def exploratory_fission_fusion(r: MitoResult) -> dict:
+    """Exploratory F/F block: both candidate models, predictions, disagreement flag.
+
+    Carries the open question through the data contract (not only the live UI) so a
+    reviewer pulling the snapshot sees that the two models conflict.
+    """
+    ff_c = fission_fusion_coherence(r)
+    ff_p = fission_fusion_psi(r)
+    coh_pred = "fission" if ff_c >= 1 else "fusion"
+    psi_pred = "fission" if ff_p >= 1 else "fusion"
+    return {
+        "fission_fusion_coherence_model": ff_c,
+        "fission_fusion_psi_model": ff_p,
+        "coherence_model_predicts": coh_pred,
+        "psi_model_predicts": psi_pred,
+        "models_disagree": coh_pred != psi_pred,
+        "review_note": (
+            "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They "
+            "disagree at hyperpolarization (coherence-derived predicts fission; "
+            "Δψ/literature predicts fusion). Open question — flag for January."
+        ),
+    }
+
+
+def snapshot(psi_mmV: float) -> dict:
+    """Canonical, self-describing snapshot — the integration contract.
+
+    Grouping encodes provenance: paper_chain (first-principles, Walker 2026),
+    platform_extension (infoton.ai heuristics), exploratory (not in any source).
+    Units and per-field provenance are documented in spec/mitochondria.schema.json.
+    """
+    r = calculate(psi_mmV)
+    return {
+        "$schema": SCHEMA_REF,
+        "model": MODEL,
+        "model_version": MODEL_VERSION,
+        "constants": CONSTANTS_TAG,
+        "t_bath_k": DEFAULT_T_BATH,
+        "input": {"psi_mmV": r.psi_mmV},
+        "state": r.state_id,
+        "paper_chain": {
+            "energy_j": r.energy_j,
+            "omega_rad_s": r.omega_rad_s,
+            "nu_thz": r.nu_thz,
+            "wavelength_um": r.wavelength_um,
+            "t_wien_k": r.t_wien_k,
+            "delta_t_k": r.delta_t_k,
+            "infoton_mass_kg": r.infoton_mass_kg,
+        },
+        "platform_extension": {
+            "tau_coh_ps": r.tau_coh_ps,
+            "tau_ratio": r.tau_ratio,
+            "coherent_cycles_q": coherent_cycles_q(r),
+            "atp_relative": r.atp,
+            "ros_relative": r.ros,
+            "vo2_relative": r.vo2,
+        },
+        "exploratory": exploratory_fission_fusion(r),
+    }
 
 
 def psi_from_energy_j(energy_j: float) -> float:

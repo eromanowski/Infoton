@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://infoton.ai/spec/mitochondria.schema.json",
+  "title": "Infoton Virtual Mitochondria — snapshot contract",
+  "description": "Self-describing output of the Quantum Heartbeat model (Walker 2026, Januarian Physics 1, 1.3). Single independent input is membrane potential Δψm; every other field is a deterministic function of it. Field groups encode provenance: paper_chain is first-principles from the paper; platform_extension are infoton.ai heuristics; exploratory fields appear in neither source and are surfaced for review.",
+  "type": "object",
+  "required": [
+    "model",
+    "model_version",
+    "constants",
+    "t_bath_k",
+    "input",
+    "state",
+    "paper_chain",
+    "platform_extension",
+    "exploratory"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "model": { "const": "infoton-virtual-mitochondria" },
+    "model_version": {
+      "type": "string",
+      "description": "Semantic version of the model. Bump major on any change to the equation chain or constants."
+    },
+    "constants": {
+      "type": "string",
+      "description": "Physical-constant set used (e.g. CODATA-2018)."
+    },
+    "t_bath_k": {
+      "type": "number",
+      "x-unit": "K",
+      "description": "Thermal bath temperature used in the Wien/ΔT step."
+    },
+    "input": {
+      "type": "object",
+      "required": ["psi_mmV"],
+      "additionalProperties": false,
+      "properties": {
+        "psi_mmV": {
+          "type": "number",
+          "x-unit": "mV",
+          "x-provenance": "input",
+          "description": "Mitochondrial membrane potential Δψm — the sole independent variable (e.g. from a JC-1 assay)."
+        }
+      }
+    },
+    "state": {
+      "type": "string",
+      "x-provenance": "paper",
+      "enum": [
+        "DYSREGULATED",
+        "HEALTHY",
+        "MILD_HYPERPOLARIZED",
+        "PATHOLOGICAL",
+        "CANCER"
+      ],
+      "description": "Coarse classification by Δψm band."
+    },
+    "paper_chain": {
+      "type": "object",
+      "description": "First-principles chain from Walker (2026), §1–§4. Each field is exact given Δψm and the constants.",
+      "required": [
+        "energy_j",
+        "omega_rad_s",
+        "nu_thz",
+        "wavelength_um",
+        "t_wien_k",
+        "delta_t_k",
+        "infoton_mass_kg"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "energy_j": { "type": "number", "x-unit": "J", "x-provenance": "paper", "description": "E = e·Δψm." },
+        "omega_rad_s": { "type": "number", "x-unit": "rad/s", "x-provenance": "paper", "description": "ω = E/ℏ." },
+        "nu_thz": { "type": "number", "x-unit": "THz", "x-provenance": "paper", "description": "ν = ω/2π." },
+        "wavelength_um": { "type": "number", "x-unit": "µm", "x-provenance": "paper", "description": "λ = c/ν." },
+        "t_wien_k": { "type": "number", "x-unit": "K", "x-provenance": "paper", "description": "T = W/λ (Wien displacement)." },
+        "delta_t_k": { "type": "number", "x-unit": "K", "x-provenance": "paper", "description": "ΔT = T − T_bath. May be ≤ 0 below the coherence floor." },
+        "infoton_mass_kg": { "type": "number", "x-unit": "kg", "x-provenance": "paper", "description": "m = k_B·T·ln(2)/c² (Landauer mass link)." }
+      }
+    },
+    "platform_extension": {
+      "type": "object",
+      "description": "infoton.ai platform heuristics derived from the coherence ratio τ/τ_healthy. Not first-principles; use with that caveat.",
+      "required": [
+        "tau_coh_ps",
+        "tau_ratio",
+        "coherent_cycles_q",
+        "atp_relative",
+        "ros_relative",
+        "vo2_relative"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "tau_coh_ps": { "type": "number", "x-unit": "ps", "x-provenance": "platform_heuristic", "description": "Coherence time τ = ℏ/(k_B·ΔT); 0 when ΔT ≤ 0." },
+        "tau_ratio": { "type": "number", "x-unit": "1", "x-provenance": "platform_heuristic", "description": "τ / τ_healthy (τ_healthy = 0.279 ps)." },
+        "coherent_cycles_q": { "type": "number", "x-unit": "1", "x-provenance": "platform_heuristic", "description": "Q = ω·τ / 2π — coherent oscillation cycles." },
+        "atp_relative": { "type": "number", "x-unit": "1", "x-provenance": "platform_heuristic", "description": "Relative ATP proxy ∝ (τ/τ_healthy)²." },
+        "ros_relative": { "type": "number", "x-unit": "1", "x-provenance": "platform_heuristic", "description": "Relative ROS proxy ∝ (τ_healthy/τ)²." },
+        "vo2_relative": { "type": "number", "x-unit": "1", "x-provenance": "platform_heuristic", "description": "Relative VO₂ proxy ∝ τ/τ_healthy." }
+      }
+    },
+    "exploratory": {
+      "type": "object",
+      "description": "Candidate fission/fusion mappings present in NEITHER the paper nor infoton.ai. Two models are surfaced because they disagree at the hyperpolarized end — an open question flagged for review. F/F > 1 = fission-dominant, < 1 = fusion-dominant.",
+      "required": [
+        "fission_fusion_coherence_model",
+        "fission_fusion_psi_model",
+        "coherence_model_predicts",
+        "psi_model_predicts",
+        "models_disagree",
+        "review_note"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "fission_fusion_coherence_model": { "type": "number", "x-unit": "1", "x-provenance": "exploratory", "description": "Model A: fission rises as coherence (τ/τ_healthy) is lost." },
+        "fission_fusion_psi_model": { "type": "number", "x-unit": "1", "x-provenance": "exploratory", "description": "Model B: F/F ≈ 2^((150−Δψm)/30), depolarization-driven fission per Twig 2008 / Youle 2012." },
+        "coherence_model_predicts": { "type": "string", "enum": ["fission", "fusion"], "x-provenance": "exploratory", "description": "Direction predicted by Model A at this Δψm." },
+        "psi_model_predicts": { "type": "string", "enum": ["fission", "fusion"], "x-provenance": "exploratory", "description": "Direction predicted by Model B at this Δψm." },
+        "models_disagree": { "type": "boolean", "x-provenance": "exploratory", "description": "True when the two models predict opposite directions — the case to flag for review." },
+        "review_note": { "type": "string", "x-provenance": "exploratory", "description": "Standing caveat: the F/F axis is exploratory and the models conflict at hyperpolarization." }
+      }
+    }
+  }
+}

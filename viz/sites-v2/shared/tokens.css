@@ -525,7 +525,8 @@ body.theme-atom::before {
 .demo-shell:has(.wgt-impact),
 .demo-shell:has(.wgt-fleet),
 .demo-shell:has(.wgt-history),
-.demo-shell:has(.wgt-learn) {
+.demo-shell:has(.wgt-learn),
+.demo-shell:has(.wgt-mito) {
   background: #160a2b;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
@@ -536,7 +537,8 @@ body.theme-atom::before {
 .demo-shell.demo-shell-instrument:has(.wgt-impact),
 .demo-shell.demo-shell-instrument:has(.wgt-fleet),
 .demo-shell.demo-shell-instrument:has(.wgt-history),
-.demo-shell.demo-shell-instrument:has(.wgt-learn) {
+.demo-shell.demo-shell-instrument:has(.wgt-learn),
+.demo-shell.demo-shell-instrument:has(.wgt-mito) {
   background: #160a2b;
 }
 
@@ -552,8 +554,9 @@ body.theme-atom::before {
 }
 
 .demo-shell:has(.wgt-history) .demo-mount,
-.demo-shell:has(.wgt-learn) .demo-mount {
-  min-height: 0;
+.demo-shell:has(.wgt-learn) .demo-mount,
+.demo-shell:has(.wgt-mito) .demo-mount {
+  min-height: min(720px, 78vh);
   overflow: visible;
 }
 

@@ -1,6 +1,11 @@
 (function (global) {
   'use strict';
 
+  var MODEL = 'infoton-virtual-mitochondria';
+  var MODEL_VERSION = '1.1.0';
+  var CONSTANTS_TAG = 'CODATA-2018';
+  var SCHEMA_REF = 'https://infoton.ai/spec/mitochondria.schema.json';
+
   var E = 1.602176634e-19;
   var H = 1.054571817e-34;
   var C = 299792458;
@@ -158,7 +163,98 @@
     };
   }
 
+  // ── Derived quantities (platform extension / exploratory) ──────────────────
+  // Kept in the core so the widget, the JSON snapshot, and the conformance
+  // vectors all share one source of truth.
+
+  /** Coherence health on 0..1 (1 = fully coherent healthy band). */
+  function coherenceUnit(r) {
+    var c = r.tauRatio;
+    if (!isFinite(c) || c <= 0) return 0;
+    return Math.max(0, Math.min(1, c));
+  }
+
+  /** Coherent cycles Q = ω·τ / 2π (0 when coherence has collapsed). */
+  function coherentCyclesQ(r) {
+    return r.tauCohS > 0 ? (r.omegaRadS * r.tauCohS) / (2 * Math.PI) : 0;
+  }
+
+  /** Fission/fusion — Model A (coherence-derived heuristic). Exploratory. */
+  function fissionFusionCoherence(r) {
+    var coh = coherenceUnit(r);
+    return Math.max(0.25, Math.min(4, 1 / Math.max(coh, 0.25)));
+  }
+
+  /** Fission/fusion — Model B (Δψ/literature-grounded). Exploratory. */
+  function fissionFusionPsi(r) {
+    return Math.max(0.2, Math.min(4, Math.pow(2, (150 - r.psiMmV) / 30)));
+  }
+
+  /**
+   * Canonical, self-describing snapshot — the integration contract.
+   * Grouping encodes provenance: paper_chain (first-principles, Walker 2026),
+   * platform_extension (infoton.ai heuristics), exploratory (not in any source).
+   * Units and per-field provenance are documented in spec/mitochondria.schema.json.
+   */
+  function snapshot(psiMmV) {
+    var r = calculate(psiMmV);
+    return {
+      $schema: SCHEMA_REF,
+      model: MODEL,
+      model_version: MODEL_VERSION,
+      constants: CONSTANTS_TAG,
+      t_bath_k: T_BATH,
+      input: { psi_mmV: r.psiMmV },
+      state: r.state.id,
+      paper_chain: {
+        energy_j: r.energyJ,
+        omega_rad_s: r.omegaRadS,
+        nu_thz: r.nuThz,
+        wavelength_um: r.wavelengthUm,
+        t_wien_k: r.tWienK,
+        delta_t_k: r.deltaTK,
+        infoton_mass_kg: r.infotonMass,
+      },
+      platform_extension: {
+        tau_coh_ps: r.tauCohPs,
+        tau_ratio: r.tauRatio,
+        coherent_cycles_q: coherentCyclesQ(r),
+        atp_relative: r.atp,
+        ros_relative: r.ros,
+        vo2_relative: r.vo2,
+      },
+      exploratory: exploratoryFissionFusion(r),
+    };
+  }
+
+  /**
+   * Exploratory fission/fusion block for the contract. Carries BOTH candidate
+   * models, each model's prediction, and an explicit disagreement flag so the
+   * open question reaches a reviewer through the data — not only the live UI.
+   */
+  function exploratoryFissionFusion(r) {
+    var ffC = fissionFusionCoherence(r);
+    var ffP = fissionFusionPsi(r);
+    var cohPred = ffC >= 1 ? 'fission' : 'fusion';
+    var psiPred = ffP >= 1 ? 'fission' : 'fusion';
+    return {
+      fission_fusion_coherence_model: ffC,
+      fission_fusion_psi_model: ffP,
+      coherence_model_predicts: cohPred,
+      psi_model_predicts: psiPred,
+      models_disagree: cohPred !== psiPred,
+      review_note:
+        'Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They ' +
+        'disagree at hyperpolarization (coherence-derived predicts fission; Δψ/literature ' +
+        'predicts fusion). Open question — flag for January.',
+    };
+  }
+
   global.P30MitoCore = {
+    MODEL: MODEL,
+    MODEL_VERSION: MODEL_VERSION,
+    CONSTANTS_TAG: CONSTANTS_TAG,
+    SCHEMA_REF: SCHEMA_REF,
     constants: {
       E: E,
       H: H,
@@ -171,6 +267,11 @@
     STATES: STATES,
     calculate: calculate,
     classifyState: classifyState,
+    coherenceUnit: coherenceUnit,
+    coherentCyclesQ: coherentCyclesQ,
+    fissionFusionCoherence: fissionFusionCoherence,
+    fissionFusionPsi: fissionFusionPsi,
+    snapshot: snapshot,
     psiFromEnergy: function (j) { return (j / E) * 1000; },
     psiFromOmega: psiFromOmega,
     psiFromNuThz: psiFromNuThz,

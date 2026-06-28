@@ -483,6 +483,188 @@
   color: var(--demo-cyan) !important;
 }
 
+/* ── Mitochondria (Care Pathways panel) ── */
+.demo-shell-instrument .wgt-mito .wgt-work {
+  background: var(--demo-bg) !important;
+}
+
+.demo-shell-instrument .wgt-mito-lead {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-state-card,
+.demo-shell-instrument .wgt-mito-card {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: var(--demo-border) !important;
+}
+
+.demo-shell-instrument .wgt-mito-state-lab,
+.demo-shell-instrument .wgt-mito-out-label {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-desc {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-lab {
+  color: var(--demo-text) !important;
+}
+
+.demo-shell-instrument .wgt-mito-psi-val {
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-mito-psi-unit {
+  color: rgba(52, 211, 153, 0.65) !important;
+}
+
+.demo-shell-instrument .wgt-mito-scale {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-preset {
+  border-color: var(--demo-border) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-preset:hover {
+  color: var(--demo-text) !important;
+  border-color: rgba(52, 211, 153, 0.4) !important;
+}
+
+.demo-shell-instrument .wgt-mito-preset.active {
+  border-color: rgba(52, 211, 153, 0.55) !important;
+  background: rgba(52, 211, 153, 0.12) !important;
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-mito-box {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: var(--demo-border) !important;
+}
+
+.demo-shell-instrument .wgt-mito-box-hero {
+  background: rgba(52, 211, 153, 0.08) !important;
+  border-color: rgba(52, 211, 153, 0.28) !important;
+}
+
+.demo-shell-instrument .wgt-mito-box-sym {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-box-hero .wgt-mito-box-sym {
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-mito-box-val {
+  color: var(--demo-text) !important;
+}
+
+.demo-shell-instrument .wgt-mito-box-hero .wgt-mito-box-val {
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-mito-box-unit {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-copy {
+  border-color: rgba(52, 211, 153, 0.35) !important;
+  background: rgba(52, 211, 153, 0.1) !important;
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-mito-viz-panel {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-color: var(--demo-border) !important;
+}
+
+.demo-shell-instrument .wgt-mito-viz-title {
+  color: var(--demo-text) !important;
+}
+
+.demo-shell-instrument .wgt-mito-viz-cap {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-cont-labels {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-ff {
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.demo-shell-instrument .wgt-mito-ff-k {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-ff-note {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-flow {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-flow span:not(.wgt-mito-flow-arr) {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.demo-shell-instrument .wgt-mito-flow-arr {
+  color: rgba(246, 210, 74, 0.45) !important;
+}
+
+.demo-shell-instrument .wgt-mito-adv {
+  border-color: var(--demo-border) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.demo-shell-instrument .wgt-mito-adv-toggle {
+  color: var(--demo-green) !important;
+}
+
+.demo-shell-instrument .wgt-mito-adv-lead {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-care {
+  border-bottom-color: var(--demo-border);
+}
+
+.demo-shell-instrument .wgt-mito-care-title {
+  color: var(--demo-green) !important;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.demo-shell-instrument .wgt-mito-care-body,
+.demo-shell-instrument .wgt-mito-ref {
+  color: var(--demo-text) !important;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.demo-shell-instrument .wgt-mito-bridge {
+  color: var(--demo-muted) !important;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.demo-shell-instrument .wgt-mito-ref-lead {
+  color: var(--demo-text) !important;
+}
+
+.demo-shell-instrument .wgt-mito-deriv .wgt-dmath {
+  color: var(--demo-muted) !important;
+}
+
+.demo-shell-instrument .wgt-mito-link {
+  color: var(--demo-green) !important;
+}
+
 .demo-shell-instrument .wgt-big.byte {
   background: rgba(76, 201, 240, 0.08) !important;
   border-color: rgba(76, 201, 240, 0.22) !important;

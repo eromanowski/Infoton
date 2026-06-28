@@ -1,0 +1,499 @@
+{
+  "model": "infoton-virtual-mitochondria",
+  "model_version": "1.1.0",
+  "constants": "CODATA-2018",
+  "generated_by": "tools/gen_mitochondria_vectors.py",
+  "schema": "spec/mitochondria.schema.json",
+  "tolerance": {
+    "rel": 1e-09,
+    "psi_abs_mV": 1e-06
+  },
+  "forward": [
+    {
+      "psi_mmV": 100,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 100
+        },
+        "state": "DYSREGULATED",
+        "paper_chain": {
+          "energy_j": 1.602176634e-20,
+          "omega_rad_s": 151926744880951.06,
+          "nu_thz": 24.17989243566467,
+          "wavelength_um": 12.398419835723276,
+          "t_wien_k": 233.72107037791363,
+          "delta_t_k": -89.27892962208637,
+          "infoton_mass_kg": 2.488657919783662e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 0.0,
+          "tau_ratio": 0.0,
+          "coherent_cycles_q": 0.0,
+          "atp_relative": 0.5,
+          "ros_relative": 100.0,
+          "vo2_relative": 0.05
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 4.0,
+          "fission_fusion_psi_model": 3.174802103936399,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fission",
+          "models_disagree": false,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    },
+    {
+      "psi_mmV": 138.2,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 138.2
+        },
+        "state": "DYSREGULATED",
+        "paper_chain": {
+          "energy_j": 2.2142081081879995e-20,
+          "omega_rad_s": 209962761425474.3,
+          "nu_thz": 33.416611346088565,
+          "wavelength_um": 8.971360228453893,
+          "t_wien_k": 323.00251926227656,
+          "delta_t_k": 0.0025192622765644046,
+          "infoton_mass_kg": 3.439325245141019e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 3031.932263914235,
+          "tau_ratio": 10867.140730875393,
+          "coherent_cycles_q": 101316.90209088841,
+          "atp_relative": 295236869.1616274,
+          "ros_relative": 8.467777100804354e-09,
+          "vo2_relative": 10867.140730875393
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 1.0,
+          "fission_fusion_psi_model": 1.3134245558784037,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fission",
+          "models_disagree": false,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    },
+    {
+      "psi_mmV": 143,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 143
+        },
+        "state": "DYSREGULATED",
+        "paper_chain": {
+          "energy_j": 2.2911125866199998e-20,
+          "omega_rad_s": 217255245179760.0,
+          "nu_thz": 34.577246183000476,
+          "wavelength_um": 8.670223661344949,
+          "t_wien_k": 334.2211306404165,
+          "delta_t_k": 11.221130640416504,
+          "infoton_mass_kg": 3.5587808252906363e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 0.6807007976599166,
+          "tau_ratio": 2.439787805232676,
+          "coherent_cycles_q": 23.53675905765173,
+          "atp_relative": 14.881411336405195,
+          "ros_relative": 0.16799481873631947,
+          "vo2_relative": 2.439787805232676
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 1.0,
+          "fission_fusion_psi_model": 1.1755479062836087,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fission",
+          "models_disagree": false,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    },
+    {
+      "psi_mmV": 145,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 145
+        },
+        "state": "HEALTHY",
+        "paper_chain": {
+          "energy_j": 2.3231561192999998e-20,
+          "omega_rad_s": 220293780077379.0,
+          "nu_thz": 35.06084403171376,
+          "wavelength_um": 8.55063436946433,
+          "t_wien_k": 338.89555204797466,
+          "delta_t_k": 15.895552047974661,
+          "infoton_mass_kg": 3.608553983686308e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 0.48052641106924476,
+          "tau_ratio": 1.7223168855528486,
+          "coherent_cycles_q": 16.847661551617964,
+          "atp_relative": 7.415938635651161,
+          "ros_relative": 0.3371117430747843,
+          "vo2_relative": 1.7223168855528486
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 1.0,
+          "fission_fusion_psi_model": 1.122462048309373,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fission",
+          "models_disagree": false,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    },
+    {
+      "psi_mmV": 150,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 150
+        },
+        "state": "HEALTHY",
+        "paper_chain": {
+          "energy_j": 2.4032649509999997e-20,
+          "omega_rad_s": 227890117321426.56,
+          "nu_thz": 36.269838653497,
+          "wavelength_um": 8.265613223815517,
+          "t_wien_k": 350.58160556687045,
+          "delta_t_k": 27.58160556687045,
+          "infoton_mass_kg": 3.7329868796754926e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 0.27693212271704304,
+          "tau_ratio": 0.992588253466104,
+          "coherent_cycles_q": 10.04428340891758,
+          "atp_relative": 2.463078602297227,
+          "ros_relative": 1.014989938879067,
+          "vo2_relative": 0.992588253466104
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 1.0074670907176408,
+          "fission_fusion_psi_model": 1.0,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fission",
+          "models_disagree": false,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    },
+    {
+      "psi_mmV": 155,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 155
+        },
+        "state": "HEALTHY",
+        "paper_chain": {
+          "energy_j": 2.4833737827e-20,
+          "omega_rad_s": 235486454565474.12,
+          "nu_thz": 37.47883327528024,
+          "wavelength_um": 7.998980539176307,
+          "t_wien_k": 362.2676590857661,
+          "delta_t_k": 39.26765908576613,
+          "infoton_mass_kg": 3.8574197756646757e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 0.19451713586732186,
+          "tau_ratio": 0.697194035366745,
+          "coherent_cycles_q": 7.290275304356389,
+          "atp_relative": 1.2151988073774151,
+          "ros_relative": 2.0572765417663494,
+          "vo2_relative": 0.697194035366745
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 1.4343209340194227,
+          "fission_fusion_psi_model": 0.8908987181403393,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fusion",
+          "models_disagree": true,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    },
+    {
+      "psi_mmV": 160,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 160
+        },
+        "state": "MILD_HYPERPOLARIZED",
+        "paper_chain": {
+          "energy_j": 2.5634826143999998e-20,
+          "omega_rad_s": 243082791809521.66,
+          "nu_thz": 38.687827897063464,
+          "wavelength_um": 7.749012397327049,
+          "t_wien_k": 373.9537126046617,
+          "delta_t_k": 50.95371260466169,
+          "infoton_mass_kg": 3.981852671653857e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 0.14990531969360038,
+          "tau_ratio": 0.5372950526652343,
+          "coherent_cycles_q": 5.799511209160291,
+          "atp_relative": 0.7217149340463422,
+          "ros_relative": 3.46397155173662,
+          "vo2_relative": 0.5372950526652343
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 1.8611747773212004,
+          "fission_fusion_psi_model": 0.7937005259840998,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fusion",
+          "models_disagree": true,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    },
+    {
+      "psi_mmV": 165,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 165
+        },
+        "state": "MILD_HYPERPOLARIZED",
+        "paper_chain": {
+          "energy_j": 2.6435914461e-20,
+          "omega_rad_s": 250679129053569.22,
+          "nu_thz": 39.8968225188467,
+          "wavelength_um": 7.51419383983229,
+          "t_wien_k": 385.6397661235574,
+          "delta_t_k": 62.63976612355742,
+          "infoton_mass_kg": 4.106285567643041e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 0.12193903410353055,
+          "tau_ratio": 0.4370574699051274,
+          "coherent_cycles_q": 4.864980001748154,
+          "atp_relative": 0.5,
+          "ros_relative": 5.235074968789914,
+          "vo2_relative": 0.4370574699051274
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 2.288028620622984,
+          "fission_fusion_psi_model": 0.7071067811865476,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fusion",
+          "models_disagree": true,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    },
+    {
+      "psi_mmV": 180,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 180
+        },
+        "state": "PATHOLOGICAL",
+        "paper_chain": {
+          "energy_j": 2.8839179412e-20,
+          "omega_rad_s": 273468140785711.9,
+          "nu_thz": 43.5238063841964,
+          "wavelength_um": 6.888011019846265,
+          "t_wien_k": 420.6979266802445,
+          "delta_t_k": 97.6979266802445,
+          "infoton_mass_kg": 4.4795842556105905e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 0.07818213586637118,
+          "tau_ratio": 0.280222709198463,
+          "coherent_cycles_q": 3.4027841441508766,
+          "atp_relative": 0.5,
+          "ros_relative": 12.734835662447823,
+          "vo2_relative": 0.280222709198463
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 3.568590150528332,
+          "fission_fusion_psi_model": 0.5,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fusion",
+          "models_disagree": true,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    },
+    {
+      "psi_mmV": 200,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 200
+        },
+        "state": "PATHOLOGICAL",
+        "paper_chain": {
+          "energy_j": 3.204353268e-20,
+          "omega_rad_s": 303853489761902.1,
+          "nu_thz": 48.35978487132934,
+          "wavelength_um": 6.199209917861638,
+          "t_wien_k": 467.44214075582727,
+          "delta_t_k": 144.44214075582727,
+          "infoton_mass_kg": 4.977315839567324e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 0.0528809150681983,
+          "tau_ratio": 0.18953732999354228,
+          "coherent_cycles_q": 2.5573096764971077,
+          "atp_relative": 0.5,
+          "ros_relative": 27.836234286487105,
+          "vo2_relative": 0.18953732999354228
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 4.0,
+          "fission_fusion_psi_model": 0.3149802624737183,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fusion",
+          "models_disagree": true,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    },
+    {
+      "psi_mmV": 220,
+      "snapshot": {
+        "$schema": "https://infoton.ai/spec/mitochondria.schema.json",
+        "model": "infoton-virtual-mitochondria",
+        "model_version": "1.1.0",
+        "constants": "CODATA-2018",
+        "t_bath_k": 323.0,
+        "input": {
+          "psi_mmV": 220
+        },
+        "state": "CANCER",
+        "paper_chain": {
+          "energy_j": 3.5247885948e-20,
+          "omega_rad_s": 334238838738092.3,
+          "nu_thz": 53.195763358462266,
+          "wavelength_um": 5.635645379874216,
+          "t_wien_k": 514.18635483141,
+          "delta_t_k": 191.18635483140997,
+          "infoton_mass_kg": 5.475047423524056e-38
+        },
+        "platform_extension": {
+          "tau_coh_ps": 0.039951766350235174,
+          "tau_ratio": 0.14319629516213322,
+          "coherent_cycles_q": 2.1252647085196856,
+          "atp_relative": 0.5,
+          "ros_relative": 48.76816742385443,
+          "vo2_relative": 0.14319629516213322
+        },
+        "exploratory": {
+          "fission_fusion_coherence_model": 4.0,
+          "fission_fusion_psi_model": 0.2,
+          "coherence_model_predicts": "fission",
+          "psi_model_predicts": "fusion",
+          "models_disagree": true,
+          "review_note": "Two exploratory F/F models, in neither Walker (2026) nor infoton.ai. They disagree at hyperpolarization (coherence-derived predicts fission; \u0394\u03c8/literature predicts fusion). Open question \u2014 flag for January."
+        }
+      }
+    }
+  ],
+  "inverse": [
+    {
+      "fn": "psi_from_energy_j",
+      "input": 2.4032649509999997e-20,
+      "psi_mmV": 150.0
+    },
+    {
+      "fn": "psi_from_omega_rad_s",
+      "input": 227890117321426.56,
+      "psi_mmV": 150.0
+    },
+    {
+      "fn": "psi_from_nu_thz",
+      "input": 36.269838653497,
+      "psi_mmV": 150.00000000000003
+    },
+    {
+      "fn": "psi_from_wavelength_um",
+      "input": 8.265613223815517,
+      "psi_mmV": 150.00000000000003
+    },
+    {
+      "fn": "psi_from_t_wien_k",
+      "input": 350.58160556687045,
+      "psi_mmV": 150.00000000000003
+    },
+    {
+      "fn": "psi_from_delta_t_k",
+      "input": 27.58160556687045,
+      "psi_mmV": 150.00000000000003
+    },
+    {
+      "fn": "psi_from_tau_coh_ps",
+      "input": 0.27693212271704304,
+      "psi_mmV": 150.00000000000003
+    },
+    {
+      "fn": "psi_from_infoton_mass_kg",
+      "input": 3.7329868796754926e-38,
+      "psi_mmV": 150.00000000000006
+    },
+    {
+      "fn": "psi_from_atp",
+      "input": 2.463078602297227,
+      "psi_mmV": 150.00000000000003
+    },
+    {
+      "fn": "psi_from_ros",
+      "input": 1.014989938879067,
+      "psi_mmV": 150.00000000000003
+    },
+    {
+      "fn": "psi_from_vo2",
+      "input": 0.992588253466104,
+      "psi_mmV": 150.00000000000003
+    }
+  ]
+}

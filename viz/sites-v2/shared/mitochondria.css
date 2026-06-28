@@ -1,30 +1,64 @@
-/* Virtual Mitochondria widget — cell theme */
+/* Virtual Mitochondria widget — Quantum Heartbeat calculator */
 
 .wgt-stage-mito {
-  grid-template-columns: 1fr min(360px, 38%);
+  grid-template-columns: 1fr min(340px, 36%);
 }
 
 .wgt-mito .wgt-work {
   background: linear-gradient(165deg, #0b2e1f 0%, #0f3d28 45%, #134832 100%);
+  gap: 0.85rem;
 }
 
 .wgt-mito .wgt-panel {
-  border-left-color: #134832;
+  border-left-color: rgba(110, 231, 183, 0.25);
+}
+
+/* ── Header ── */
+.wgt-mito-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
 }
 
 .wgt-mito .wgt-work-title {
-  font: 600 13px/1.2 'Cinzel', serif;
-  letter-spacing: 0.06em;
+  font: 600 15px/1.2 'Cinzel', serif;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(220, 252, 231, 0.92);
+  color: rgba(220, 252, 231, 0.95);
 }
 
-.wgt-mito-state {
-  font: 600 10px/1 'Cinzel', serif;
-  letter-spacing: 0.08em;
-  padding: 4px 10px;
-  border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.wgt-mito-lead {
+  font: 400 14px/1.5 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.68);
+  margin: 0.35rem 0 0;
+  max-width: 38em;
+}
+
+/* ── State hero ── */
+.wgt-mito-state-card {
+  text-align: center;
+  padding: 1rem 1.1rem 1.05rem;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(110, 231, 183, 0.22);
+  border-radius: 10px;
+}
+
+.wgt-mito-state-lab {
+  font: 600 9px/1 'Cinzel', serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(220, 252, 231, 0.45);
+  margin-bottom: 0.55rem;
+}
+
+.wgt-mito-state-big {
+  display: inline-block;
+  font: 600 22px/1.15 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 0.55rem;
 }
 
 .wgt-mito-state.state-healthy {
@@ -57,16 +91,68 @@
   background: rgba(127, 29, 29, 0.35);
 }
 
-.wgt-mito-hero {
-  display: grid;
-  gap: 1rem;
+.wgt-mito-desc {
+  font: 400 14px/1.5 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.72);
+  margin: 0 auto;
+  max-width: 34em;
 }
 
+/* ── Cards ── */
+.wgt-mito-card {
+  padding: 0.85rem 1rem;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(110, 231, 183, 0.16);
+  border-radius: 10px;
+}
+
+.wgt-mito-card-ext {
+  border-color: rgba(253, 224, 71, 0.2);
+}
+
+.wgt-mito-section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+  flex-wrap: wrap;
+}
+
+/* ── Driver / slider ── */
 .wgt-mito-lab {
   display: block;
   font: 500 14px/1.3 'Cormorant Garamond', serif;
   color: rgba(220, 252, 231, 0.85);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.45rem;
+}
+
+.wgt-mito-lab-tag {
+  font: 600 9px/1 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(110, 231, 183, 0.65);
+  margin-left: 0.35rem;
+}
+
+.wgt-mito-band {
+  height: 6px;
+  border-radius: 3px;
+  margin-bottom: 0.45rem;
+  background: linear-gradient(
+    90deg,
+    #f87171 0%,
+    #f87171 2.6%,
+    #34d399 2.6%,
+    #34d399 15.6%,
+    #f6d24a 15.6%,
+    #f6d24a 28.6%,
+    #fb923c 28.6%,
+    #fb923c 74%,
+    #ef4444 74%,
+    #ef4444 100%
+  );
+  opacity: 0.85;
 }
 
 .wgt-mito-psi-row {
@@ -78,13 +164,20 @@
 .wgt-mito-psi-row input[type='range'] {
   flex: 1;
   accent-color: #34d399;
+  height: 6px;
 }
 
 .wgt-mito-psi-val {
-  font: 600 22px/1 'Cinzel', serif;
+  font: 600 28px/1 'Cinzel', serif;
   color: #a7f3d0;
   min-width: 5.5rem;
   text-align: right;
+}
+
+.wgt-mito-psi-unit {
+  font: 600 14px/1 'Cinzel', serif;
+  color: rgba(167, 243, 208, 0.65);
+  margin-left: 0.15rem;
 }
 
 .wgt-mito-scale {
@@ -93,6 +186,37 @@
   font: 400 11px/1.2 'Cormorant Garamond', serif;
   color: rgba(220, 252, 231, 0.45);
   margin-top: 0.25rem;
+}
+
+.wgt-mito-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.65rem 0 0.75rem;
+}
+
+.wgt-mito-preset {
+  font: 600 9px/1 'Cinzel', serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.55rem;
+  border-radius: 4px;
+  border: 1px solid rgba(110, 231, 183, 0.28);
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(220, 252, 231, 0.72);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.wgt-mito-preset:hover {
+  border-color: rgba(110, 231, 183, 0.5);
+  color: #ecfdf5;
+}
+
+.wgt-mito-preset.active {
+  border-color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.2);
+  color: #a7f3d0;
 }
 
 .wgt-mito-coh-head {
@@ -104,11 +228,11 @@
 }
 
 .wgt-mito-coh-track {
-  height: 10px;
+  height: 8px;
   background: rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
+  border-radius: 4px;
   overflow: hidden;
-  border: 1px solid rgba(110, 231, 183, 0.25);
+  border: 1px solid rgba(110, 231, 183, 0.2);
 }
 
 .wgt-mito-coh-fill {
@@ -118,57 +242,510 @@
   transition: width 0.15s ease;
 }
 
-.wgt-mito-grid {
+/* ── Coherence continuum (Collapsed → Coherent) ── */
+.wgt-mito-cont {
+  margin-top: 0.7rem;
+}
+
+.wgt-mito-cont-bar {
+  position: relative;
+  height: 20px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ef4444 0%, #f59e0b 34%, #eab308 56%, #22c55e 100%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.18);
+}
+
+.wgt-mito-cont-marker {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  left: 0;
+  width: 4px;
+  margin-left: -2px;
+  background: #ecfdf5;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45), 0 0 7px rgba(0, 0, 0, 0.55);
+  transition: left 0.2s ease;
+}
+
+.wgt-mito-cont-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.3rem;
+  font: 600 8px/1.2 'Cinzel', serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(220, 252, 231, 0.62);
+}
+
+/* ── Diagnostic summary ── */
+.wgt-mito-diag-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem;
+}
+
+.wgt-mito-diag-card {
+  padding: 0.6rem 0.5rem;
+  border: 1px solid rgba(110, 231, 183, 0.25);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.22);
+  text-align: center;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.wgt-mito-diag-good { border-color: rgba(52, 211, 153, 0.6); background: rgba(16, 84, 60, 0.28); }
+.wgt-mito-diag-warn { border-color: rgba(246, 210, 74, 0.6); background: rgba(92, 74, 16, 0.28); }
+.wgt-mito-diag-bad { border-color: rgba(248, 113, 113, 0.65); background: rgba(94, 24, 24, 0.3); }
+
+.wgt-mito-diag-title {
+  font: 600 8px/1.3 'Cinzel', serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(220, 252, 231, 0.6);
+}
+
+.wgt-mito-diag-val {
+  font: 700 22px/1.1 'Cinzel', serif;
+  color: #ecfdf5;
+  margin: 0.2rem 0 0.1rem;
+}
+
+.wgt-mito-diag-lab {
+  font: 600 12px/1.2 'Cormorant Garamond', serif;
+}
+
+.wgt-mito-diag-good .wgt-mito-diag-lab { color: #6ee7b7; }
+.wgt-mito-diag-warn .wgt-mito-diag-lab { color: #f6d24a; }
+.wgt-mito-diag-bad .wgt-mito-diag-lab { color: #f87171; }
+
+.wgt-mito-diag-sub {
+  margin-top: 0.2rem;
+  font: 400 9px/1.2 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.42);
+}
+
+.wgt-mito-diag-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.wgt-mito-sim {
+  flex: 1;
+  min-width: 120px;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(110, 231, 183, 0.3);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  color: rgba(236, 253, 245, 0.9);
+  font: 600 11px/1.2 'Cinzel', serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+}
+
+.wgt-mito-sim:hover { background: rgba(110, 231, 183, 0.12); }
+.wgt-mito-sim:active { transform: translateY(1px); }
+.wgt-mito-sim-bad { border-color: rgba(248, 113, 113, 0.5); color: #fca5a5; }
+.wgt-mito-sim-bad:hover { background: rgba(248, 113, 113, 0.14); }
+.wgt-mito-sim-good { border-color: rgba(52, 211, 153, 0.55); color: #6ee7b7; }
+.wgt-mito-sim-good:hover { background: rgba(52, 211, 153, 0.14); }
+
+@media (max-width: 640px) {
+  .wgt-mito-diag-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Visualization (spiral + radar) ── */
+.wgt-mito-viz-card {
+  padding: 0.85rem 1rem 1rem;
+}
+
+.wgt-mito-viz {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.wgt-mito-viz-panel {
+  margin: 0;
+  padding: 0.65rem 0.7rem 0.55rem;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(110, 231, 183, 0.18);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wgt-mito-viz-title {
+  font: 600 10px/1.2 'Cinzel', serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(220, 252, 231, 0.72);
+  text-align: center;
+  margin-bottom: 0.35rem;
+}
+
+.wgt-mito-canvas {
+  width: 100%;
+  display: block;
+}
+
+.wgt-mito-viz-cap {
+  font: 400 11px/1.35 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.5);
+  text-align: center;
+  margin-top: 0.3rem;
+  min-height: 1.35em;
+}
+
+.wgt-mito-viz-legend {
+  display: flex;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: 0.3rem;
+}
+
+.wgt-mito-leg {
+  font: 600 9px/1.2 'Cinzel', serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+}
+
+.wgt-mito-leg::before {
+  content: '';
+  display: inline-block;
+  width: 14px;
+  height: 0;
+  margin-right: 0.35rem;
+  border-top: 2px solid currentColor;
+}
+
+.wgt-mito-leg-normal {
+  color: rgba(52, 211, 153, 0.85);
+}
+
+.wgt-mito-leg-normal::before {
+  border-top-style: dashed;
+}
+
+.wgt-mito-leg-current {
+  color: #6ee7b7;
+}
+
+.wgt-mito-leg-coh {
+  color: #60a5fa;
+}
+
+.wgt-mito-leg-risk {
+  color: #f87171;
+}
+
+.wgt-mito-ff {
+  margin-top: 0.7rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px dashed rgba(253, 224, 71, 0.32);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.wgt-mito-ff-tag {
+  font: 600 8px/1.3 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(253, 224, 71, 0.7);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.wgt-mito-ff-tag::-webkit-details-marker {
+  display: none;
+}
+
+.wgt-mito-ff-tag::before {
+  content: '▸';
+  font-size: 9px;
+  opacity: 0.7;
+  transition: transform 0.15s ease;
+}
+
+.wgt-mito-ff[open] .wgt-mito-ff-tag::before {
+  transform: rotate(90deg);
+}
+
+.wgt-mito-ff-body {
+  display: grid;
+  gap: 0.3rem;
+  margin-top: 0.45rem;
+}
+
+.wgt-mito-ff-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
   gap: 0.5rem;
 }
 
-.wgt-mito-metric {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(110, 231, 183, 0.18);
-  border-radius: 6px;
-  padding: 0.45rem 0.5rem;
+.wgt-mito-ff-k {
+  font: 400 13px/1.3 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.7);
 }
 
-.wgt-mito-metric.biomarker {
-  border-color: rgba(253, 224, 71, 0.25);
+.wgt-mito-ff-v {
+  font: 600 13px/1.2 'Cinzel', serif;
+  color: #fde68a;
 }
 
-.wgt-mito-k {
-  display: block;
-  font: 600 9px/1.2 'Cinzel', serif;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+.wgt-mito-ff-note {
+  font: 400 12px/1.4 'Cormorant Garamond', serif;
   color: rgba(220, 252, 231, 0.55);
 }
 
-.wgt-mito-v {
-  display: block;
-  font: 600 18px/1.2 'Cinzel', serif;
+/* ── Chain flow ── */
+.wgt-mito-flow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem 0.25rem;
+  padding: 0.35rem 0.5rem;
+  font: 600 10px/1 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  color: rgba(110, 231, 183, 0.55);
+}
+
+.wgt-mito-flow span:not(.wgt-mito-flow-arr) {
+  padding: 0.2rem 0.35rem;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.wgt-mito-flow-arr {
+  color: rgba(253, 224, 71, 0.45);
+  font-weight: 400;
+}
+
+/* ── Parameter boxes (infoton-inspired) ── */
+.wgt-mito-out-label {
+  font: 600 9px/1.2 'Cinzel', serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(220, 252, 231, 0.4);
+}
+
+.wgt-mito-out-label.wgt-mito-out-ext {
+  color: rgba(253, 224, 71, 0.45);
+}
+
+.wgt-mito-param-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.wgt-mito-param-ext {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.wgt-mito-box {
+  text-align: center;
+  padding: 0.55rem 0.4rem 0.5rem;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(110, 231, 183, 0.2);
+  border-radius: 8px;
+  transition: border-color 0.15s;
+}
+
+.wgt-mito-box-hero {
+  padding: 0.7rem 0.45rem 0.65rem;
+  border-color: rgba(110, 231, 183, 0.35);
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.wgt-mito-box-ext {
+  border-color: rgba(253, 224, 71, 0.22);
+}
+
+.wgt-mito-box-sym {
+  font: 600 16px/1.2 'Cinzel', serif;
+  color: rgba(220, 252, 231, 0.75);
+  margin-bottom: 0.25rem;
+}
+
+.wgt-mito-box-hero .wgt-mito-box-sym {
+  font-size: 20px;
+  color: #a7f3d0;
+}
+
+.wgt-mito-box-val {
+  font: 600 17px/1.2 'Cinzel', serif;
   color: #ecfdf5;
-  margin-top: 0.15rem;
+  word-break: break-word;
+  min-height: 1.2em;
 }
 
-.wgt-mito-v.sm {
-  font-size: 11px;
-  font-family: 'Cormorant Garamond', serif;
-  font-weight: 500;
+.wgt-mito-box-hero .wgt-mito-box-val {
+  font-size: 22px;
+  color: #6ee7b7;
 }
 
-.wgt-mito-desc {
-  font: 400 14px/1.45 'Cormorant Garamond', serif;
-  color: rgba(220, 252, 231, 0.72);
+.wgt-mito-box-sm .wgt-mito-box-val {
+  font: 500 11px/1.3 'Cormorant Garamond', serif;
+  color: rgba(236, 253, 245, 0.9);
+}
+
+.wgt-mito-box-unit {
+  font: 600 8px/1.2 'Cinzel', serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(220, 252, 231, 0.4);
+  margin-top: 0.2rem;
+}
+
+.wgt-mito-copy {
+  font: 600 9px/1 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.6rem;
+  border-radius: 4px;
+  border: 1px solid rgba(110, 231, 183, 0.35);
+  background: rgba(16, 185, 129, 0.12);
+  color: #a7f3d0;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+}
+
+.wgt-mito-copy:hover {
+  background: rgba(16, 185, 129, 0.22);
+  border-color: #6ee7b7;
+}
+
+.wgt-mito-bridge {
+  font: 400 13px/1.5 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.62);
+  margin: 0.35rem 0 0.55rem;
+}
+
+/* ── Advanced ── */
+.wgt-mito-adv {
+  border: 1px solid rgba(110, 231, 183, 0.28);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.18);
+}
+
+.wgt-mito-adv-toggle {
+  cursor: pointer;
+  padding: 0.65rem 0.85rem;
+  font: 600 10px/1.2 'Cinzel', serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a7f3d0;
+  list-style: none;
+  user-select: none;
+}
+
+.wgt-mito-adv-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.wgt-mito-adv-toggle::before {
+  content: '▸ ';
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+.wgt-mito-adv[open] .wgt-mito-adv-toggle::before {
+  transform: rotate(90deg);
+}
+
+.wgt-mito-adv-lead {
+  padding: 0 0.85rem 0.65rem;
+  font: 400 13px/1.4 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.55);
   margin: 0;
 }
 
-.wgt-mito .wgt-caption {
-  color: rgba(220, 252, 231, 0.5);
-  font-size: 13px;
+.wgt-mito-adv-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  padding: 0 0.85rem 0.85rem;
 }
 
+.wgt-mito-adv-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.wgt-mito-adv-lab {
+  font: 600 9px/1.2 'Cinzel', serif;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(253, 224, 71, 0.75);
+}
+
+.wgt-mito-adv-field input[type='number'] {
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border-radius: 5px;
+  border: 1px solid rgba(253, 224, 71, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fef9c3;
+  font: 600 15px/1.2 'Cinzel', serif;
+}
+
+.wgt-mito-adv-field input[type='number']:focus {
+  outline: none;
+  border-color: #fde047;
+  box-shadow: 0 0 0 2px rgba(253, 224, 71, 0.2);
+}
+
+.wgt-mito .wgt-caption {
+  color: rgba(220, 252, 231, 0.45);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* ── Side panel ── */
 .wgt-mito-deriv .wgt-dmath {
   color: #134832;
+}
+
+.wgt-mito-panel-fold {
+  border: none;
+  margin: 0;
+}
+
+.wgt-mito-panel-fold-title {
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.wgt-mito-panel-fold-title::-webkit-details-marker {
+  display: none;
+}
+
+.wgt-mito-panel-fold-title::before {
+  content: '▸ ';
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+.wgt-mito-panel-fold[open] .wgt-mito-panel-fold-title::before {
+  transform: rotate(90deg);
+}
+
+.wgt-mito-care-wrap {
+  padding-top: 0.35rem;
 }
 
 .wgt-mito-care {
@@ -181,21 +758,31 @@
 }
 
 .wgt-mito-care-title {
-  font: 600 11px/1.3 'Cinzel', serif;
-  letter-spacing: 0.04em;
-  color: #134832;
+  font: 600 12px/1.35 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  color: #0f3324;
 }
 
 .wgt-mito-care-body {
-  font: 400 14px/1.4 'Cormorant Garamond', serif;
-  color: rgba(19, 72, 50, 0.78);
-  margin-top: 0.2rem;
+  font: 400 15px/1.55 'Cormorant Garamond', serif;
+  color: #1a3d2e;
+  margin-top: 0.25rem;
 }
 
 .wgt-mito-ref {
-  font: 400 14px/1.45 'Cormorant Garamond', serif;
-  color: rgba(19, 72, 50, 0.78);
+  font: 400 15px/1.55 'Cormorant Garamond', serif;
+  color: #1a3d2e;
   margin: 0 0 0.5rem;
+}
+
+.wgt-mito-ref-lead {
+  margin-bottom: 0.65rem;
+}
+
+.wgt-mito-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
 }
 
 .wgt-mito-link {
@@ -208,14 +795,267 @@
   text-decoration: underline;
 }
 
+/* ── Responsive ── */
 @media (max-width: 900px) {
-  .wgt-mito-grid {
+  .wgt-mito-param-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wgt-mito-param-ext {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wgt-mito-viz {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 520px) {
-  .wgt-mito-grid {
-    grid-template-columns: 1fr 1fr;
+  .wgt-mito-state-big {
+    font-size: 17px;
   }
+
+  .wgt-mito-psi-val {
+    font-size: 22px;
+  }
+
+  .wgt-mito-adv-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .wgt-mito-presets {
+    flex-direction: column;
+  }
+
+  .wgt-mito-preset {
+    text-align: left;
+  }
+}
+
+/* ============================================================
+   Wow-factor additions: heartbeat audio, tour, share/snapshot,
+   live derivation, JC-1 assay, reproducibility check.
+   ============================================================ */
+
+/* ── Header toolbar ── */
+.wgt-mito-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+.wgt-mito-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font: 600 9px/1 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.6rem;
+  border-radius: 5px;
+  border: 1px solid rgba(110, 231, 183, 0.3);
+  background: rgba(0, 0, 0, 0.22);
+  color: rgba(220, 252, 231, 0.82);
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.wgt-mito-tool:hover { border-color: rgba(110, 231, 183, 0.55); color: #ecfdf5; }
+
+.wgt-mito-tool.active {
+  border-color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.22);
+  color: #a7f3d0;
+}
+
+.wgt-mito-tool-ico { font-size: 12px; line-height: 1; }
+.wgt-mito-tool.active .wgt-mito-tool-ico { animation: wgt-mito-pulse 0.9s ease-in-out infinite; }
+
+@keyframes wgt-mito-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.35); opacity: 1; }
+}
+
+/* ── Guided tour banner ── */
+.wgt-mito-tour {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(110, 231, 183, 0.4);
+  border-left: 3px solid #34d399;
+  border-radius: 10px;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.wgt-mito-tour[hidden] { display: none; }
+.wgt-mito-tour-body { flex: 1; }
+
+.wgt-mito-tour-step {
+  font: 600 8px/1 'Cinzel', serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(167, 243, 208, 0.7);
+  margin-bottom: 0.3rem;
+}
+
+.wgt-mito-tour-title {
+  font: 600 15px/1.2 'Cinzel', serif;
+  color: #ecfdf5;
+  margin-bottom: 0.2rem;
+}
+
+.wgt-mito-tour-text {
+  font: 400 13px/1.45 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.78);
+}
+
+.wgt-mito-tour-actions { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.wgt-mito-tour-btn {
+  font: 600 9px/1 'Cinzel', serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.7rem;
+  border-radius: 5px;
+  border: 1px solid rgba(110, 231, 183, 0.3);
+  background: rgba(0, 0, 0, 0.2);
+  color: rgba(220, 252, 231, 0.8);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.wgt-mito-tour-next { border-color: #6ee7b7; background: rgba(16, 185, 129, 0.22); color: #a7f3d0; }
+.wgt-mito-tour-btn:hover { color: #ecfdf5; }
+
+/* ── JC-1 assay input ── */
+.wgt-mito-assay {
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed rgba(110, 231, 183, 0.2);
+}
+
+.wgt-mito-assay-lab {
+  display: block;
+  font: 500 12px/1.3 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.72);
+  margin-bottom: 0.35rem;
+}
+
+.wgt-mito-assay-row { display: flex; align-items: center; gap: 0.6rem; }
+
+.wgt-mito-assay-row input {
+  width: 92px;
+  padding: 0.35rem 0.5rem;
+  border-radius: 5px;
+  border: 1px solid rgba(110, 231, 183, 0.3);
+  background: rgba(0, 0, 0, 0.28);
+  color: #ecfdf5;
+  font: 600 14px/1 'Cinzel', serif;
+}
+
+.wgt-mito-assay-arrow {
+  font: 500 13px/1 'Cormorant Garamond', serif;
+  color: rgba(167, 243, 208, 0.85);
+}
+
+.wgt-mito-assay-note {
+  margin: 0.4rem 0 0;
+  font: 400 11px/1.4 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.42);
+}
+
+/* ── Live derivation chain ── */
+.wgt-mito-chain {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.wgt-mito-chain-step {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.55rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(110, 231, 183, 0.16);
+}
+
+.wgt-mito-chain-sec {
+  font: 600 9px/1 'Cinzel', serif;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(167, 243, 208, 0.7);
+  text-align: center;
+}
+
+.wgt-mito-chain-math {
+  font: 500 13px/1.3 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+  color: #d1fae5;
+}
+
+/* ── Reproducibility check ── */
+.wgt-mito-repro-lead {
+  font: 400 12px/1.5 'Cormorant Garamond', serif;
+  color: rgba(220, 252, 231, 0.6);
+  margin: 0 0 0.6rem;
+}
+
+.wgt-mito-repro-lead a { color: #6ee7b7; }
+
+.wgt-mito-repro-summary {
+  font: 600 12px/1.3 'Cinzel', serif;
+  letter-spacing: 0.02em;
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+  margin-bottom: 0.55rem;
+  color: rgba(220, 252, 231, 0.8);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(110, 231, 183, 0.2);
+}
+
+.wgt-mito-repro-summary.ok { color: #a7f3d0; border-color: rgba(52, 211, 153, 0.55); background: rgba(16, 84, 60, 0.25); }
+.wgt-mito-repro-summary.fail { color: #fca5a5; border-color: rgba(248, 113, 113, 0.55); background: rgba(94, 24, 24, 0.28); }
+
+.wgt-mito-repro-rows {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.35rem;
+}
+
+.wgt-mito-repro-row {
+  display: grid;
+  grid-template-columns: auto 16px 1fr;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(110, 231, 183, 0.14);
+  font: 500 11px/1 'IBM Plex Mono', ui-monospace, monospace;
+  color: rgba(220, 252, 231, 0.72);
+}
+
+.wgt-mito-repro-row.ok .wgt-mito-repro-mark { color: #34d399; }
+.wgt-mito-repro-row.fail { border-color: rgba(248, 113, 113, 0.5); }
+.wgt-mito-repro-row.fail .wgt-mito-repro-mark { color: #f87171; }
+.wgt-mito-repro-row.current {
+  border-color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.16);
+  box-shadow: 0 0 0 1px rgba(110, 231, 183, 0.35) inset;
+}
+
+.wgt-mito-repro-psi { color: #ecfdf5; font-weight: 600; }
+.wgt-mito-repro-mark { text-align: center; font-weight: 700; }
+.wgt-mito-repro-err { color: rgba(167, 243, 208, 0.6); text-align: right; }
+
+@media (max-width: 640px) {
+  .wgt-mito-tour { flex-direction: column; align-items: stretch; }
+  .wgt-mito-tour-actions { flex-direction: row; }
+  .wgt-mito-tour-btn { flex: 1; text-align: center; }
 }

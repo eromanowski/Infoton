@@ -12,6 +12,15 @@
   var INSTRUMENT_SLIDES = { calculator: 1 };
   var FIRST_BEAT = story.beats[0];
 
+  // Old route IDs → new IDs, so existing deep links keep working.
+  var REDIRECTS = {
+    science: 'model',
+    product: 'workflow',
+    market: 'business',
+    moat: 'validation',
+    close: 'ask',
+  };
+
   function conceptById(id) {
     for (var i = 0; i < concepts.length; i++) {
       if (concepts[i].id === id) return concepts[i];
@@ -29,7 +38,7 @@
   }
 
   function setBodyTheme(theme) {
-    document.body.className = theme ? 'theme-' + theme : 'page-home';
+    document.body.className = 'page-mito-brief ' + (theme ? 'theme-' + theme : 'page-home');
   }
 
   function destroyWidget() {
@@ -61,8 +70,73 @@
       mountEl.innerHTML = '';
       activeWidget = registry.mount(mountEl, c ? c.widget : null, c ? c.demo : null, o);
     }).catch(function () {
-      mountEl.innerHTML = '<p class="demo-error">Demo failed to load.</p>';
+      mountEl.innerHTML = demoFallbackHtml();
     });
+  }
+
+  // Live demo is the keystone asset — if scripts fail to load (e.g. a bad
+  // deploy path), degrade to a static snapshot at the healthy anchor rather
+  // than a dead error message.
+  function demoFallbackHtml() {
+    return (
+      '<div class="demo-fallback">' +
+        '<p class="demo-fallback-note">Live demo unavailable here \u2014 static snapshot at the healthy anchor (\u0394\u03c8\u2098 = 150 mV):</p>' +
+        '<div class="demo-fallback-grid">' +
+          '<div><span class="dfb-val">150 mV</span><span class="dfb-lab">\u0394\u03c8\u2098 input</span></div>' +
+          '<div><span class="dfb-val">36.26 THz</span><span class="dfb-lab">Quantum heartbeat</span></div>' +
+          '<div><span class="dfb-val">HEALTHY</span><span class="dfb-lab">State classification</span></div>' +
+          '<div><span class="dfb-val">1.00\u00d7</span><span class="dfb-lab">Coherence vs healthy</span></div>' +
+        '</div>' +
+        '<p class="demo-fallback-cta"><a href="https://infoton.ai/mitochondria" target="_blank" rel="noopener">Open the live calculator on infoton.ai \u2192</a></p>' +
+      '</div>'
+    );
+  }
+
+  function listItems(arr) {
+    return (arr || []).map(function (x) { return '<li>' + x + '</li>'; }).join('');
+  }
+
+  function scopeBoxHtml() {
+    var s = thesis.scope || {};
+    if (!s.is && !s.isNot) return '';
+    return (
+      '<div class="scope-box">' +
+        '<div class="scope-col scope-is">' +
+          '<h4>This is</h4><ul>' + listItems(s.is) + '</ul>' +
+        '</div>' +
+        '<div class="scope-col scope-isnot">' +
+          '<h4>This is not yet</h4><ul>' + listItems(s.isNot) + '</ul>' +
+        '</div>' +
+      '</div>'
+    );
+  }
+
+  function tryThisHtml() {
+    var t = thesis.tryThis || [];
+    if (!t.length) return '';
+    return (
+      '<div class="try-this">' +
+        '<span class="try-this-tag">Try this</span>' +
+        '<ol class="try-this-steps">' + listItems(t) + '</ol>' +
+      '</div>'
+    );
+  }
+
+  function validationGridHtml() {
+    var v = thesis.validation || {};
+    return (
+      '<div class="vstatus-grid">' +
+        '<div class="vstatus-col vstatus-today">' +
+          '<h4>Established today</h4><ul>' + listItems(v.today) + '</ul>' +
+        '</div>' +
+        '<div class="vstatus-col vstatus-open">' +
+          '<h4>Not yet proven</h4><ul>' + listItems(v.unproven) + '</ul>' +
+        '</div>' +
+        '<div class="vstatus-col vstatus-unlock">' +
+          '<h4>This round unlocks</h4><ul>' + listItems(v.unlocks) + '</ul>' +
+        '</div>' +
+      '</div>'
+    );
   }
 
   function demoShellHtml(c) {
@@ -178,9 +252,6 @@
       );
     }).join('');
 
-    var risks = t.risks.map(function (r) { return '<li>' + r + '</li>'; }).join('');
-    var trust = t.trust.map(function (x) { return '<li>' + x + '</li>'; }).join('');
-
     var appendix = story.appendix.map(function (id) {
       var c = conceptById(id);
       return '<a class="appendix-link" href="#/' + id + '">' + c.title + ' →</a>';
@@ -201,10 +272,12 @@
           '</div>' +
         '</section>' +
         '<section class="proof-embed">' +
+          scopeBoxHtml() +
           '<section class="demo-shell demo-shell-hero demo-shell-instrument">' +
             '<div class="live-proof-section">' +
               '<h3 class="live-proof-title">Live demo</h3>' +
-              '<p class="live-proof-lead">Drag Δψ<sub>m</sub> on the Quantum Heartbeat calculator — or <a href="#/calculator">open the full demo slide</a>.</p>' +
+              '<p class="live-proof-lead">Drag Δψ<sub>m</sub> and watch the deterministic readout update — or <a href="#/calculator">open the full demo slide</a>.</p>' +
+              tryThisHtml() +
             '</div>' +
             '<div class="demo-mount" id="demo-mount"></div>' +
           '</section>' +
@@ -228,10 +301,11 @@
           '</div>' +
         '</section>' +
         '<section class="trust-block">' +
-          '<div class="trust-grid">' +
-            '<div class="trust-col"><h3>Credibility</h3><ul>' + trust + '</ul></div>' +
-            '<div class="trust-col trust-risks"><h3>We will not hide</h3><ul>' + risks + '</ul></div>' +
+          '<div class="section-head">' +
+            '<span class="section-tag">Validation path</span>' +
+            '<h2>What\u2019s proven, and what this round proves</h2>' +
           '</div>' +
+          validationGridHtml() +
         '</section>' +
         (appendix
           ? '<section class="appendix-block">' +
@@ -248,7 +322,14 @@
   }
 
   function renderChapter(c) {
-    var demo = (c.widget || c.demo) ? demoShellHtml(c) : renderExtra(c);
+    var demo;
+    if (c.widget || c.demo) {
+      demo = (c.id === 'calculator' ? scopeBoxHtml() + tryThisHtml() : '') + demoShellHtml(c);
+    } else if (c.id === 'validation') {
+      demo = validationGridHtml() + renderExtra(c);
+    } else {
+      demo = renderExtra(c);
+    }
     return (
       '<div class="deck deck-chapter">' +
         '<div class="page-enter">' +
@@ -288,6 +369,10 @@
 
   function route() {
     var id = parseRoute();
+    if (REDIRECTS[id]) {
+      location.hash = '#/' + REDIRECTS[id];
+      return;
+    }
     var app = document.getElementById('app');
     if (!app) return;
 
